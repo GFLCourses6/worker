@@ -1,0 +1,18 @@
+# Maven specific files / directories
+target/
+pom.xml.backup
+mvnw
+mvnw.cmd
+
+# IDE files (if applicable)
+.idea/
+*.iml
+
+# Logs and other generated files
+logs/
+*.log
+*.log.*
+*.swp
+*.jar
+*.war
+*.ear
