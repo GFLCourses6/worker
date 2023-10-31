@@ -1,14 +1,8 @@
 package executor.service.model;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Objects;
 
-public class ProxyNetworkConfig
-        implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1234567L;
+public class ProxyNetworkConfig {
     private String hostname;
     private Integer port;
 
