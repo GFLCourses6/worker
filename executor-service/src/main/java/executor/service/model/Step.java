@@ -7,6 +7,14 @@ public class Step {
     String action;
     String value;
 
+    public Step() {
+    }
+
+    public Step(String action, String value) {
+        this.action = action;
+        this.value = value;
+    }
+
     public String getAction() {
         return action;
     }
