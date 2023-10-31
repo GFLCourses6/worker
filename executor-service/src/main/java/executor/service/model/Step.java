@@ -2,7 +2,7 @@ package executor.service.model;
 
 import java.util.Objects;
 
-public class StepDTO {
+public class Step {
 
     String action;
     String value;
@@ -27,7 +27,7 @@ public class StepDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StepDTO stepDTO = (StepDTO) o;
+        Step stepDTO = (Step) o;
         return Objects.equals(action, stepDTO.action) && Objects.equals(value, stepDTO.value);
     }
 
