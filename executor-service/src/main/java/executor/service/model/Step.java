@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class Step {
 
-    String action;
-    String value;
+    private String action;
+    private String value;
 
     public Step() {
     }
