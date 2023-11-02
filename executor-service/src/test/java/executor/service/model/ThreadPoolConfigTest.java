@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ThreadPoolConfigTest {
+class ThreadPoolConfigTest {
 
     @Test
     @Order(0)
