@@ -1,8 +1,13 @@
 package executor.service.model;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class WebDriverConfigTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+
+public class WebDriverConfigTest {
+    @Test
     public void testDefaultConstructor() {
         WebDriverConfig config = new WebDriverConfig();
 
@@ -12,6 +17,7 @@ public class WebDriverConfigTest extends TestCase {
         assertNull(config.getImplicitlyWait());
     }
 
+    @Test
     public void testParameterizedConstructor() {
         String webDriverExecutable = "driver.exe";
         String userAgent = "TestUserAgent";
@@ -26,6 +32,7 @@ public class WebDriverConfigTest extends TestCase {
         assertEquals(implicitlyWait, config.getImplicitlyWait());
     }
 
+    @Test
     public void testSetterMethods() {
         WebDriverConfig config = new WebDriverConfig();
 
@@ -41,6 +48,7 @@ public class WebDriverConfigTest extends TestCase {
         assertEquals(5L, config.getImplicitlyWait().longValue());
     }
 
+    @Test
     public void testEqualsAndHashCode() {
         WebDriverConfig config1 = new WebDriverConfig("driver.exe", "TestUserAgent", 10L, 5L);
         WebDriverConfig config2 = new WebDriverConfig("driver.exe", "TestUserAgent", 10L, 5L);
@@ -49,6 +57,7 @@ public class WebDriverConfigTest extends TestCase {
         assertEquals(config1.hashCode(), config2.hashCode());
     }
 
+    @Test
     public void testToString() {
         WebDriverConfig config = new WebDriverConfig("driver.exe", "TestUserAgent", 15L, 7L);
         String expectedString = "WebDriverConfig{webDriverExecutable='driver.exe', userAgent='TestUserAgent', pageLoadTimeout=15, implicitlyWait=7}";
