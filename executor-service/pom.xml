@@ -13,6 +13,8 @@
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>5.10.0</junit.version>
+    <selenium.version>4.15.0</selenium.version>
+    <reflections.version>0.10.2</reflections.version>
   </properties>
 
   <dependencies>
@@ -31,8 +33,13 @@
       <dependency>
           <groupId>org.seleniumhq.selenium</groupId>
           <artifactId>selenium-api</artifactId>
-          <version>4.15.0</version>
+          <version>${selenium.version}</version>
       </dependency>
+    <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>${reflections.version}</version>
+    </dependency>
   </dependencies>
 
 </project>
