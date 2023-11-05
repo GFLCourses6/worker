@@ -28,6 +28,11 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
+      <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-api</artifactId>
+          <version>4.15.0</version>
+      </dependency>
   </dependencies>
 
 </project>
