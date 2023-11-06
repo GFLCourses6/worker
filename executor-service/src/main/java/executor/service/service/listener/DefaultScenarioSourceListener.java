@@ -1,6 +1,7 @@
 package executor.service.service.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import executor.service.exception.ScenarioSourceExecutionException;
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.Scenario;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class DefaultScenarioSourceListener implements ScenarioSourceListener {
 
-    private static final String SCENARIOS_PATH = "src/main/resources/Scenarios.json";
+    private static final String SCENARIOS_PATH = "src/json/Scenarios.json";
     private final ObjectMapper objectMapper;
     private final ScenarioQueueHolder scenarioQueueHolder;
 
@@ -20,11 +21,22 @@ public class DefaultScenarioSourceListener implements ScenarioSourceListener {
     }
 
     @Override
-    public void execute() throws IOException {
-        List<Scenario> scenarios = objectMapper.readValue(
-                new File(SCENARIOS_PATH),
-                objectMapper.getTypeFactory().constructCollectionType(List.class, Scenario.class)
-        );
+    public void execute() {
+        List<Scenario> scenarios = readScenarios();
         scenarioQueueHolder.addAll(scenarios);
+    }
+
+    private List<Scenario> readScenarios() {
+        try {
+            return objectMapper.readValue(
+                    new File(SCENARIOS_PATH),
+                    objectMapper.getTypeFactory()
+                            .constructCollectionType(List.class, Scenario.class)
+            );
+        } catch (IOException e) {
+            throw new ScenarioSourceExecutionException(
+                    String.format("Wasn't able to parse scenarios from file: %s", SCENARIOS_PATH)
+            );
+        }
     }
 }
