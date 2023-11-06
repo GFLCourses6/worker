@@ -1,0 +1,10 @@
+[
+  {
+    "action": "clickCss",
+    "value": "body > ul > li:nth-child(1) > a"
+  },
+  {
+    "action": "clickXpath",
+    "value": "/html/body/p"
+  }
+]
