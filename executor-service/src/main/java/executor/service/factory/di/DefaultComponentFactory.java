@@ -1,5 +1,7 @@
 package executor.service.factory.di;
 
+import executor.service.exception.ComponentCreationException;
+import executor.service.exception.ImplCountException;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
@@ -37,8 +39,7 @@ public class DefaultComponentFactory implements ComponentFactory {
             var implementations = findImplementationsInHolder(tClass).toList();
 
             if (implementations.size() > 1) {
-                // todo: create a new custom exception
-                throw new IllegalArgumentException("The quantity of the implementations > 1 for " + tClass);
+                throw new ImplCountException("The quantity of the implementations > 1 for " + tClass);
             }
             else if (implementations.size() == 1) {
                 return tClass.cast(implementations.get(0));
@@ -75,8 +76,7 @@ public class DefaultComponentFactory implements ComponentFactory {
             return impl.cast(constructor.newInstance(dependencies));
         }
         catch (Exception e) {
-            // todo: create a new custom exception
-            throw new RuntimeException(e.getMessage());
+            throw new ComponentCreationException(e.getMessage());
         }
     }
 
@@ -94,8 +94,7 @@ public class DefaultComponentFactory implements ComponentFactory {
                 .toList();
 
         if (implementations.size() != 1) {
-            // todo: create a new custom exception
-            throw new IllegalArgumentException(
+            throw new ImplCountException(
                     "The quantity of the implementations is " + implementations.size() + " for " + tClass
             );
         }
