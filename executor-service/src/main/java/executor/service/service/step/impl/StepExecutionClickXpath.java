@@ -9,12 +9,12 @@ import org.openqa.selenium.WebElement;
 public class StepExecutionClickXpath implements StepExecution {
     @Override
     public String getStepAction() {
-        return "Xpath";
+        return "clickXpath";
     }
 
     @Override
     public void step(WebDriver webDriver, Step step) {
-        String xpath = step.getAction();
+        String xpath = step.getValue();
         try {
             WebElement element = webDriver.findElement(By.xpath(xpath));
             element.click();
