@@ -14,7 +14,7 @@ public class StepExecutionClickCss implements StepExecution {
 
     @Override
     public void step(WebDriver webDriver, Step step) {
-        String cssSelector = step.getAction();
+        String cssSelector = step.getValue();
         WebElement webElement = webDriver.findElement(By.cssSelector(cssSelector));
         webElement.click();
     }
