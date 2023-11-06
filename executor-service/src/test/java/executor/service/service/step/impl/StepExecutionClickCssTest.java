@@ -26,19 +26,19 @@ class StepExecutionClickCssTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         stepExecutionClickCss = null;
         webDriver = null;
     }
 
     @Test
-    public void testGetStepAction() {
+    void testGetStepAction() {
         String action = stepExecutionClickCss.getStepAction();
         assertEquals("clickCss", action);
     }
 
     @Test
-    public void testStepExecutionClickCssWhenFound() {
+    void testStepExecutionClickCssWhenFound() {
         webDriver = mock(WebDriver.class);
         Step step = new Step("clickCss", ".test-css-selector");
         WebElement webElement = mock(WebElement.class);
