@@ -39,20 +39,23 @@ public class DefaultComponentFactory implements ComponentFactory {
             var implementations = findImplementationsInHolder(tClass).toList();
 
             if (implementations.size() > 1) {
-                throw new ImplCountException("The quantity of the implementations > 1 for " + tClass);
+                throw new ImplCountException("The quantity of the implementations > 1 for "
+                        + tClass.getSimpleName());
             }
             else if (implementations.size() == 1) {
                 return tClass.cast(implementations.get(0));
             }
             return null;
         }
-        return tClass.cast(findImplementationsInHolder(tClass).findFirst().get());
+        return findImplementationsInHolder(tClass)
+                .findFirst()
+                .map(tClass::cast)
+                .orElse(null);
     }
 
-    private <T> Stream<? extends Class<?>> findImplementationsInHolder(Class<T> tClass) {
+    private <T> Stream<Object> findImplementationsInHolder(Class<T> tClass) {
         return componentHolder.stream()
-                .map(Object::getClass)
-                .filter(tClass::isAssignableFrom);
+                .filter(tClass::isInstance);
     }
 
     private <T> T scanPackagesAndCreate(Class<T> tClass) {
@@ -66,7 +69,7 @@ public class DefaultComponentFactory implements ComponentFactory {
     private <T> T buildComponent(Class<? extends T> impl) {
         Constructor<?> constructor = Arrays.stream(impl.getConstructors())
                 .max(Comparator.comparing(Constructor::getParameterCount))
-                .orElseThrow(() -> new IllegalArgumentException("There's no constructor in the" + impl));
+                .orElseThrow(() -> new ComponentCreationException("There's no constructor in the" + impl));
 
         try {
             if (constructor.getParameterCount() == 0) {
@@ -95,8 +98,8 @@ public class DefaultComponentFactory implements ComponentFactory {
 
         if (implementations.size() != 1) {
             throw new ImplCountException(
-                    "The quantity of the implementations is " + implementations.size() + " for " + tClass
-            );
+                    "The quantity of the implementations is " + implementations.size() +
+                            " for " + tClass.getSimpleName());
         }
         return implementations.get(0);
     }
