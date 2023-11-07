@@ -1,16 +1,10 @@
 package executor.service.exception;
 
-public class StepExecutionException
+public class StepExecutionInterruptedException
         extends RuntimeException {
-
-    public StepExecutionException(
+    public StepExecutionInterruptedException(
             final String message,
             final Throwable cause) {
         super(message, cause);
-    }
-
-    public StepExecutionException(
-            final String message) {
-        super(message);
     }
 }
