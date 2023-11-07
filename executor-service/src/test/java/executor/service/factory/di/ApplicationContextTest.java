@@ -11,6 +11,7 @@ import executor.service.service.listener.ScenarioSourceListener;
 import executor.service.service.step.StepExecution;
 import executor.service.service.step.impl.StepExecutionClickCss;
 import executor.service.testComponent.TestAutowiredConstructorComponent;
+import executor.service.testComponent.TestComponentWithDependencies;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -62,7 +63,18 @@ class ApplicationContextTest {
     void testPullFromConfigClassViaAbstractClassOrInterface() {
         ObjectCodec objectMapper = componentFactory.getComponent(ObjectCodec.class);
 
+        assertNotNull(objectMapper);
         assertTrue(objectMapper instanceof ObjectMapper);
+    }
+
+    @Test
+    @DisplayName("Test - pull component with from one of the config classes' methods with dependencies")
+    void testPullFromConfigClassWithDependencies() {
+        TestComponentWithDependencies component = componentFactory.getComponent(TestComponentWithDependencies.class);
+
+        assertNotNull(component);
+        assertNotNull(component.componentDependency);
+        assertNotNull(component.objectMapper);
     }
 
     @Test
