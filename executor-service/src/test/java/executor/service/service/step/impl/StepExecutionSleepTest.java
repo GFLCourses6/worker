@@ -7,10 +7,8 @@ import executor.service.service.step.StepExecution;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.openqa.selenium.WebDriver;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -18,14 +16,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-@ExtendWith(MockitoExtension.class)
 class StepExecutionSleepTest {
     private StepExecution stepExecutionSleep;
     @Mock
     private WebDriver webDriver;
     @BeforeEach
     public void setUp() {
-//        webDriver = mock(WebDriver.class);
         MockitoAnnotations.openMocks(this);
         stepExecutionSleep = new StepExecutionSleep();
     }
@@ -50,7 +46,7 @@ class StepExecutionSleepTest {
     @Test
     void testStepThrowsNumberFormatException() {
         Step step = new Step("sleep", "invalid");
-        StepNumberFormatException exception = assertThrows(StepNumberFormatException.class, () -> stepExecutionSleep.step(webDriver, step));
+        assertThrows(StepNumberFormatException.class, () -> stepExecutionSleep.step(webDriver, step));
     }
 
     @Test
