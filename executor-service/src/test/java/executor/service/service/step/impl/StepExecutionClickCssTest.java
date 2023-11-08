@@ -93,22 +93,22 @@ class StepExecutionClickCssTest {
     @Test
     @DisplayName("Given a ScenarioExecutor instance, when step method is interrupted while sleeping, then a StepExecutionInterruptedException is thrown")
     void testStepThrowsInterruptedException() {
-        String validValue = "1:2";
-        when(mockStep.getValue()).thenReturn(validValue);
-        StepExecutionSleep stepExecutor = spy(new StepExecutionSleep());
-        doThrow(new RuntimeException(new InterruptedException())).when(stepExecutor).step(webDriver, mockStep);
+            String validValue = "1:2";
+            when(mockStep.getValue()).thenReturn(validValue);
+            StepExecutionSleep stepExecutor = spy(new StepExecutionSleep());
+            doThrow(new RuntimeException(new InterruptedException())).when(stepExecutor).step(webDriver, mockStep);
 
-        assertThrows(StepExecutionInterruptedException.class, () -> {
-            try {
-                stepExecutor.step(webDriver, mockStep);
-            } catch (RuntimeException e) {
-                if (e.getCause() instanceof InterruptedException) {
-                    Thread.currentThread().interrupt();
-                    throw new StepExecutionInterruptedException(
-                            "Step execution interrupted while sleeping", e);
+            assertThrows(StepExecutionInterruptedException.class, () -> {
+                try {
+                    stepExecutor.step(webDriver, mockStep);
+                } catch (RuntimeException e) {
+                    if (e.getCause() instanceof InterruptedException) {
+                        Thread.currentThread().interrupt();
+                        throw new StepExecutionInterruptedException(
+                                "Step execution interrupted while sleeping", e);
+                    }
+                    throw e;
                 }
-                throw e;
-            }
-        });
+            });
     }
 }
