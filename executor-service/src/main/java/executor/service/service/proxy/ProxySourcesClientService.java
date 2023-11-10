@@ -14,11 +14,9 @@ public class ProxySourcesClientService implements ProxySourcesClient {
     private static final String PROXY_CREDENTIALS_PATH = "src/json/ProxyCredentials.json";
     private static final String PROXY_NETWORK_CONFIG_PATH = "src/json/ProxyNetworkConfig.json";
     private final ObjectMapper objectMapper;
-    private List<ProxyConfigHolder> proxyConfigHolders = new ArrayList<>();
 
     public ProxySourcesClientService(ObjectMapper objectMapper) throws IOException {
         this.objectMapper = objectMapper;
-        this.proxyConfigHolders = getProxyConfigHolders();
     }
 
     private List<ProxyCredentials> getProxyCredentialsFromFile() throws IOException {
@@ -35,9 +33,11 @@ public class ProxySourcesClientService implements ProxySourcesClient {
                         .constructCollectionType(List.class, ProxyNetworkConfig.class));
     }
 
-    private List<ProxyConfigHolder> getProxyConfigHolders() throws IOException {
+    @Override
+    public ProxyConfigHolder getProxy() throws IOException {
         List<ProxyCredentials> proxyCredentials = getProxyCredentialsFromFile();
         List<ProxyNetworkConfig> proxyNetworkConfigs = getProxyNetworkConfigFromFile();
+        List<ProxyConfigHolder> proxyConfigHolders = new ArrayList<>();
         int difference = proxyCredentials.size() - proxyNetworkConfigs.size();
         int j = 0;
         for (int i = 0; i < proxyNetworkConfigs.size() + difference; i++) {
@@ -49,14 +49,10 @@ public class ProxySourcesClientService implements ProxySourcesClient {
                 proxyConfigHolders.add(new ProxyConfigHolder(proxyNetworkConfigs.get(i), proxyCredentials.get(i)));
             }
         }
-        return proxyConfigHolders;
-    }
-
-    @Override
-    public ProxyConfigHolder getProxy() throws IOException {
-        ProxyConfigHolder proxyConfigHolder = proxyConfigHolders.get(0);
-        proxyConfigHolders.remove(0);
-        return proxyConfigHolder;
+        for (ProxyConfigHolder p : proxyConfigHolders) {
+            return p;
+        }
+        return null;
     }
 }
 
