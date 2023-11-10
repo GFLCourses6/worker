@@ -3,58 +3,46 @@ package executor.service.service.webDriver.impl;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.ProxyCredentials;
 import executor.service.model.ProxyNetworkConfig;
-import executor.service.model.WebDriverConfig;
+import executor.service.service.ConfigPropertiesLoader;
 import executor.service.service.webDriver.WebDriverInitializer;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class WebDriverInitializerTest {
 
-  private WebDriverInitializer webDriverInitializer;
-  private ProxyConfigHolder proxyConfigHolder;
+    private WebDriverInitializer webDriverInitializer;
 
-  @BeforeEach
-  public void setUp() {
-    // Инициализация настроек WebDriver и прокси
-    WebDriverConfig webDriverConfig = new WebDriverConfig();
-    proxyConfigHolder = new ProxyConfigHolder(
-        new ProxyNetworkConfig("proxy.example.com", 8080),
-        new ProxyCredentials("username", "password")
-    );
+    @BeforeEach
+    public void setUp() {
+        WebDriverManager.chromedriver().setup();
 
-    // Используем WebDriverManager для установки и настройки ChromeDriver
-    WebDriverManager.chromedriver().setup();
+        webDriverInitializer = new WebDriverInitializerImpl(new ConfigPropertiesLoader());
+    }
 
-    // Создаем экземпляр WebDriverInitializerImpl
-    webDriverInitializer = new WebDriverInitializerImpl(webDriverConfig, proxyConfigHolder);
-  }
+    @Test
+    public void createWebDriverWithoutProxy() {
+        WebDriver driver = webDriverInitializer.create(new ProxyConfigHolder());
+        assertNotNull(driver);
 
-  @Test
-  public void createWebDriverWithoutProxy() {
-    // Создаем WebDriver без прокси
-    WebDriver driver = webDriverInitializer.create();
-    assertNotNull(driver);
+        driver.get("https://www.automationtesting.co.uk/buttons.html");
+        driver.findElement(By.xpath("//button[@id='btn_one']")).click();
+    }
 
-    // Ваш код для выполнения действий с WebDriver без прокси
-     driver.get("https://www.example.com");
-  }
+    @Test
+    public void createWebDriverWithAuthenticatedProxy() {
+        ProxyConfigHolder proxyConfigHolder = new ProxyConfigHolder(
+                new ProxyNetworkConfig("188.74.210.207", 6286),
+                new ProxyCredentials("ixfkiyxf", "0v2ypvysubnt")
+        );
 
-  @Test
-  public void createWebDriverWithProxy() {
-    // Изменяем настройки прокси для теста с прокси
-    proxyConfigHolder = new ProxyConfigHolder(
-        new ProxyNetworkConfig("proxy.example.com", 8080),
-        new ProxyCredentials("username", "password")
-    );
-
-    // Создаем WebDriver с прокси
-    WebDriver driver = webDriverInitializer.create();
-    assertNotNull(driver);
-    driver.get("https://www.example.com");
-    // Ваш код для выполнения действий с WebDriver с прокси
-  }
+        WebDriver driver = webDriverInitializer.create(proxyConfigHolder);
+        assertNotNull(driver);
+        driver.get("https://www.automationtesting.co.uk/buttons.html");
+        driver.findElement(By.xpath("//button[@id='btn_one']")).click();
+    }
 }
