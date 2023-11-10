@@ -4,9 +4,6 @@ import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import executor.service.exception.ComponentCreationException;
 import executor.service.exception.ImplCountException;
-import executor.service.factory.di.helper.DefaultComponentConstructorResolver;
-import executor.service.factory.di.helper.DefaultConfigMethodScanner;
-import executor.service.factory.di.helper.DefaultPackageComponentScanner;
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.Step;
 import executor.service.service.listener.DefaultScenarioSourceListener;
@@ -30,11 +27,7 @@ class ApplicationContextTest {
 
     @BeforeEach
     void setUp() {
-        componentFactory = new ApplicationContext(
-                new DefaultComponentConstructorResolver(),
-                new DefaultConfigMethodScanner(),
-                new DefaultPackageComponentScanner()
-        );
+        componentFactory = new ApplicationContext();
     }
 
     @Test
