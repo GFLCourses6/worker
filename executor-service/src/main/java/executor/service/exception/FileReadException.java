@@ -1,16 +1,15 @@
 package executor.service.exception;
 
-public class StepExecutionException
+public class FileReadException
         extends RuntimeException {
+    public FileReadException(
+            final String message) {
+        super(message);
+    }
 
-    public StepExecutionException(
+    public FileReadException(
             final String message,
             final Throwable cause) {
         super(message, cause);
-    }
-
-    public StepExecutionException(
-            final String message) {
-        super(message);
     }
 }

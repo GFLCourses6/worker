@@ -7,19 +7,19 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 
-import static executor.service.service.executor.Action.CLICK_CSS_ACTION;
+import static executor.service.service.executor.Action.CLICK_XPATH_ACTION;
 
-public class StepExecutionClickCss implements StepExecution {
+public class StepExecutionClickXpath implements StepExecution {
     @Override
     public String getStepAction() {
-        return CLICK_CSS_ACTION;
+        return CLICK_XPATH_ACTION;
     }
 
     @Override
     public void step(WebDriver webDriver, Step step) {
-        String cssSelector = step.getValue();
+        String xpath = step.getValue();
         try {
-            webDriver.findElement(By.cssSelector(cssSelector)).click();
+            webDriver.findElement(By.xpath(xpath)).click();
         } catch (WebDriverException e) {
             throw new StepExecutionException(
                     "An error occurred while clicking the element", e);
