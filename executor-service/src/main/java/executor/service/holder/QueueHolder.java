@@ -8,4 +8,5 @@ public interface QueueHolder<T> {
     void add(T instance);
     void addAll(Collection<T> instances);
     Optional<T> poll();
+    boolean isEmpty();
 }
