@@ -22,6 +22,7 @@ public class ComponentConfiguration {
         Properties properties = configPropertiesLoader.loadConfigProperties("config.properties");
         WebDriverConfig webDriverConfig = new WebDriverConfig();
 
+        webDriverConfig.setWebDriverExecutable(properties.getProperty("webDriverExecutable"));
         webDriverConfig.setUserAgent(properties.getProperty("userAgent"));
         webDriverConfig.setPageLoadTimeout(Long.parseLong(properties.getProperty("pageLoadTimeout")));
         webDriverConfig.setImplicitlyWait(Long.parseLong(properties.getProperty("implicitlyWait")));

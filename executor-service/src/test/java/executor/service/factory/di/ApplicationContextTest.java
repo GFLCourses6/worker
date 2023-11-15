@@ -6,6 +6,8 @@ import executor.service.exception.ComponentCreationException;
 import executor.service.exception.ImplCountException;
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.Step;
+import executor.service.model.ThreadPoolConfig;
+import executor.service.model.WebDriverConfig;
 import executor.service.service.listener.DefaultScenarioSourceListener;
 import executor.service.service.listener.ScenarioSourceListener;
 import executor.service.service.step.StepExecution;
@@ -32,7 +34,8 @@ class ApplicationContextTest {
 
     @Test
     @Order(1)
-    @DisplayName("Test - create component using class, expected fail with ComponentCreationException")
+    @DisplayName("Test - create component using class, expected fail with ComponentCreationException " +
+            "because it's impossible to inject dependencies in the constructor")
     void testCreateFromClassNegative() {
         assertThrows(ComponentCreationException.class, () ->
                 componentFactory.getComponent(Step.class));
@@ -117,6 +120,30 @@ class ApplicationContextTest {
         assertNotNull(objectMapper1);
         assertSame(objectMapper1, objectMapper2);
         assertSame(objectMapper2, objectMapper3);
+    }
+
+    @Test
+    @DisplayName("Test - assert that ThreadPoolConfig is created with the proper configs from 'config.properties' " +
+            "inside the @Configuration class, expected ok")
+    void testThreadPoolConfigBeanCreation() {
+        ThreadPoolConfig threadPoolConfig = componentFactory.getComponent(ThreadPoolConfig.class);
+
+        assertNotNull(threadPoolConfig);
+        assertEquals(threadPoolConfig.getCorePoolSize(), 10);
+        assertEquals(threadPoolConfig.getKeepAliveTime(), 2L);
+    }
+
+    @Test
+    @DisplayName("Test - assert that ThreadPoolConfig is created with the proper configs from 'config.properties' " +
+            "inside the @Configuration class, expected ok")
+    void testWebDriverConfig() {
+        WebDriverConfig webDriverConfig = componentFactory.getComponent(WebDriverConfig.class);
+
+        assertNotNull(webDriverConfig);
+        assertEquals(webDriverConfig.getWebDriverExecutable(), "path/to/chromedriver.exe");
+        assertEquals(webDriverConfig.getUserAgent(), "Mozilla/5.0");
+        assertEquals(webDriverConfig.getPageLoadTimeout(), 50L);
+        assertEquals(webDriverConfig.getImplicitlyWait(), 20L);
     }
 
     private  <T> Object getPrivateField(Object obj, String fieldName, Class<T> fieldType)
