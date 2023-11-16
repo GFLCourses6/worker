@@ -129,21 +129,21 @@ class ApplicationContextTest {
         ThreadPoolConfig threadPoolConfig = componentFactory.getComponent(ThreadPoolConfig.class);
 
         assertNotNull(threadPoolConfig);
-        assertEquals(threadPoolConfig.getCorePoolSize(), 10);
-        assertEquals(threadPoolConfig.getKeepAliveTime(), 2L);
+        assertEquals(10, threadPoolConfig.getCorePoolSize());
+        assertEquals(2L, threadPoolConfig.getKeepAliveTime());
     }
 
     @Test
-    @DisplayName("Test - assert that ThreadPoolConfig is created with the proper configs from 'config.properties' " +
+    @DisplayName("Test - assert that WebDriverConfig is created with the proper configs from 'config.properties' " +
             "inside the @Configuration class, expected ok")
     void testWebDriverConfig() {
         WebDriverConfig webDriverConfig = componentFactory.getComponent(WebDriverConfig.class);
 
         assertNotNull(webDriverConfig);
-        assertEquals(webDriverConfig.getWebDriverExecutable(), "path/to/chromedriver.exe");
-        assertEquals(webDriverConfig.getUserAgent(), "Mozilla/5.0");
-        assertEquals(webDriverConfig.getPageLoadTimeout(), 50L);
-        assertEquals(webDriverConfig.getImplicitlyWait(), 20L);
+        assertEquals("path/to/chromedriver.exe", webDriverConfig.getWebDriverExecutable());
+        assertEquals("Mozilla/5.0", webDriverConfig.getUserAgent());
+        assertEquals(50L, webDriverConfig.getPageLoadTimeout());
+        assertEquals(20L, webDriverConfig.getImplicitlyWait());
     }
 
     private  <T> Object getPrivateField(Object obj, String fieldName, Class<T> fieldType)

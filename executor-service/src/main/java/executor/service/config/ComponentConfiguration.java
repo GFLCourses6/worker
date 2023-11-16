@@ -11,6 +11,8 @@ import java.util.Properties;
 
 @Configuration
 public class ComponentConfiguration {
+    
+    private static final String CONFIG_PROPS_PATH = "config.properties";
 
     @Bean
     public ObjectMapper objectMapper() {
@@ -19,7 +21,7 @@ public class ComponentConfiguration {
 
     @Bean
     public WebDriverConfig webDriverConfig(ConfigPropertiesLoader configPropertiesLoader) {
-        Properties properties = configPropertiesLoader.loadConfigProperties("config.properties");
+        Properties properties = configPropertiesLoader.loadConfigProperties(CONFIG_PROPS_PATH);
         WebDriverConfig webDriverConfig = new WebDriverConfig();
 
         webDriverConfig.setWebDriverExecutable(properties.getProperty("webDriverExecutable"));
@@ -32,7 +34,7 @@ public class ComponentConfiguration {
 
     @Bean
     public ThreadPoolConfig threadPoolConfig(ConfigPropertiesLoader configPropertiesLoader) {
-        Properties properties = configPropertiesLoader.loadConfigProperties("config.properties");
+        Properties properties = configPropertiesLoader.loadConfigProperties(CONFIG_PROPS_PATH);
         ThreadPoolConfig threadPoolConfig = new ThreadPoolConfig();
 
         threadPoolConfig.setCorePoolSize(Integer.parseInt(properties.getProperty("corePoolSize")));
