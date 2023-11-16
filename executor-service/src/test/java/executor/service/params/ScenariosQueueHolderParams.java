@@ -12,11 +12,11 @@ public class ScenariosQueueHolderParams {
     static Stream<Arguments> testPoll() {
         ScenarioQueueHolder holder1 = new ScenarioQueueHolder();
         Scenario expectedScenario1 = new Scenario();
-        holder1.addAll(List.of(expectedScenario1, new Scenario(), new Scenario()));
+        holder1.getQueue().addAll(List.of(expectedScenario1, new Scenario(), new Scenario()));
 
         ScenarioQueueHolder holder2 = new ScenarioQueueHolder();
         Scenario expectedScenario2 = new Scenario();
-        holder2.addAll(List.of(expectedScenario2, new Scenario()));
+        holder2.getQueue().addAll(List.of(expectedScenario2, new Scenario()));
 
         // ScenarioQueueHolder scenariosHolder, Scenario expectedScenario
         return Stream.of(

@@ -8,22 +8,23 @@ import executor.service.model.Scenario;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Queue;
 
 public class DefaultScenarioSourceListener implements ScenarioSourceListener {
 
     private static final String SCENARIOS_PATH = "src/json/Scenarios.json";
     private final ObjectMapper objectMapper;
-    private final ScenarioQueueHolder scenarioQueueHolder;
+    private final Queue<Scenario> scenarioQueue;
 
     public DefaultScenarioSourceListener(ObjectMapper objectMapper, ScenarioQueueHolder scenarioQueueHolder) {
         this.objectMapper = objectMapper;
-        this.scenarioQueueHolder = scenarioQueueHolder;
+        this.scenarioQueue = scenarioQueueHolder.getQueue();
     }
 
     @Override
     public void execute() {
         List<Scenario> scenarios = readScenarios();
-        scenarioQueueHolder.addAll(scenarios);
+        scenarioQueue.addAll(scenarios);
     }
 
     private List<Scenario> readScenarios() {

@@ -11,19 +11,20 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Queue;
 
 public class ProxySourcesClientService implements ProxySourcesClient {
     private static final String PROXY_CREDENTIALS_PATH = "src/json/ProxyCredentials.json";
     private static final String PROXY_NETWORK_CONFIG_PATH = "src/json/ProxyNetworkConfig.json";
     private final ObjectMapper objectMapper;
-    private final ProxyNetworkConfigHolder networkConfigHolder;
-    private final ProxyCredentialsHolder credentialsHolder;
+    private final Queue<ProxyNetworkConfig> networkConfigQueue;
+    private final Queue<ProxyCredentials> credentialsQueue;
 
     public ProxySourcesClientService(ObjectMapper objectMapper, ProxyNetworkConfigHolder networkConfigHolder,
                                       ProxyCredentialsHolder credentialsHolder) throws IOException {
         this.objectMapper = objectMapper;
-        this.networkConfigHolder = networkConfigHolder;
-        this.credentialsHolder = credentialsHolder;
+        this.credentialsQueue = credentialsHolder.getQueue();
+        this.networkConfigQueue = networkConfigHolder.getQueue();
         getConfigs();
         getCredentials();
     }
@@ -36,21 +37,23 @@ public class ProxySourcesClientService implements ProxySourcesClient {
     }
 
     private void getConfigs() throws IOException {
-        List<ProxyNetworkConfig> proxyNetworkConfigs = getProxyInfoFromFile(PROXY_NETWORK_CONFIG_PATH, ProxyNetworkConfig.class);
-        networkConfigHolder.addAll(proxyNetworkConfigs);
+        List<ProxyNetworkConfig> proxyNetworkConfigs =
+                getProxyInfoFromFile(PROXY_NETWORK_CONFIG_PATH, ProxyNetworkConfig.class);
+        networkConfigQueue.addAll(proxyNetworkConfigs);
     }
 
     private void getCredentials() throws IOException {
-        List<ProxyCredentials> proxyCredentials = getProxyInfoFromFile(PROXY_CREDENTIALS_PATH, ProxyCredentials.class);
-        credentialsHolder.addAll(proxyCredentials);
+        List<ProxyCredentials> proxyCredentials =
+                getProxyInfoFromFile(PROXY_CREDENTIALS_PATH, ProxyCredentials.class);
+        credentialsQueue.addAll(proxyCredentials);
     }
 
     @Override
     public ProxyConfigHolder getProxy() {
         ProxyConfigHolder proxyConfigHolder = new ProxyConfigHolder();
         try {
-            proxyConfigHolder.setProxyNetworkConfig(networkConfigHolder.poll().get());
-            proxyConfigHolder.setProxyCredentials(credentialsHolder.poll().get());
+            proxyConfigHolder.setProxyNetworkConfig(networkConfigQueue.poll());
+            proxyConfigHolder.setProxyCredentials(credentialsQueue.poll());
             return proxyConfigHolder;
         } catch (NoSuchElementException e){
             throw new NoSuchElementException("ProxyNetworkConfig is null");
