@@ -1,0 +1,22 @@
+[
+  {
+    "proxyNetworkConfig": {
+      "hostname": "proxy1.example.com",
+      "port": 8080
+    },
+    "proxyCredentials": {
+      "username": "user1",
+      "password": "pass1"
+    }
+  },
+  {
+    "proxyNetworkConfig": {
+      "hostname": "proxy2.example.com",
+      "port": 8888
+    },
+    "proxyCredentials": {
+      "username": "user2",
+      "password": "pass2"
+    }
+  }
+]
