@@ -1,11 +1,8 @@
 package executor.service.holder;
 
-import java.util.Collection;
-import java.util.Optional;
+import java.util.Queue;
 
 public interface QueueHolder<T> {
 
-    void add(T instance);
-    void addAll(Collection<T> instances);
-    Optional<T> poll();
+    Queue<T> getQueue();
 }

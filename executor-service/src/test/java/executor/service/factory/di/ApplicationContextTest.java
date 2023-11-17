@@ -4,20 +4,23 @@ import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import executor.service.exception.ComponentCreationException;
 import executor.service.exception.ImplCountException;
-import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.Step;
+import executor.service.model.ThreadPoolConfig;
+import executor.service.model.WebDriverConfig;
 import executor.service.service.listener.DefaultScenarioSourceListener;
 import executor.service.service.listener.ScenarioSourceListener;
 import executor.service.service.step.StepExecution;
 import executor.service.service.step.impl.StepExecutionClickCss;
 import executor.service.testComponent.TestAutowiredConstructorComponent;
 import executor.service.testComponent.TestComponentWithDependencies;
+import executor.service.util.file.FileJsonParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
+import java.util.Queue;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,7 +35,8 @@ class ApplicationContextTest {
 
     @Test
     @Order(1)
-    @DisplayName("Test - create component using class, expected fail with ComponentCreationException")
+    @DisplayName("Test - create component using class, expected fail with ComponentCreationException " +
+            "because it's impossible to inject dependencies in the constructor")
     void testCreateFromClassNegative() {
         assertThrows(ComponentCreationException.class, () ->
                 componentFactory.getComponent(Step.class));
@@ -83,8 +87,8 @@ class ApplicationContextTest {
         ScenarioSourceListener scenarioSourceListener = componentFactory.getComponent(ScenarioSourceListener.class);
 
         assertTrue(scenarioSourceListener instanceof DefaultScenarioSourceListener);
-        assertNotNull(getPrivateField(scenarioSourceListener, "objectMapper", ObjectMapper.class));
-        assertNotNull(getPrivateField(scenarioSourceListener, "scenarioQueueHolder", ScenarioQueueHolder.class));
+        assertNotNull(getPrivateField(scenarioSourceListener, "fileParser", FileJsonParser.class));
+        assertNotNull(getPrivateField(scenarioSourceListener, "scenarioQueue", Queue.class));
     }
 
     @Test
@@ -119,7 +123,31 @@ class ApplicationContextTest {
         assertSame(objectMapper2, objectMapper3);
     }
 
-    private  <T> Object getPrivateField(Object obj, String fieldName, Class<T> fieldType)
+    @Test
+    @DisplayName("Test - assert that ThreadPoolConfig is created with the proper configs from 'config.properties' " +
+            "inside the @Configuration class, expected ok")
+    void testThreadPoolConfigBeanCreation() {
+        ThreadPoolConfig threadPoolConfig = componentFactory.getComponent(ThreadPoolConfig.class);
+
+        assertNotNull(threadPoolConfig);
+        assertEquals(10, threadPoolConfig.getCorePoolSize());
+        assertEquals(2L, threadPoolConfig.getKeepAliveTime());
+    }
+
+    @Test
+    @DisplayName("Test - assert that WebDriverConfig is created with the proper configs from 'config.properties' " +
+            "inside the @Configuration class, expected ok")
+    void testWebDriverConfig() {
+        WebDriverConfig webDriverConfig = componentFactory.getComponent(WebDriverConfig.class);
+
+        assertNotNull(webDriverConfig);
+        assertEquals("path/to/chromedriver.exe", webDriverConfig.getWebDriverExecutable());
+        assertEquals("Mozilla/5.0", webDriverConfig.getUserAgent());
+        assertEquals(50L, webDriverConfig.getPageLoadTimeout());
+        assertEquals(20L, webDriverConfig.getImplicitlyWait());
+    }
+
+    private <T> Object getPrivateField(Object obj, String fieldName, Class<T> fieldType)
             throws NoSuchFieldException, IllegalAccessException {
 
         Class<?> objClass = obj.getClass();

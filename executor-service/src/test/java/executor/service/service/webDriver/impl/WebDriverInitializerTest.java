@@ -3,29 +3,46 @@ package executor.service.service.webDriver.impl;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.ProxyCredentials;
 import executor.service.model.ProxyNetworkConfig;
-import executor.service.service.ConfigPropertiesLoader;
-import executor.service.service.webDriver.WebDriverInitializer;
+import executor.service.model.WebDriverConfig;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
-public class WebDriverInitializerTest {
+class WebDriverInitializerTest {
 
-    private WebDriverInitializer webDriverInitializer;
+    @Mock
+    private WebDriverConfig webDriverConfig;
+    @InjectMocks
+    private WebDriverInitializerImpl webDriverInitializer;
+    private AutoCloseable openMocks;
 
     @BeforeEach
-    public void setUp() {
-        WebDriverManager.chromedriver().setup();
+    void setUp() {
+        openMocks = MockitoAnnotations.openMocks(this);
 
-        webDriverInitializer = new WebDriverInitializerImpl(new ConfigPropertiesLoader());
+        when(webDriverConfig.getUserAgent()).thenReturn("Mozilla/5.0");
+        when(webDriverConfig.getPageLoadTimeout()).thenReturn(30L);
+        when(webDriverConfig.getImplicitlyWait()).thenReturn(10L);
+
+        WebDriverManager.chromedriver().setup();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
     }
 
     @Test
-    public void createWebDriverWithoutProxy() {
+    void createWebDriverWithoutProxy() {
         WebDriver driver = webDriverInitializer.create(new ProxyConfigHolder());
         assertNotNull(driver);
 
@@ -34,7 +51,7 @@ public class WebDriverInitializerTest {
     }
 
     @Test
-    public void createWebDriverWithAuthenticatedProxy() {
+    void createWebDriverWithAuthenticatedProxy() {
         ProxyConfigHolder proxyConfigHolder = new ProxyConfigHolder(
                 new ProxyNetworkConfig("188.74.210.207", 6286),
                 new ProxyCredentials("ixfkiyxf", "0v2ypvysubnt")
