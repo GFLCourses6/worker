@@ -1,6 +1,6 @@
 package executor.service.service.listener;
 
-import executor.service.exception.ScenarioSourceExecutionException;
+import executor.service.exception.FileReadException;
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.Scenario;
 import executor.service.util.file.FileParser;
@@ -15,8 +15,7 @@ public class DefaultScenarioSourceListener implements ScenarioSourceListener {
     private final Queue<Scenario> scenarioQueue;
     private final FileParser fileParser;
 
-    public DefaultScenarioSourceListener(ScenarioQueueHolder scenarioQueueHolder,
-                                         FileParser fileParser) {
+    public DefaultScenarioSourceListener(ScenarioQueueHolder scenarioQueueHolder, FileParser fileParser) {
         this.scenarioQueue = scenarioQueueHolder.getQueue();
         this.fileParser = fileParser;
     }
@@ -31,7 +30,7 @@ public class DefaultScenarioSourceListener implements ScenarioSourceListener {
         try {
             return fileParser.getAllFromFile(SCENARIOS_PATH, Scenario.class);
         } catch (IOException e) {
-            throw new ScenarioSourceExecutionException(
+            throw new FileReadException(
                     String.format("Wasn't able to parse scenarios from file: %s", SCENARIOS_PATH)
             );
         }
