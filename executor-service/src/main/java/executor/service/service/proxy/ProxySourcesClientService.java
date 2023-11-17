@@ -7,7 +7,6 @@ import executor.service.model.ProxyNetworkConfig;
 import executor.service.util.file.FileParser;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -22,27 +21,25 @@ public class ProxySourcesClientService implements ProxySourcesClient {
 
     public ProxySourcesClientService(FileParser fileParser) {
         this.fileParser = fileParser;
-        this.credentialsQueue = new LinkedBlockingQueue<>();
-        this.networkConfigQueue = new LinkedBlockingQueue<>();
-        getConfigs();
-        getCredentials();
+        this.credentialsQueue = getCredentials();
+        this.networkConfigQueue = getConfigs();
     }
 
-    private void getConfigs() {
+    private Queue<ProxyNetworkConfig> getConfigs() {
         try {
-            List<ProxyNetworkConfig> proxyNetworkConfigs =
-                    fileParser.getAllFromFile(PROXY_NETWORK_CONFIG_PATH, ProxyNetworkConfig.class);
-            networkConfigQueue.addAll(proxyNetworkConfigs);
+            return new LinkedBlockingQueue<>(
+                    fileParser.getAllFromFile(PROXY_NETWORK_CONFIG_PATH, ProxyNetworkConfig.class)
+            );
         } catch (IOException e) {
             throw new FileReadException("Wasn't able to read " + PROXY_NETWORK_CONFIG_PATH);
         }
     }
 
-    private void getCredentials() {
+    private Queue<ProxyCredentials> getCredentials() {
         try {
-            List<ProxyCredentials> proxyCredentials =
-                    fileParser.getAllFromFile(PROXY_CREDENTIALS_PATH, ProxyCredentials.class);
-            credentialsQueue.addAll(proxyCredentials);
+            return new LinkedBlockingQueue<>(
+                    fileParser.getAllFromFile(PROXY_CREDENTIALS_PATH, ProxyCredentials.class)
+            );
         } catch (IOException e) {
             throw new FileReadException("Wasn't able to read " + PROXY_CREDENTIALS_PATH);
         }

@@ -1,8 +1,7 @@
-package executor.service.service;
+package executor.service.service.listener;
 
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.Scenario;
-import executor.service.service.listener.DefaultScenarioSourceListener;
 import executor.service.util.file.FileParser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
