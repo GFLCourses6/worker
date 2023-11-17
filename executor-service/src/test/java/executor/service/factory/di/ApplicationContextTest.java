@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import executor.service.exception.ComponentCreationException;
 import executor.service.exception.ImplCountException;
-import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.Step;
 import executor.service.model.ThreadPoolConfig;
 import executor.service.model.WebDriverConfig;
@@ -14,12 +13,14 @@ import executor.service.service.step.StepExecution;
 import executor.service.service.step.impl.StepExecutionClickCss;
 import executor.service.testComponent.TestAutowiredConstructorComponent;
 import executor.service.testComponent.TestComponentWithDependencies;
+import executor.service.util.file.FileJsonParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
+import java.util.Queue;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -86,8 +87,8 @@ class ApplicationContextTest {
         ScenarioSourceListener scenarioSourceListener = componentFactory.getComponent(ScenarioSourceListener.class);
 
         assertTrue(scenarioSourceListener instanceof DefaultScenarioSourceListener);
-        assertNotNull(getPrivateField(scenarioSourceListener, "objectMapper", ObjectMapper.class));
-        assertNotNull(getPrivateField(scenarioSourceListener, "scenarioQueueHolder", ScenarioQueueHolder.class));
+        assertNotNull(getPrivateField(scenarioSourceListener, "fileParser", FileJsonParser.class));
+        assertNotNull(getPrivateField(scenarioSourceListener, "scenarioQueue", Queue.class));
     }
 
     @Test
@@ -146,7 +147,7 @@ class ApplicationContextTest {
         assertEquals(20L, webDriverConfig.getImplicitlyWait());
     }
 
-    private  <T> Object getPrivateField(Object obj, String fieldName, Class<T> fieldType)
+    private <T> Object getPrivateField(Object obj, String fieldName, Class<T> fieldType)
             throws NoSuchFieldException, IllegalAccessException {
 
         Class<?> objClass = obj.getClass();

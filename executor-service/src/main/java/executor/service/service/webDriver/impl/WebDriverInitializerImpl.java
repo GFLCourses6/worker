@@ -29,7 +29,7 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
     public WebDriver create(ProxyConfigHolder proxyConfigHolder) {
         WebDriverManager.chromedriver().setup();
 
-        ChromeOptions chromeOptions = getChromeOptions(webDriverConfig);
+        ChromeOptions chromeOptions = getChromeOptions();
         configureProxy(chromeOptions, proxyConfigHolder);
 
         ChromeDriver driver = new ChromeDriver(chromeOptions);
@@ -41,7 +41,7 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
         return driver;
     }
 
-    private ChromeOptions getChromeOptions(WebDriverConfig webDriverConfig) {
+    private ChromeOptions getChromeOptions() {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--user-agent=" + webDriverConfig.getUserAgent());
         chromeOptions.setAcceptInsecureCerts(true);
