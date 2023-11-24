@@ -1,8 +1,8 @@
 package executor.service.holder;
 
-import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 
 public interface QueueHolder<T> {
 
-    Queue<T> getQueue();
+    BlockingQueue<T> getQueue();
 }

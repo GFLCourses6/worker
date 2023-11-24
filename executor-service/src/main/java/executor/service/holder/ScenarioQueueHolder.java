@@ -2,15 +2,15 @@ package executor.service.holder;
 
 import executor.service.model.Scenario;
 
-import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ScenarioQueueHolder implements QueueHolder<Scenario> {
 
-    private final Queue<Scenario> scenarios = new LinkedBlockingQueue<>();
+    private final BlockingQueue<Scenario> scenarios = new LinkedBlockingQueue<>();
 
     @Override
-    public Queue<Scenario> getQueue() {
+    public BlockingQueue<Scenario> getQueue() {
         return scenarios;
     }
 }
