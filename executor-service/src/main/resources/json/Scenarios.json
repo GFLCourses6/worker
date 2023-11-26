@@ -1,0 +1,100 @@
+[
+  {
+    "name":"test scenario 1",
+    "site":"https://www.automationtesting.co.uk/loader.html",
+    "steps":[
+      {
+        "action":"sleep",
+        "value":"5:10"
+      },
+      {
+        "action":"clickCss",
+        "value":"button#loaderBtn"
+      }
+    ]
+  },
+  {
+    "name":"test scenario 2",
+    "site":"https://www.automationtesting.co.uk/loader.html",
+    "steps":[
+      {
+        "action":"sleep",
+        "value":"5:10"
+      },
+      {
+        "action":"clickCss",
+        "value":"button#loaderBtn"
+      }
+    ]
+  },
+  {
+    "name":"test scenario 3",
+    "site":"https://www.automationtesting.co.uk/loader.html",
+    "steps":[
+      {
+        "action":"sleep",
+        "value":"5:10"
+      },
+      {
+        "action":"clickCss",
+        "value":"button#loaderBtn"
+      }
+    ]
+  },
+  {
+    "name":"test scenario 4",
+    "site":"https://www.automationtesting.co.uk/loader.html",
+    "steps":[
+      {
+        "action":"sleep",
+        "value":"5:10"
+      },
+      {
+        "action":"clickCss",
+        "value":"button#loaderBtn"
+      }
+    ]
+  },
+  {
+    "name":"test scenario 5",
+    "site":"https://www.automationtesting.co.uk/loader.html",
+    "steps":[
+      {
+        "action":"sleep",
+        "value":"5:10"
+      },
+      {
+        "action":"clickCss",
+        "value":"button#loaderBtn"
+      }
+    ]
+  },
+  {
+    "name":"test scenario 6",
+    "site":"https://www.automationtesting.co.uk/loader.html",
+    "steps":[
+      {
+        "action":"sleep",
+        "value":"5:10"
+      },
+      {
+        "action":"clickCss",
+        "value":"button#loaderBtn"
+      }
+    ]
+  },
+  {
+    "name":"test scenario 7",
+    "site":"https://www.automationtesting.co.uk/loader.html",
+    "steps":[
+      {
+        "action":"sleep",
+        "value":"5:10"
+      },
+      {
+        "action":"clickCss",
+        "value":"button#loaderBtn"
+      }
+    ]
+  }
+]

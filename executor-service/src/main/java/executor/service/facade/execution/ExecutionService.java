@@ -1,9 +1,10 @@
 package executor.service.facade.execution;
 
-import executor.service.service.executor.ScenarioExecutor;
 import org.openqa.selenium.WebDriver;
+
+import java.util.function.Supplier;
 
 public interface ExecutionService {
 
-    void execute(WebDriver webDriver, ScenarioExecutor scenarioExecutor);
+    void execute(Supplier<WebDriver> webDriverSupplier);
 }

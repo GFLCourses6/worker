@@ -16,11 +16,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.lang.reflect.Field;
-import java.util.NoSuchElementException;
 import java.util.Queue;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 class ProxySourcesClientServiceTest {
@@ -69,10 +68,10 @@ class ProxySourcesClientServiceTest {
     }
 
     @Test
-    @DisplayName("Test - the negative scenario for the `getProxy` method, when " +
+    @DisplayName("Test - the scenario for the `getProxy` method, when " +
             "there's no ProxyNetworkConfig in the queue")
-    void getProxyTestNegative() {
+    void getEmptyProxyTest() {
         when(mockNetworkConfigQueue.poll()).thenReturn(null);
-        assertThrows(NoSuchElementException.class, () -> proxySourcesClient.getProxy());
+        assertNotNull(proxySourcesClient.getProxy());
     }
 }

@@ -7,14 +7,13 @@ import executor.service.model.ProxyNetworkConfig;
 import executor.service.util.file.FileParser;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ProxySourcesClientService implements ProxySourcesClient {
 
-    private static final String PROXY_CREDENTIALS_PATH = "src/json/ProxyCredentials.json";
-    private static final String PROXY_NETWORK_CONFIG_PATH = "src/json/ProxyNetworkConfig.json";
+    private static final String PROXY_CREDENTIALS_PATH = "src/main/resources/json/ProxyCredentials.json";
+    private static final String PROXY_NETWORK_CONFIG_PATH = "src/main/resources/json/ProxyNetworkConfig.json";
     private final FileParser fileParser;
     private final Queue<ProxyNetworkConfig> networkConfigQueue;
     private final Queue<ProxyCredentials> credentialsQueue;
@@ -23,6 +22,11 @@ public class ProxySourcesClientService implements ProxySourcesClient {
         this.fileParser = fileParser;
         this.credentialsQueue = getCredentials();
         this.networkConfigQueue = getConfigs();
+    }
+
+    private void fillProxyConfigQueues() {
+        networkConfigQueue.addAll(getConfigs());
+        credentialsQueue.addAll(getCredentials());
     }
 
     private Queue<ProxyNetworkConfig> getConfigs() {
@@ -52,7 +56,7 @@ public class ProxySourcesClientService implements ProxySourcesClient {
         proxyConfigHolder.setProxyCredentials(credentialsQueue.poll());
 
         if (proxyConfigHolder.getProxyNetworkConfig() == null) {
-            throw new NoSuchElementException("ProxyNetworkConfig is null");
+            fillProxyConfigQueues();
         }
         return proxyConfigHolder;
     }
