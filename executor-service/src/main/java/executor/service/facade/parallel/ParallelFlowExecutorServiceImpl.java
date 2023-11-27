@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorService {
 
-    private final Logger log = Logger.getLogger("ParallelFlowExecutorServiceImpl");
+    private final Logger log = Logger.getLogger(ParallelFlowExecutorServiceImpl.class.getName());
     private final ExecutorService configurableThreadPool;
     private final ScenarioSourceListener scenarioSourceListener;
     private final WebDriverInitializer webDriverInitializer;

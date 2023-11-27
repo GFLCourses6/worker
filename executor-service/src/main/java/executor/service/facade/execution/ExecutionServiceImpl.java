@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 public class ExecutionServiceImpl implements ExecutionService {
 
-    private final Logger log = Logger.getLogger("ParallelFlowExecutorServiceImpl");
+    private final Logger log = Logger.getLogger(ExecutionServiceImpl.class.getName());
     private final BlockingQueue<Scenario> scenarioQueue;
     private final ScenarioExecutor scenarioExecutor;
 
@@ -35,7 +35,7 @@ public class ExecutionServiceImpl implements ExecutionService {
         try {
             synchronized (scenarioQueue) {
                 if (scenarioQueue.isEmpty()) {
-                    log.info("Scenario queue is empty!");
+                    log.info("ScenarioQueue is empty!");
                     scenarioQueue.notify();
                 }
             }
