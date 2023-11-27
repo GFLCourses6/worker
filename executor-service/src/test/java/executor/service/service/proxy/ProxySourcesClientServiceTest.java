@@ -1,8 +1,6 @@
 package executor.service.service.proxy;
 
 import executor.service.model.ProxyConfigHolder;
-import executor.service.model.ProxyCredentials;
-import executor.service.model.ProxyNetworkConfig;
 import executor.service.util.file.FileParser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,20 +14,18 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.lang.reflect.Field;
-import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class ProxySourcesClientServiceTest {
 
     @Mock
     private FileParser fileParser;
     @Mock
-    private Queue<ProxyNetworkConfig> mockNetworkConfigQueue;
-    @Mock
-    private Queue<ProxyCredentials> mockCredentialsQueue;
+    private BlockingQueue<ProxyConfigHolder> mockProxyConfigQueue;
     @InjectMocks
     private ProxySourcesClientService proxySourcesClient;
     private AutoCloseable closeable;
@@ -37,17 +33,12 @@ class ProxySourcesClientServiceTest {
     @BeforeEach
     void setUp() throws IllegalAccessException {
         closeable = MockitoAnnotations.openMocks(this);
-        // mocking private queues
-        Field networkConfigQueueField = ReflectionUtils.findFields(ProxySourcesClientService.class,
-                        f -> f.getName().equals("networkConfigQueue"), ReflectionUtils.HierarchyTraversalMode.TOP_DOWN
+        // mocking private queue
+        Field proxyConfigQueueField = ReflectionUtils.findFields(ProxySourcesClientService.class,
+                        f -> f.getName().equals("proxyConfigHolders"), ReflectionUtils.HierarchyTraversalMode.TOP_DOWN
                 ).get(0);
-        Field credentialsQueueField = ReflectionUtils.findFields(ProxySourcesClientService.class,
-                        f -> f.getName().equals("credentialsQueue"), ReflectionUtils.HierarchyTraversalMode.TOP_DOWN
-                ).get(0);
-        credentialsQueueField.setAccessible(true);
-        networkConfigQueueField.setAccessible(true);
-        credentialsQueueField.set(proxySourcesClient, mockCredentialsQueue);
-        networkConfigQueueField.set(proxySourcesClient, mockNetworkConfigQueue);
+        proxyConfigQueueField.setAccessible(true);
+        proxyConfigQueueField.set(proxySourcesClient, mockProxyConfigQueue);
     }
 
     @AfterEach
@@ -60,18 +51,22 @@ class ProxySourcesClientServiceTest {
     @DisplayName("Test - the positive scenario for the `getProxy` method, when" +
             "there's ProxyNetworkConfig with/without credentials")
     void getProxyTestPositive(ProxyConfigHolder expected) {
-        when(mockCredentialsQueue.poll()).thenReturn(expected.getProxyCredentials());
-        when(mockNetworkConfigQueue.poll()).thenReturn(expected.getProxyNetworkConfig());
+        when(mockProxyConfigQueue.peek()).thenReturn(expected);
+        when(mockProxyConfigQueue.poll()).thenReturn(expected);
 
         ProxyConfigHolder actual = proxySourcesClient.getProxy();
+        verify(mockProxyConfigQueue, never()).addAll(any());
         assertEquals(expected, actual);
     }
 
     @Test
     @DisplayName("Test - the scenario for the `getProxy` method, when " +
             "there's no ProxyNetworkConfig in the queue")
-    void getEmptyProxyTest() {
-        when(mockNetworkConfigQueue.poll()).thenReturn(null);
-        assertNotNull(proxySourcesClient.getProxy());
+    void verifyRefillsQueueWhenPeekedNull() {
+        when(mockProxyConfigQueue.peek()).thenReturn(null);
+
+        proxySourcesClient.getProxy();
+
+        verify(mockProxyConfigQueue, times(1)).addAll(any());
     }
 }
