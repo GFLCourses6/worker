@@ -2,59 +2,46 @@ package executor.service.service.proxy;
 
 import executor.service.exception.FileReadException;
 import executor.service.model.ProxyConfigHolder;
-import executor.service.model.ProxyCredentials;
-import executor.service.model.ProxyNetworkConfig;
 import executor.service.util.file.FileParser;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Queue;
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ProxySourcesClientService implements ProxySourcesClient {
 
-    private static final String PROXY_CREDENTIALS_PATH = "src/json/ProxyCredentials.json";
-    private static final String PROXY_NETWORK_CONFIG_PATH = "src/json/ProxyNetworkConfig.json";
+    private static final String PROXY_CONFIGS_PATH = "src/main/resources/json/ProxyConfigs.json";
     private final FileParser fileParser;
-    private final Queue<ProxyNetworkConfig> networkConfigQueue;
-    private final Queue<ProxyCredentials> credentialsQueue;
+    private final BlockingQueue<ProxyConfigHolder> proxyConfigHolders;
 
     public ProxySourcesClientService(FileParser fileParser) {
         this.fileParser = fileParser;
-        this.credentialsQueue = getCredentials();
-        this.networkConfigQueue = getConfigs();
+        proxyConfigHolders = new LinkedBlockingQueue<>(getConfigs());
     }
 
-    private Queue<ProxyNetworkConfig> getConfigs() {
-        try {
-            return new LinkedBlockingQueue<>(
-                    fileParser.getAllFromFile(PROXY_NETWORK_CONFIG_PATH, ProxyNetworkConfig.class)
-            );
-        } catch (IOException e) {
-            throw new FileReadException("Wasn't able to read " + PROXY_NETWORK_CONFIG_PATH);
-        }
+    private void fillProxyConfigHoldersQueue() {
+        proxyConfigHolders.addAll(getConfigs());
     }
 
-    private Queue<ProxyCredentials> getCredentials() {
+    private List<ProxyConfigHolder> getConfigs() {
         try {
-            return new LinkedBlockingQueue<>(
-                    fileParser.getAllFromFile(PROXY_CREDENTIALS_PATH, ProxyCredentials.class)
-            );
+            return fileParser.getAllFromFile(PROXY_CONFIGS_PATH, ProxyConfigHolder.class);
         } catch (IOException e) {
-            throw new FileReadException("Wasn't able to read " + PROXY_CREDENTIALS_PATH);
+            throw new FileReadException(e.getMessage());
         }
     }
 
     @Override
     public ProxyConfigHolder getProxy() {
-        ProxyConfigHolder proxyConfigHolder = new ProxyConfigHolder();
-        proxyConfigHolder.setProxyNetworkConfig(networkConfigQueue.poll());
-        proxyConfigHolder.setProxyCredentials(credentialsQueue.poll());
+        ProxyConfigHolder proxyConfigHolder = proxyConfigHolders.peek();
 
-        if (proxyConfigHolder.getProxyNetworkConfig() == null) {
-            throw new NoSuchElementException("ProxyNetworkConfig is null");
+        synchronized (this) {
+            if (proxyConfigHolder == null) {
+                fillProxyConfigHoldersQueue();
+            }
         }
-        return proxyConfigHolder;
+        return proxyConfigHolders.poll();
     }
 }
 

@@ -11,7 +11,7 @@ import java.util.Queue;
 
 public class DefaultScenarioSourceListener implements ScenarioSourceListener {
 
-    private static final String SCENARIOS_PATH = "src/json/Scenarios.json";
+    private static final String SCENARIOS_PATH = "src/main/resources/json/Scenarios.json";
     private final Queue<Scenario> scenarioQueue;
     private final FileParser fileParser;
 

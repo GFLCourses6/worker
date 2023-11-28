@@ -24,11 +24,23 @@ public class DefaultPackageComponentScanner implements PackageComponentScanner {
                 .toList();
 
         if (implementations.size() > 1) {
+            Optional<Class<? extends T>> cls = findClassExtendsAll(implementations);
+            if (cls.isPresent()) {
+                return cls;
+            }
             throw new ImplCountException(tClass);
         }
         else if (implementations.isEmpty()) {
             return Optional.empty();
         }
         return Optional.of(implementations.get(0));
+    }
+
+    private <T> Optional<Class<? extends T>> findClassExtendsAll(List<Class<? extends T>> implementations) {
+        // find the class which extends (is assignable from) all the classes from the list, and return it
+        return implementations.stream()
+                .filter(candidateSubclass -> implementations.stream().allMatch(
+                        superclass -> superclass.isAssignableFrom(candidateSubclass))
+                ).findFirst();
     }
 }
