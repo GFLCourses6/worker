@@ -5,25 +5,23 @@ import executor.service.facade.execution.ExecutionService;
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
-import executor.service.model.ThreadPoolConfig;
 import executor.service.service.listener.ScenarioSourceListener;
 import executor.service.service.proxy.ProxySourcesClient;
 import executor.service.service.webDriver.WebDriverInitializer;
 import org.openqa.selenium.WebDriver;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.logging.Logger;
 
 public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorService {
 
     private final Logger log = Logger.getLogger(ParallelFlowExecutorServiceImpl.class.getName());
-    private final ExecutorService configurableThreadPool;
+    private final ThreadPoolExecutor configurableThreadPool;
     private final ScenarioSourceListener scenarioSourceListener;
     private final WebDriverInitializer webDriverInitializer;
     private final ProxySourcesClient proxySourcesClient;
     private final ExecutionService executionService;
-    private final ThreadPoolConfig threadPoolConfig;
     private final BlockingQueue<Scenario> scenarioQueue;
 
     @Autowired
@@ -31,14 +29,12 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
                                            WebDriverInitializer webDriverInitializer,
                                            ProxySourcesClient proxySourcesClient,
                                            ExecutionService executionService,
-                                           ThreadPoolConfig threadPoolConfig,
-                                           ExecutorService configurableThreadPool,
+                                           ThreadPoolExecutor configurableThreadPool,
                                            ScenarioQueueHolder scenarioQueueHolder) {
         this.scenarioSourceListener = scenarioSourceListener;
         this.webDriverInitializer = webDriverInitializer;
         this.proxySourcesClient = proxySourcesClient;
         this.executionService = executionService;
-        this.threadPoolConfig = threadPoolConfig;
         this.configurableThreadPool = configurableThreadPool;
         this.scenarioQueue = scenarioQueueHolder.getQueue();
     }
@@ -53,7 +49,7 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
     private void submitTasksToExecutor() {
         configurableThreadPool.submit(startScenarioListener());
 
-        for (int i = 0; i < threadPoolConfig.getCorePoolSize() - 1; i++) {
+        for (int i = 0; i < configurableThreadPool.getCorePoolSize() - 1; i++) {
             configurableThreadPool.submit(getWorker());
         }
     }
