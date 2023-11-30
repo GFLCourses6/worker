@@ -1,8 +1,8 @@
 [
   {
     "proxyNetworkConfig": {
-      "hostname": "185.199.229.156",
-      "port": 7492
+      "hostname": "193.42.225.12",
+      "port": 6503
     },
     "proxyCredentials": {
       "username": "ixfkiyxf",
@@ -11,8 +11,8 @@
   },
   {
     "proxyNetworkConfig": {
-      "hostname": "185.199.228.220",
-      "port": 7300
+      "hostname": "119.42.39.191",
+      "port": 5819
     },
     "proxyCredentials": {
       "username": "ixfkiyxf",
@@ -21,8 +21,8 @@
   },
   {
     "proxyNetworkConfig": {
-      "hostname": "185.199.228.220",
-      "port": 7300
+      "hostname": "103.101.90.97",
+      "port": 6362
     },
     "proxyCredentials": {
       "username": "ixfkiyxf",
@@ -31,8 +31,8 @@
   },
   {
     "proxyNetworkConfig": {
-      "hostname": "185.199.231.45",
-      "port": 8382
+      "hostname": "104.238.10.147",
+      "port": 6093
     },
     "proxyCredentials": {
       "username": "ixfkiyxf",
