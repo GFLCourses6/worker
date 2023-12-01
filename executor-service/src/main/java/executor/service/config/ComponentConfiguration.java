@@ -3,11 +3,13 @@ package executor.service.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import executor.service.annotation.Bean;
 import executor.service.annotation.Configuration;
+import executor.service.facade.parallel.ConfigurableThreadPool;
 import executor.service.model.ThreadPoolConfig;
 import executor.service.model.WebDriverConfig;
 import executor.service.service.ConfigPropertiesLoader;
 
 import java.util.Properties;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @Configuration
 public class ComponentConfiguration {
@@ -41,5 +43,10 @@ public class ComponentConfiguration {
         threadPoolConfig.setKeepAliveTime(Long.parseLong(properties.getProperty("keepAliveTime")));
 
         return threadPoolConfig;
+    }
+
+    @Bean
+    public ThreadPoolExecutor threadPoolExecutor(ThreadPoolConfig threadPoolConfig) {
+        return new ConfigurableThreadPool(threadPoolConfig);
     }
 }
