@@ -5,8 +5,6 @@ import executor.service.model.Scenario;
 import executor.service.model.Step;
 import executor.service.params.ActionsArgumentsProvider;
 import executor.service.params.ScenariosArgumentsProvider;
-import executor.service.service.step.StepExecution;
-import executor.service.service.step.impl.StepExecutionClickCss;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +14,6 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import org.mockito.Mock;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import java.util.Arrays;
@@ -25,10 +22,7 @@ import java.util.List;
 import static executor.service.service.executor.Action.UNSUPPORTED_ACTION;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ScenarioExecutorServiceTest {
 
@@ -75,6 +69,7 @@ class ScenarioExecutorServiceTest {
         click.setValue(value);
         List<Step> steps = Arrays.asList(click, sleep);
         Scenario scenario = new Scenario();
+        scenario.setName("name");
         scenario.setSite(site);
         scenario.setSteps(steps);
         service.execute(scenario, webDriver);
@@ -101,6 +96,7 @@ class ScenarioExecutorServiceTest {
         String site = "https://github.com";
         when(webDriver.findElement(any(By.class))).thenReturn(webElement);
         Scenario scenario = new Scenario();
+        scenario.setName("name");
         scenario.setSite(site);
         scenario.setSteps(steps);
         service.execute(scenario, webDriver);

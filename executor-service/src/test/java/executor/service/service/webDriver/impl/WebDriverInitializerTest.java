@@ -54,7 +54,7 @@ class WebDriverInitializerTest {
     @Test
     void createWebDriverWithAuthenticatedProxy() {
         ProxyConfigHolder proxyConfigHolder = new ProxyConfigHolder(
-                new ProxyNetworkConfig("188.74.210.207", 6286),
+                new ProxyNetworkConfig("193.42.225.12", 6503),
                 new ProxyCredentials("ixfkiyxf", "0v2ypvysubnt")
         );
 
