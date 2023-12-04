@@ -21,8 +21,7 @@ public class StepExecutionClickCss implements StepExecution {
         try {
             webDriver.findElement(By.cssSelector(cssSelector)).click();
         } catch (WebDriverException e) {
-            throw new StepExecutionException(
-                    "An error occurred while clicking the element", e);
+            throw new StepExecutionException(e.getRawMessage());
         }
     }
 }

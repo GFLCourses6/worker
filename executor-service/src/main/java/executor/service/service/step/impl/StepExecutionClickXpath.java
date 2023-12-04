@@ -21,8 +21,7 @@ public class StepExecutionClickXpath implements StepExecution {
         try {
             webDriver.findElement(By.xpath(xpath)).click();
         } catch (WebDriverException e) {
-            throw new StepExecutionException(
-                    "An error occurred while clicking the element", e);
+            throw new StepExecutionException(e.getRawMessage());
         }
     }
 }

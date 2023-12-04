@@ -10,6 +10,14 @@
       {
         "action":"clickCss",
         "value":"button#loaderBtn"
+      },
+      {
+        "action":"sleep",
+        "value":"5:10"
+      },
+      {
+        "action":"clickCss",
+        "value":"a.toggggle"
       }
     ]
   },

@@ -4,15 +4,17 @@ import executor.service.annotation.Autowired;
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.Scenario;
 import executor.service.service.executor.ScenarioExecutor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.function.Supplier;
-import java.util.logging.Logger;
 
 public class ExecutionServiceImpl implements ExecutionService {
 
-    private final Logger log = Logger.getLogger(ExecutionServiceImpl.class.getName());
+    private final Logger logger = LogManager.getLogger(ExecutionServiceImpl.class);
+
     private final BlockingQueue<Scenario> scenarioQueue;
     private final ScenarioExecutor scenarioExecutor;
 
@@ -25,8 +27,9 @@ public class ExecutionServiceImpl implements ExecutionService {
     @Override
     public void execute(Supplier<WebDriver> webDriverSupplier) {
         while (!Thread.currentThread().isInterrupted()) {
-            log.info(Thread.currentThread().getName() + " | scenarios in queue: " + scenarioQueue.size()); // todo: add logger
+            logger.info("Scenarios in queue: {}", scenarioQueue.size());
             Scenario scenario = getScenario();
+            logger.info("Executing the scenario '{}'", scenario.getName());
             scenarioExecutor.execute(scenario, webDriverSupplier.get());
         }
     }
@@ -35,7 +38,7 @@ public class ExecutionServiceImpl implements ExecutionService {
         try {
             synchronized (scenarioQueue) {
                 if (scenarioQueue.isEmpty()) {
-                    log.info("ScenarioQueue is empty!");
+                    logger.info("ScenarioQueue is empty!");
                     scenarioQueue.notify();
                 }
             }

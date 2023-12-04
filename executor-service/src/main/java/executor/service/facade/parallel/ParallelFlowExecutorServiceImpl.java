@@ -8,15 +8,16 @@ import executor.service.model.Scenario;
 import executor.service.service.listener.ScenarioSourceListener;
 import executor.service.service.proxy.ProxySourcesClient;
 import executor.service.service.webDriver.WebDriverInitializer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.logging.Logger;
 
 public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorService {
 
-    private final Logger log = Logger.getLogger(ParallelFlowExecutorServiceImpl.class.getName());
+    private final Logger logger = LogManager.getLogger(ParallelFlowExecutorServiceImpl.class);
     private final ThreadPoolExecutor configurableThreadPool;
     private final ScenarioSourceListener scenarioSourceListener;
     private final WebDriverInitializer webDriverInitializer;
@@ -60,13 +61,13 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
                 synchronized (scenarioQueue) {
                     if (!scenarioQueue.isEmpty()) {
                         try {
-                            log.info("Wait until ScenarioQueue is empty");
+                            logger.info("Wait until ScenarioQueue is empty");
                             scenarioQueue.wait();
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                         }
                     }
-                    log.info("Adding elements to the ScenarioQueue");
+                    logger.info("Adding elements to the ScenarioQueue");
                     scenarioSourceListener.execute();
                 }
             }
