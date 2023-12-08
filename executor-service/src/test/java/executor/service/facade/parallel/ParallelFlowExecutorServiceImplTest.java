@@ -1,66 +1,68 @@
 package executor.service.facade.parallel;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import executor.service.facade.execution.ExecutionService;
-import executor.service.facade.execution.ExecutionServiceImpl;
 import executor.service.holder.ScenarioQueueHolder;
-import executor.service.model.ProxyConfigHolder;
-import executor.service.service.executor.ScenarioExecutorService;
+import executor.service.model.Scenario;
+import executor.service.model.ThreadPoolConfig;
 import executor.service.service.listener.ScenarioSourceListener;
 import executor.service.service.proxy.ProxySourcesClient;
-import executor.service.service.proxy.ProxySourcesClientService;
 import executor.service.service.webDriver.WebDriverInitializer;
-import executor.service.util.file.FileJsonParser;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 class ParallelFlowExecutorServiceImplTest {
 
-    private  ThreadPoolExecutor configurableThreadPool;
+    private ConfigurableThreadPool configurableThreadPool;
+    @Mock
     private  ScenarioSourceListener scenarioSourceListener;
+    @Mock
     private  WebDriverInitializer webDriverInitializer;
+    @Mock
     private  ProxySourcesClient proxySourcesClient;
+    @Mock
     private  ExecutionService executionService;
+    @Mock
     private ScenarioQueueHolder scenarioQueueHolder;
+    private ParallelFlowExecutorServiceImpl parallelFlowExecutorService;
+    private AutoCloseable autoCloseable;
+    private static final int CORE_POOL_SIZE = 10;
 
     @BeforeEach
     public void setup(){
-        configurableThreadPool = new ThreadPoolExecutor(10, 10,
-                60, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10));
-        scenarioSourceListener = ()->{};
-        webDriverInitializer = proxyConfigHolder -> new ChromeDriver();
-        proxySourcesClient = new ProxySourcesClientService(new FileJsonParser(new ObjectMapper()));
-        scenarioQueueHolder = new ScenarioQueueHolder();
-        executionService = new ExecutionServiceImpl(scenarioQueueHolder, new ScenarioExecutorService());
+        autoCloseable = MockitoAnnotations.openMocks(this);
+        when(scenarioQueueHolder.getQueue()).thenReturn(new LinkedBlockingQueue<>());
+        configurableThreadPool = new ConfigurableThreadPool(new ThreadPoolConfig(CORE_POOL_SIZE, 1000L));
+        parallelFlowExecutorService = new ParallelFlowExecutorServiceImpl(scenarioSourceListener, webDriverInitializer,
+                proxySourcesClient, executionService, configurableThreadPool, scenarioQueueHolder);
+    }
+
+    @AfterEach
+    public void cleanup() throws Exception {
+        autoCloseable.close();
     }
 
     @Test
-    public void test(){
-        ParallelFlowExecutorServiceImpl parallelFlowExecutorService = new ParallelFlowExecutorServiceImpl(
-                scenarioSourceListener, webDriverInitializer, proxySourcesClient,
-                executionService, configurableThreadPool, scenarioQueueHolder);
-
+    public void test() throws InterruptedException {
+        doAnswer(call ->{
+            scenarioQueueHolder.getQueue().add(new Scenario());
+            return null;
+        }).when(scenarioSourceListener).execute();
 
         parallelFlowExecutorService.execute();
 
-        int amountOfSubmittedScenario = 1;
-        int amountOfSubmittedWorkers = configurableThreadPool.getCorePoolSize()-1;
+        Thread.sleep(3000);
 
-        assertEquals(amountOfSubmittedScenario + amountOfSubmittedWorkers,
-                configurableThreadPool.getTaskCount());
-
-        assertEquals(amountOfSubmittedScenario + amountOfSubmittedWorkers,
-                configurableThreadPool.getActiveCount());
-
-
+        assertEquals(CORE_POOL_SIZE, configurableThreadPool.getTaskCount());
+        verify(executionService, times(CORE_POOL_SIZE-1)).execute(any());
+        verify(scenarioSourceListener).execute();
     }
 
 }
