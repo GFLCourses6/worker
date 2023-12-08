@@ -51,21 +51,12 @@ class ExecutionServiceImplTest {
         Scenario scenario1 = new Scenario("TestScenario1", "example1.com", steps);
         Scenario scenario2 = new Scenario("TestScenario2", "example2.com", steps);
 
-        CountDownLatch latch = new CountDownLatch(2);
-
         scenarioQueue.add(scenario1);
         scenarioQueue.add(scenario2);
-        latch.countDown();
-        latch.countDown();
 
         Thread executionThread = new Thread(() -> executionService.execute(webDriverSupplier));
         executionThread.start();
         Thread.sleep(1000);
-
-        // Wait for the latch to reach zero before interrupting
-        latch.await();
-
-        executionThread.interrupt();
 
         verify(scenarioExecutor, times(1)).execute(scenario1, mockWebDriver);
         verify(scenarioExecutor, times(1)).execute(scenario2, mockWebDriver);
