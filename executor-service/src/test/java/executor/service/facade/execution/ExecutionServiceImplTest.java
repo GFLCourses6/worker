@@ -3,7 +3,6 @@ package executor.service.facade.execution;
 import java.util.function.Supplier;
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.Scenario;
-import executor.service.model.Step;
 import executor.service.service.executor.ScenarioExecutor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.openqa.selenium.WebDriver;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 import static org.mockito.Mockito.times;
@@ -46,9 +43,8 @@ class ExecutionServiceImplTest {
     void execute() {
         WebDriver mockWebDriver = mock(WebDriver.class);
         Supplier<WebDriver> webDriverSupplier = () -> mockWebDriver;
-        List<Step> steps = new ArrayList<>();
-        Scenario scenario1 = new Scenario("TestScenario1", "example1.com", steps);
-        Scenario scenario2 = new Scenario("TestScenario2", "example2.com", steps);
+        Scenario scenario1 = new Scenario("TestScenario1", "example1.com", null);
+        Scenario scenario2 = new Scenario("TestScenario2", "example2.com", null);
 
         scenarioQueue.add(scenario1);
         scenarioQueue.add(scenario2);
