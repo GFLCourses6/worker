@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,7 +39,8 @@ class ParallelFlowExecutorServiceImplTest {
     @BeforeEach
     public void setup(){
         autoCloseable = MockitoAnnotations.openMocks(this);
-        when(scenarioQueueHolder.getQueue()).thenReturn(new LinkedBlockingQueue<>());
+        BlockingQueue<Scenario> scenarioQueue = new LinkedBlockingQueue<>();
+        when(scenarioQueueHolder.getQueue()).thenReturn(scenarioQueue);
         configurableThreadPool = new ConfigurableThreadPool(new ThreadPoolConfig(CORE_POOL_SIZE, 1000L));
         parallelFlowExecutorService = new ParallelFlowExecutorServiceImpl(scenarioSourceListener, webDriverInitializer,
                 proxySourcesClient, executionService, configurableThreadPool, scenarioQueueHolder);
@@ -51,7 +53,7 @@ class ParallelFlowExecutorServiceImplTest {
 
     @Test
     public void test() throws InterruptedException {
-        doAnswer(call ->{
+        doAnswer(call -> {
             scenarioQueueHolder.getQueue().add(new Scenario());
             return null;
         }).when(scenarioSourceListener).execute();
