@@ -40,7 +40,7 @@ class ExecutionServiceImplTest {
     }
     @Test
     @DisplayName("Test execute method with interruptions")
-    void execute() {
+    void execute() throws InterruptedException {
         WebDriver mockWebDriver = mock(WebDriver.class);
         Supplier<WebDriver> webDriverSupplier = () -> mockWebDriver;
         Scenario scenario1 = new Scenario("TestScenario1", "example1.com", null);
@@ -51,6 +51,7 @@ class ExecutionServiceImplTest {
 
         Thread executionThread = new Thread(() -> executionService.execute(webDriverSupplier));
         executionThread.start();
+        Thread.sleep(1000);
 
         verify(scenarioExecutor, times(1)).execute(scenario1, mockWebDriver);
         verify(scenarioExecutor, times(1)).execute(scenario2, mockWebDriver);
