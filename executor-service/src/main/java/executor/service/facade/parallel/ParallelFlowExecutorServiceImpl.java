@@ -1,6 +1,5 @@
 package executor.service.facade.parallel;
 
-import executor.service.annotation.Autowired;
 import executor.service.facade.execution.ExecutionService;
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.ProxyConfigHolder;
@@ -11,10 +10,12 @@ import executor.service.service.webDriver.WebDriverInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+import org.springframework.stereotype.Service;
+import executor.service.annotation.Autowired;
 
+@Service
 public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorService {
 
     private final Logger logger = LogManager.getLogger(ParallelFlowExecutorServiceImpl.class);

@@ -7,12 +7,12 @@ import executor.service.service.step.StepExecution;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
-
+import org.springframework.stereotype.Service;
 import java.util.ArrayDeque;
 import java.util.Queue;
-
 import static executor.service.service.executor.StepExecutionType.fromString;
 
+@Service
 public class ScenarioExecutorService
         implements ScenarioExecutor {
 

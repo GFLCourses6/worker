@@ -9,11 +9,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-
+import org.springframework.stereotype.Component;
 import java.io.File;
-
 import static java.time.Duration.ofSeconds;
 
+@Component
 public class WebDriverInitializerImpl implements WebDriverInitializer {
 
     private static final String EXTENSION_PATH = "src/main/resources/MultiPass-for-HTTP-basic-authentication.crx";

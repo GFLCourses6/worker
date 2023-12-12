@@ -1,13 +1,16 @@
 package executor.service;
 
 import executor.service.facade.parallel.ParallelFlowExecutorService;
-import executor.service.factory.di.ApplicationContext;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class App {
 
     public static void main(String[] args) {
-        ApplicationContext applicationContext = new ApplicationContext();
-        ParallelFlowExecutorService executorService = applicationContext.getComponent(ParallelFlowExecutorService.class);
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(App.class);
+        ParallelFlowExecutorService executorService = applicationContext.getBean(ParallelFlowExecutorService.class);
         executorService.execute();
     }
 }

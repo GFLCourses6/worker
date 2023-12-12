@@ -1,7 +1,9 @@
 package executor.service.model;
 
+import org.springframework.stereotype.Component;
 import java.util.Objects;
 
+@Component
 public class WebDriverConfig {
     private String webDriverExecutable;
     private String userAgent;

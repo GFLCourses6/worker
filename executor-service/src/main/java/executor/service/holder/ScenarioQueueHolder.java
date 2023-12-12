@@ -1,10 +1,11 @@
 package executor.service.holder;
 
 import executor.service.model.Scenario;
-
+import org.springframework.stereotype.Component;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+@Component
 public class ScenarioQueueHolder implements QueueHolder<Scenario> {
 
     private final BlockingQueue<Scenario> scenarios = new LinkedBlockingQueue<>();

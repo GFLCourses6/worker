@@ -3,12 +3,13 @@ package executor.service.facade.parallel;
 import executor.service.model.ThreadPoolConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ConfigurableThreadPool extends ThreadPoolExecutor {
 
     private final ThreadLocal<Long> startTime = new ThreadLocal<>();
