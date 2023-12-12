@@ -15,8 +15,7 @@ public enum StepExecutionType {
 
     private final StepExecution stepExecution;
 
-    StepExecutionType(
-            final StepExecution stepExecution) {
+    StepExecutionType(final StepExecution stepExecution) {
         this.stepExecution = stepExecution;
     }
 

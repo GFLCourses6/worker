@@ -1,6 +1,5 @@
 package executor.service.facade.execution;
 
-import executor.service.annotation.Autowired;
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.Scenario;
 import executor.service.service.executor.ScenarioExecutor;
@@ -18,7 +17,6 @@ public class ExecutionServiceImpl implements ExecutionService {
     private final BlockingQueue<Scenario> scenarioQueue;
     private final ScenarioExecutor scenarioExecutor;
 
-    @Autowired
     public ExecutionServiceImpl(ScenarioQueueHolder scenarioQueueHolder, ScenarioExecutor scenarioExecutor) {
         this.scenarioQueue = scenarioQueueHolder.getQueue();
         this.scenarioExecutor = scenarioExecutor;

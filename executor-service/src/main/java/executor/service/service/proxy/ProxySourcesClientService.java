@@ -20,10 +20,6 @@ public class ProxySourcesClientService implements ProxySourcesClient {
         proxyConfigHolders = new LinkedBlockingQueue<>(getConfigs());
     }
 
-    private void fillProxyConfigHoldersQueue() {
-        proxyConfigHolders.addAll(getConfigs());
-    }
-
     private List<ProxyConfigHolder> getConfigs() {
         try {
             return fileParser.getAllFromFile(PROXY_CONFIGS_PATH, ProxyConfigHolder.class);
@@ -38,7 +34,7 @@ public class ProxySourcesClientService implements ProxySourcesClient {
 
         synchronized (this) {
             if (proxyConfigHolder == null) {
-                fillProxyConfigHoldersQueue();
+                proxyConfigHolders.addAll(getConfigs());
             }
         }
         return proxyConfigHolders.poll();

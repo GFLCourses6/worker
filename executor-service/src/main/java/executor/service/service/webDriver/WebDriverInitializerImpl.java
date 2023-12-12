@@ -32,10 +32,9 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
         configureProxy(chromeOptions, proxyConfigHolder);
 
         ChromeDriver driver = new ChromeDriver(chromeOptions);
-        configureProxyAuth(driver, proxyConfigHolder);
 
-        driver.manage().timeouts().pageLoadTimeout(ofSeconds(webDriverConfig.getPageLoadTimeout()));
-        driver.manage().timeouts().implicitlyWait(ofSeconds(webDriverConfig.getImplicitlyWait()));
+        configureProxyAuth(driver, proxyConfigHolder);
+        configureTimeouts(driver);
 
         return driver;
     }
@@ -56,9 +55,10 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
             String hostname = networkConfig.getHostname();
             Integer port = networkConfig.getPort();
             chromeOptions.addArguments(String.format("--proxy-server=%s:%d", hostname, port));
-        }
-        if (networkConfig != null && proxyCredentials != null) {
-            chromeOptions.addExtensions(new File(EXTENSION_PATH));
+
+            if (proxyCredentials != null) {
+                chromeOptions.addExtensions(new File(EXTENSION_PATH));
+            }
         }
     }
 
@@ -77,5 +77,10 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
         driver.findElement(By.id("username")).sendKeys(username);
         driver.findElement(By.id("password")).sendKeys(password);
         driver.findElement(By.className("credential-form-submit")).click();
+    }
+
+    private void configureTimeouts(WebDriver driver) {
+        driver.manage().timeouts().pageLoadTimeout(ofSeconds(webDriverConfig.getPageLoadTimeout()));
+        driver.manage().timeouts().implicitlyWait(ofSeconds(webDriverConfig.getImplicitlyWait()));
     }
 }
