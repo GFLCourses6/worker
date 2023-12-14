@@ -6,7 +6,7 @@ import executor.service.model.Scenario;
 import executor.service.model.ThreadPoolConfig;
 import executor.service.service.listener.ScenarioSourceListener;
 import executor.service.service.proxy.ProxySourcesClient;
-import executor.service.service.webDriver.WebDriverInitializer;
+import executor.service.service.webdriver.WebDriverInitializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

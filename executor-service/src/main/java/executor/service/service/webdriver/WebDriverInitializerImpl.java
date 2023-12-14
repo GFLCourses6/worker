@@ -1,4 +1,4 @@
-package executor.service.service.webDriver;
+package executor.service.service.webdriver;
 
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.ProxyCredentials;
