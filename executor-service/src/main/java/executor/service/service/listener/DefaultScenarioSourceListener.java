@@ -4,11 +4,12 @@ import executor.service.exception.FileReadException;
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.Scenario;
 import executor.service.util.file.FileParser;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Queue;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DefaultScenarioSourceListener implements ScenarioSourceListener {
 
     private static final String SCENARIOS_PATH = "src/main/resources/json/Scenarios.json";

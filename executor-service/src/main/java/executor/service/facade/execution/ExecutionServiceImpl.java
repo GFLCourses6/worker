@@ -6,10 +6,12 @@ import executor.service.service.executor.ScenarioExecutor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.function.Supplier;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
+@Service
 public class ExecutionServiceImpl implements ExecutionService {
 
     private final Logger logger = LogManager.getLogger(ExecutionServiceImpl.class);

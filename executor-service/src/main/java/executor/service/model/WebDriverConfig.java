@@ -1,7 +1,11 @@
 package executor.service.model;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import java.util.Objects;
 
+@Configuration
+@ConfigurationProperties(prefix = "web-driver")
 public class WebDriverConfig {
     private String webDriverExecutable;
     private String userAgent;

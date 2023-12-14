@@ -1,10 +1,15 @@
 package executor.service.model;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import java.util.Objects;
 
+@Configuration
+@ConfigurationProperties(prefix = "thread-pool")
 public class ThreadPoolConfig {
 
     private Integer corePoolSize;
+
     private Long keepAliveTime;
 
     public ThreadPoolConfig() {
