@@ -9,7 +9,6 @@ import org.openqa.selenium.WebDriver;
 import java.util.concurrent.BlockingQueue;
 import java.util.function.Supplier;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class ExecutionServiceImpl implements ExecutionService {
