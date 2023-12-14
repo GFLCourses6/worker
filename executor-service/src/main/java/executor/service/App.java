@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringBootApplication
 public class App implements CommandLineRunner {
+
     @Autowired
     private ParallelFlowExecutorService executorService;
 
@@ -16,7 +17,7 @@ public class App implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         executorService.execute();
     }
 }
