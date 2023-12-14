@@ -19,10 +19,9 @@
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>5.10.0</junit.version>
-    <selenium.version>4.15.0</selenium.version>
+    <selenium.version>4.16.1</selenium.version>
     <reflections.version>0.10.2</reflections.version>
     <jackson-databind.version>2.15.2</jackson-databind.version>
-    <selenium.version>4.15.0</selenium.version>
     <mockito.version>5.6.0</mockito.version>
     <log4j.version>2.20.0</log4j.version>
   </properties>
@@ -39,11 +38,6 @@
       <artifactId>junit-jupiter-params</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-        <artifactId>selenium-api</artifactId>
-        <version>${selenium.version}</version>
     </dependency>
     <dependency>
       <groupId>org.reflections</groupId>
@@ -67,8 +61,8 @@
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-devtools</artifactId>
-      <version>4.0.0-rc-1</version>
+      <artifactId>selenium-devtools-v120</artifactId>
+      <version>${selenium.version}</version>
     </dependency>
     <dependency>
       <groupId>io.github.bonigarcia</groupId>
