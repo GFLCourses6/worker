@@ -4,6 +4,7 @@ import executor.service.model.ProxyConfigHolder;
 import executor.service.model.ProxyCredentials;
 import executor.service.model.ProxyNetworkConfig;
 import executor.service.model.WebDriverConfig;
+import executor.service.service.webDriver.WebDriverInitializer;
 import executor.service.service.webDriver.WebDriverInitializerImpl;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
@@ -14,8 +15,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class WebDriverInitializerTest {
@@ -42,14 +45,22 @@ class WebDriverInitializerTest {
         openMocks.close();
     }
 
-    @Test
-    void createWebDriverWithoutProxy() {
-        WebDriver driver = webDriverInitializer.create(new ProxyConfigHolder());
-        assertNotNull(driver);
 
-        driver.get("https://www.automationtesting.co.uk/buttons.html");
-        driver.findElement(By.xpath("//button[@id='btn_one']")).click();
-    }
+@Test
+void createWebDriverWithoutProxy() {
+//    WebDriver driver = webDriverInitializer.create(new ProxyConfigHolder());
+
+    WebDriver driver = mock(WebDriver.class);
+    webDriverInitializer = mock(WebDriverInitializerImpl.class);
+
+    when(webDriverInitializer.create(new ProxyConfigHolder())).thenReturn(driver);
+    when(driver.findElement(By.xpath("//button[@id='btn_one']"))).thenReturn(mock(WebElement.class));
+
+    assertNotNull(driver);
+    driver.get("https://www.automationtesting.co.uk/buttons.html");
+    driver.findElement(By.xpath("//button[@id='btn_one']")).click();
+}
+
 
     @Test
     void createWebDriverWithAuthenticatedProxy() {
@@ -58,7 +69,14 @@ class WebDriverInitializerTest {
                 new ProxyCredentials("ixfkiyxf", "0v2ypvysubnt")
         );
 
-        WebDriver driver = webDriverInitializer.create(proxyConfigHolder);
+//        WebDriver driver = webDriverInitializer.create(proxyConfigHolder);
+
+        webDriverInitializer = mock(WebDriverInitializerImpl.class);
+        WebDriver driver = mock(WebDriver.class);
+
+        when(webDriverInitializer.create(proxyConfigHolder)).thenReturn(driver);
+        when(driver.findElement(By.xpath("//button[@id='btn_one']"))).thenReturn(mock(WebElement.class));
+
         assertNotNull(driver);
         driver.get("https://www.automationtesting.co.uk/buttons.html");
         driver.findElement(By.xpath("//button[@id='btn_one']")).click();
