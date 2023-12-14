@@ -1,18 +1,15 @@
 package executor.service.model;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import java.util.Objects;
 
-@Component
-@PropertySource("classpath:config.properties")
+@Configuration
+@ConfigurationProperties(prefix = "thread-pool")
 public class ThreadPoolConfig {
 
-    @Value("${corePoolSize}")
     private Integer corePoolSize;
 
-    @Value("${keepAliveTime}")
     private Long keepAliveTime;
 
     public ThreadPoolConfig() {

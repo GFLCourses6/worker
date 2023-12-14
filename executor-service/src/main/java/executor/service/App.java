@@ -1,16 +1,22 @@
 package executor.service;
 
 import executor.service.facade.parallel.ParallelFlowExecutorService;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringBootApplication
-public class App {
+public class App implements CommandLineRunner {
+    @Autowired
+    private ParallelFlowExecutorService executorService;
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext applicationContext = SpringApplication.run(App.class);
-        ParallelFlowExecutorService executorService = applicationContext.getBean(ParallelFlowExecutorService.class);
+        SpringApplication.run(App.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
         executorService.execute();
     }
 }

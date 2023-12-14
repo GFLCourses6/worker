@@ -13,7 +13,7 @@ import org.openqa.selenium.WebDriver;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import org.springframework.stereotype.Service;
-import executor.service.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorService {
