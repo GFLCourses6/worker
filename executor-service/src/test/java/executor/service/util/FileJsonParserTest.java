@@ -1,4 +1,4 @@
-package executor.service.util.file;
+package executor.service.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import executor.service.model.ProxyNetworkConfig;
@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Queue;
 
+import static executor.service.params.ScenariosArgumentsProvider.SCENARIO_FILENAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -22,8 +23,7 @@ class FileJsonParserTest {
     @MethodSource("executor.service.params.DefaultScenarioSourceListenerParams#testExecute")
     void testGetAllFromFile(Queue<Scenario> expectedScenarios) throws IOException {
         List<Scenario> actual = fileJsonParser.getAllFromFile(
-                "src/test/resources/json/Scenario.json", Scenario.class);
-
+                SCENARIO_FILENAME, Scenario.class);
         assertTrue(actual.containsAll(expectedScenarios));
     }
 
@@ -31,7 +31,7 @@ class FileJsonParserTest {
     void testGetFromFile() throws IOException {
         ProxyNetworkConfig expected = new ProxyNetworkConfig("proxy1.example.com", 8080);
         ProxyNetworkConfig actual = fileJsonParser.getFromFile(
-                "src/test/resources/json/SingleProxyNetworkConfig.json", ProxyNetworkConfig.class);
+                "json/SingleProxyNetworkConfig.json", ProxyNetworkConfig.class);
 
         assertEquals(expected, actual);
     }

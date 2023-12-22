@@ -2,18 +2,20 @@ package executor.service.service.proxy;
 
 import executor.service.exception.FileReadException;
 import executor.service.model.ProxyConfigHolder;
-import executor.service.util.file.FileParser;
+import executor.service.util.FileParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
-public class ProxySourcesClientService implements ProxySourcesClient {
+public class ProxySourcesClientService
+        implements ProxySourcesClient {
 
-    private static final String PROXY_CONFIGS_PATH = "src/main/resources/json/ProxyConfigs.json";
+    private static final String PROXY_CONFIGS_PATH = "json/ProxyConfigs.json";
     private final FileParser fileParser;
     private final BlockingQueue<ProxyConfigHolder> proxyConfigHolders;
 
@@ -25,11 +27,14 @@ public class ProxySourcesClientService implements ProxySourcesClient {
 
     private List<ProxyConfigHolder> getConfigs() {
         try {
-            return fileParser.getAllFromFile(PROXY_CONFIGS_PATH, ProxyConfigHolder.class);
+            return fileParser.getAllFromFile(
+                    PROXY_CONFIGS_PATH,
+                    ProxyConfigHolder.class);
         } catch (IOException e) {
             throw new FileReadException(e.getMessage());
         }
     }
+
 
     @Override
     public ProxyConfigHolder getProxy() {
@@ -43,5 +48,3 @@ public class ProxySourcesClientService implements ProxySourcesClient {
         return proxyConfigHolders.poll();
     }
 }
-
-

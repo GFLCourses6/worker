@@ -13,7 +13,7 @@ import static java.util.Arrays.asList;
 public class ScenariosArgumentsProvider
         implements ArgumentsProvider {
 
-    private static final String SCENARIO_FILENAME = "json/Scenario.json";
+    public static final String SCENARIO_FILENAME = "json/Scenario.json";
 
     @Override
     public Stream<? extends Arguments> provideArguments(

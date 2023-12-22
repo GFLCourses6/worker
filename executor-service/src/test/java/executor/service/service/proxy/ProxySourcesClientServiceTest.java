@@ -1,7 +1,7 @@
 package executor.service.service.proxy;
 
 import executor.service.model.ProxyConfigHolder;
-import executor.service.util.file.FileParser;
+import executor.service.util.FileParser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

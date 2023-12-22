@@ -2,7 +2,7 @@ package executor.service.service.listener;
 
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.Scenario;
-import executor.service.util.file.FileParser;
+import executor.service.util.FileParser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,6 +22,9 @@ class DefaultScenarioSourceListenerTest {
 
     @Mock
     private FileParser fileParser;
+    @Mock
+    private FileParser urlFileJsonParser;
+
     private DefaultScenarioSourceListener scenarioSourceListener;
     private ScenarioQueueHolder scenarioQueueHolder;
     private AutoCloseable openMocks;
@@ -32,8 +35,7 @@ class DefaultScenarioSourceListenerTest {
 
         scenarioQueueHolder = new ScenarioQueueHolder();
         scenarioSourceListener = new DefaultScenarioSourceListener(
-                scenarioQueueHolder, fileParser
-        );
+                scenarioQueueHolder, fileParser);
     }
 
     @AfterEach
