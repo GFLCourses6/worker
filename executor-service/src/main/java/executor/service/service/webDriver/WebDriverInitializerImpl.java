@@ -9,8 +9,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 import java.io.File;
+import java.io.IOException;
+
 import static java.time.Duration.ofSeconds;
 
 @Component
@@ -19,6 +24,9 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
     private static final String EXTENSION_PATH = "src/main/resources/MultiPass-for-HTTP-basic-authentication.crx";
     private static final String EXTENSION_URL = "chrome-extension://enhldmjbphoeibbpdhmjkchohnidgnah/options.html";
     private final WebDriverConfig webDriverConfig;
+
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     public WebDriverInitializerImpl(WebDriverConfig webDriverConfig) {
         this.webDriverConfig = webDriverConfig;
@@ -57,7 +65,14 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
             chromeOptions.addArguments(String.format("--proxy-server=%s:%d", hostname, port));
 
             if (proxyCredentials != null) {
-                chromeOptions.addExtensions(new File(EXTENSION_PATH));
+                Resource resource = resourceLoader.getResource("classpath:MultiPass-for-HTTP-basic-authentication.crx");
+                try {
+                File file = resource.getFile();
+                    chromeOptions.addExtensions(file);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
         }
     }

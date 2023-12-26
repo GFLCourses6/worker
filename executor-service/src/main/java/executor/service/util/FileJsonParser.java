@@ -3,9 +3,11 @@ package executor.service.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Component("fileJsonParser")
@@ -22,10 +24,12 @@ public class FileJsonParser implements FileParser {
     public <T> List<T> getAllFromFile(
             String filePath, Class<T> type)
             throws IOException {
+        Resource resource = new ClassPathResource(filePath);
+        InputStream inputStream = resource.getInputStream();
         return objectMapper.readValue(
-                new ClassPathResource(filePath).getInputStream(),
+                inputStream,
                 objectMapper.getTypeFactory().constructCollectionType(
-                         List.class, type));
+                        List.class, type));
     }
 
     @Override

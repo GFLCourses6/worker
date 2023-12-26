@@ -4,6 +4,7 @@ import executor.service.exception.FileReadException;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.util.FileParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class ProxySourcesClientService
     private final BlockingQueue<ProxyConfigHolder> proxyConfigHolders;
 
     @Autowired
-    public ProxySourcesClientService(FileParser fileParser) {
+    public ProxySourcesClientService(@Qualifier("fileJsonParser") FileParser fileParser) {
         this.fileParser = fileParser;
         this.proxyConfigHolders = new LinkedBlockingQueue<>(getConfigs());
     }
