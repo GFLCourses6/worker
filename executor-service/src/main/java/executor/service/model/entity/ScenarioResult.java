@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedBy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "scenario_result")
@@ -68,5 +69,27 @@ public class ScenarioResult {
 
     public List<StepResult> getStepResults() {
         return stepResults;
+    }
+
+    @Override
+    public String toString() {
+        return "ScenarioResult{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", site='" + site + '\'' +
+                ", createdBy='" + createdBy + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ScenarioResult that)) return false;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(site, that.site) && Objects.equals(createdBy, that.createdBy) && Objects.equals(stepResults, that.stepResults);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, site, createdBy, stepResults);
     }
 }
