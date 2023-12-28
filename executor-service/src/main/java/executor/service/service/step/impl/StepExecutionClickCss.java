@@ -1,7 +1,7 @@
 package executor.service.service.step.impl;
 
 import executor.service.model.Step;
-import executor.service.model.StepResult;
+import executor.service.model.entity.StepResult;
 import executor.service.service.step.AbstractStepExecution;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

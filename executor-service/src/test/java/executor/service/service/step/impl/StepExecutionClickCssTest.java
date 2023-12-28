@@ -1,8 +1,8 @@
 package executor.service.service.step.impl;
 
-import executor.service.model.ExecutionStatus;
+import executor.service.model.entity.ExecutionStatus;
 import executor.service.model.Step;
-import executor.service.model.StepResult;
+import executor.service.model.entity.StepResult;
 import executor.service.service.step.StepExecution;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

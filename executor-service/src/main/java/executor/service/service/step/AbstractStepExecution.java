@@ -1,8 +1,8 @@
 package executor.service.service.step;
 
-import executor.service.model.ExecutionStatus;
+import executor.service.model.entity.ExecutionStatus;
 import executor.service.model.Step;
-import executor.service.model.StepResult;
+import executor.service.model.entity.StepResult;
 
 public abstract class AbstractStepExecution implements StepExecution {
 

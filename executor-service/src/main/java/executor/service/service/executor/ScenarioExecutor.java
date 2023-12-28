@@ -1,11 +1,12 @@
 package executor.service.service.executor;
 
 import executor.service.model.Scenario;
+import executor.service.model.entity.ScenarioResult;
 import org.openqa.selenium.WebDriver;
 
 public interface ScenarioExecutor {
 
-    void execute(
+    ScenarioResult execute(
             Scenario scenario,
             WebDriver webDriver);
 }

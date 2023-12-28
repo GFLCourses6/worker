@@ -1,18 +1,49 @@
-package executor.service.model;
+package executor.service.model.entity;
+
+import executor.service.model.Step;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
+@Entity
+@Table(name = "step_result")
 public class StepResult {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name="STEP_VALUE"))
     private Step step;
+
+    @Column(name = "execution_status", nullable = false)
     private ExecutionStatus executionStatus;
+
+    @Column(name = "execution_message", nullable = false)
     private String executionMessage;
+
+    @ManyToOne
+    @JoinColumn(name = "scenario_id")
+    private ScenarioResult scenarioResult;
 
     public StepResult(Step step) {
         this.step = step;
     }
 
     public StepResult() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public ScenarioResult getScenarioResult() {
+        return scenarioResult;
+    }
+
+    public void setScenarioResult(ScenarioResult scenarioResult) {
+        this.scenarioResult = scenarioResult;
     }
 
     public Step getStep() {
