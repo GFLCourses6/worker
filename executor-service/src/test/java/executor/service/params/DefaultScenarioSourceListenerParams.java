@@ -24,7 +24,7 @@ public class DefaultScenarioSourceListenerParams {
                         ),
                         new Step(
                                 "sleep",
-                                "5:10"
+                                "5"
                         ),
                         new Step(
                                 "clickXpath",
@@ -42,7 +42,7 @@ public class DefaultScenarioSourceListenerParams {
                         ),
                         new Step(
                                 "sleep",
-                                "5:10"
+                                "5"
                         ),
                         new Step(
                                 "clickCss",

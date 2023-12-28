@@ -1,9 +1,8 @@
 package executor.service.service.step.impl;
 
-import executor.service.exception.StepExecutionException;
-import executor.service.exception.StepExecutionInterruptedException;
-import executor.service.exception.StepNumberFormatException;
+import executor.service.model.entity.ExecutionStatus;
 import executor.service.model.Step;
+import executor.service.model.entity.StepResult;
 import executor.service.service.step.StepExecution;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,12 +14,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 class StepExecutionClickCssTest {
@@ -56,39 +50,27 @@ class StepExecutionClickCssTest {
         stepExecutionClickCss.step(webDriver, step);
         verify(webElement).click();
     }
+
     @Test
-    @DisplayName("Given a ScenarioExecutor instance, when step method is called with an invalid selector, then a StepExecutionException is thrown")
-    void testStepThrowsExceptionCssSelector() {
-        String cssSelector = "cssSelector";
-        when(mockStep.getValue()).thenReturn(cssSelector);
-        when(webDriver.findElement(By.cssSelector(cssSelector)))
-                .thenThrow(WebDriverException.class);
+    @DisplayName("When step method is called with an invalid cssSelector, then ExecutionStatus.FAIL is returned")
+    void testStepReturnsExecutionStatusFail() {
+        String wrongSelector = "cssSelector";
+        when(mockStep.getValue()).thenReturn(wrongSelector);
+        when(webDriver.findElement(By.cssSelector(wrongSelector))).thenThrow(new WebDriverException());
         StepExecution stepExecutor = new StepExecutionClickCss();
-        assertThrows(StepExecutionException.class,
-                () -> stepExecutor.step(webDriver, mockStep));
+        StepResult result = stepExecutor.step(webDriver, mockStep);
+        assertEquals(ExecutionStatus.FAIL, result.getExecutionStatus());
     }
 
     @Test
-    @DisplayName("Given a ScenarioExecutor instance, when step method is called with an invalid xpath, then a StepExecutionException is thrown")
-    void testStepThrowsException() {
-        String cssSelector = "cssSelector";
-        when(mockStep.getValue()).thenReturn(cssSelector);
-        when(webDriver.findElement(By.xpath(cssSelector)))
-                .thenThrow(WebDriverException.class);
-        StepExecution stepExecutor = new StepExecutionClickXpath();
-        assertThrows(StepExecutionException.class,
-                () -> stepExecutor.step(webDriver, mockStep));
+    @DisplayName("step() returns StepResult with execution status ExecutionStatus.SUCCESS")
+    void testStepReturnsExecutionStatusSuccess() {
+        String rightSelector = "rightSelector";
+        var mockWebElement = mock(WebElement.class);
+        when(mockStep.getValue()).thenReturn(rightSelector);
+        when(webDriver.findElement(any(By.class))).thenReturn(mockWebElement);
+        StepExecution stepExecutor = new StepExecutionClickCss();
+        StepResult result = stepExecutor.step(webDriver, mockStep);
+        assertEquals(ExecutionStatus.SUCCESS, result.getExecutionStatus());
     }
-
-    @Test
-    @DisplayName("Given a ScenarioExecutor instance, when step method is called with an invalid duration value, then a StepNumberFormatException is thrown")
-    void testStepThrowsNumberFormatException() {
-        String value = "invalid";
-        when(mockStep.getValue()).thenReturn(value);
-        StepExecution stepExecutor = new StepExecutionSleep();
-        assertThrows(StepNumberFormatException.class,
-                () -> stepExecutor.step(webDriver, mockStep));
-    }
-
-   
 }

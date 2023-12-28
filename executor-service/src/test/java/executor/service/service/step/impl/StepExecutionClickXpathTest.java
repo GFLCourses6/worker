@@ -1,11 +1,15 @@
 package executor.service.service.step.impl;
 
+import executor.service.model.entity.ExecutionStatus;
 import executor.service.model.Step;
+import executor.service.model.entity.StepResult;
+import executor.service.service.step.StepExecution;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,13 +31,13 @@ class StepExecutionClickXpathTest {
     }
 
     @Test
-    public void testGetStepAction() {
+    void testGetStepAction() {
         String action = stepExecutionClickXpath.getStepAction();
         assertEquals("clickXpath", action);
     }
 
     @Test
-    public void testStepExecutionClickXpathWhenFound() {
+    void testStepExecutionClickXpathWhenFound() {
         webDriver = mock(WebDriver.class);
         Step step = new Step("clickXpath", ".test-xpath");
         WebElement mockElement = mock(WebElement.class);
@@ -42,4 +46,15 @@ class StepExecutionClickXpathTest {
         verify(mockElement).click();
     }
 
+    @Test
+    void testStepReturnsExecutionStatusFail() {
+        String wrongSelector = "cssSelector";
+        var mockStep = mock(Step.class);
+        webDriver = mock(WebDriver.class);
+        when(mockStep.getValue()).thenReturn(wrongSelector);
+        when(webDriver.findElement(By.xpath(wrongSelector))).thenThrow(new WebDriverException());
+        StepExecution stepExecutor = new StepExecutionClickXpath();
+        StepResult result = stepExecutor.step(webDriver, mockStep);
+        assertEquals(ExecutionStatus.FAIL, result.getExecutionStatus());
+    }
 }

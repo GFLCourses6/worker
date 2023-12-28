@@ -1,7 +1,10 @@
 package executor.service.model;
 
+import jakarta.persistence.Embeddable;
+
 import java.util.Objects;
 
+@Embeddable
 public class Step {
 
     private String action;

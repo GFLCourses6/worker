@@ -1,50 +1,44 @@
 package executor.service.service.executor;
 
 import executor.service.model.Scenario;
-import executor.service.model.ScenarioLogMessage;
 import executor.service.model.Step;
+import executor.service.model.entity.ScenarioResult;
+import executor.service.model.entity.StepResult;
 import executor.service.service.step.StepExecution;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayDeque;
 import java.util.Queue;
+
 import static executor.service.service.executor.StepExecutionType.fromString;
 
 @Service
 public class ScenarioExecutorService
         implements ScenarioExecutor {
 
-    private final Logger logger = LogManager.getLogger(ScenarioExecutorService.class);
-
     @Override
-    public void execute(
+    public ScenarioResult execute(
             final Scenario scenario,
             final WebDriver webDriver) {
         webDriver.get(scenario.getSite());
-        executeSteps(scenario, webDriver);
+        var scenarioResult = executeSteps(scenario, webDriver);
         webDriver.quit();
+        return scenarioResult;
     }
 
-    private void executeSteps(
+    private ScenarioResult executeSteps(
             final Scenario scenario,
             final WebDriver driver) {
         Queue<Step> steps = new ArrayDeque<>(scenario.getSteps());
-        ScenarioLogMessage message = new ScenarioLogMessage(scenario.getName());
+        var scenarioResult = new ScenarioResult(scenario);
 
         while (!steps.isEmpty()) {
             Step step = steps.poll();
-            try {
-                getStepExecution(step).step(driver, step);
-            } catch (Exception e) {
-                message.addExecutionMessage(e.getMessage());
-                logger.error(message);
-                return;
-            }
+            StepResult stepResult = getStepExecution(step).step(driver, step);
+            scenarioResult.addStepResult(stepResult);
         }
-        message.addExecutionMessage("Scenario is successfully executed");
-        logger.info(message);
+        return scenarioResult;
     }
 
     private StepExecution getStepExecution(
