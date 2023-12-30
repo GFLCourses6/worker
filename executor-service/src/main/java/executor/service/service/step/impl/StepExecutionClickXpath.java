@@ -15,7 +15,7 @@ public class StepExecutionClickXpath extends AbstractStepExecution {
     }
 
     @Override
-    protected void doStepLogic(WebDriver webDriver, Step step) {
+    protected void executeStepLogic(WebDriver webDriver, Step step) {
         String xpath = step.getValue();
         webDriver.findElement(By.xpath(xpath)).click();
     }

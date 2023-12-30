@@ -16,7 +16,7 @@ public class StepExecutionSleep extends AbstractStepExecution {
     }
 
     @Override
-    protected void doStepLogic(WebDriver webDriver, Step step) throws Exception {
+    protected void executeStepLogic(WebDriver webDriver, Step step) throws Exception {
         long value = Long.parseLong(step.getValue());
         TimeUnit.SECONDS.sleep(value);
     }

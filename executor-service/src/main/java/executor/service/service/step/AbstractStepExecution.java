@@ -8,14 +8,14 @@ import org.openqa.selenium.WebDriverException;
 
 public abstract class AbstractStepExecution implements StepExecution {
 
-    protected abstract void doStepLogic(WebDriver webDriver, Step step) throws Exception;
+    protected abstract void executeStepLogic(WebDriver webDriver, Step step) throws Exception;
 
     @Override
     public StepResult step(WebDriver webDriver, Step step) {
         StepResult stepResult = new StepResult(step, ExecutionStatus.SUCCESS);
 
         try {
-            doStepLogic(webDriver, step);
+            executeStepLogic(webDriver, step);
         } catch (WebDriverException e) {
             handleStepExecutionException(stepResult, e.getRawMessage());
         } catch (Exception e) {
