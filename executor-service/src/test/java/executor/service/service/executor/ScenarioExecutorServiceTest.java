@@ -5,13 +5,18 @@ import executor.service.model.Scenario;
 import executor.service.model.Step;
 import executor.service.params.ActionsArgumentsProvider;
 import executor.service.params.ScenariosArgumentsProvider;
+import executor.service.service.result.ScenarioResultService;
+import executor.service.service.step.impl.StepExecutionType;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -38,11 +43,16 @@ class ScenarioExecutorServiceTest {
     private Scenario scenario;
     @Mock
     private WebElement webElement;
+    @InjectMocks
+    private ScenarioExecutorService service;
     @Mock
-    private ScenarioExecutor service;
+    private ScenarioResultService resultService;
+
+    AutoCloseable autoCloseable;
 
     @BeforeEach
     public void setup() {
+        autoCloseable = MockitoAnnotations.openMocks(this);
         sleep = new Step();
         click = new Step();
         clickCss = mock(Step.class);
@@ -52,7 +62,12 @@ class ScenarioExecutorServiceTest {
         List<Step> steps = Arrays.asList(click, sleep, clickCss);
         scenario.setSteps(steps);
         when(scenario.getSteps()).thenReturn(steps);
-        service = new ScenarioExecutorService();
+        service = new ScenarioExecutorService(resultService);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        autoCloseable.close();
     }
 
     @ParameterizedTest(name = "Step: action = {0}, value = {1}")
@@ -63,7 +78,7 @@ class ScenarioExecutorServiceTest {
             String value) {
         String site = "https://github.com";
         when(webDriver.findElement(any(By.class))).thenReturn(webElement);
-        sleep.setValue("1:2");
+        sleep.setValue("1");
         sleep.setAction("SLEEP");
         click.setAction(action);
         click.setValue(value);

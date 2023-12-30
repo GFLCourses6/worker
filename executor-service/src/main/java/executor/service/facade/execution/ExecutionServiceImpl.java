@@ -6,9 +6,10 @@ import executor.service.service.executor.ScenarioExecutor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
+import org.springframework.stereotype.Service;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.function.Supplier;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ExecutionServiceImpl implements ExecutionService {
@@ -18,7 +19,10 @@ public class ExecutionServiceImpl implements ExecutionService {
     private final BlockingQueue<Scenario> scenarioQueue;
     private final ScenarioExecutor scenarioExecutor;
 
-    public ExecutionServiceImpl(ScenarioQueueHolder scenarioQueueHolder, ScenarioExecutor scenarioExecutor) {
+    public ExecutionServiceImpl(
+            ScenarioQueueHolder scenarioQueueHolder,
+            ScenarioExecutor scenarioExecutor
+    ) {
         this.scenarioQueue = scenarioQueueHolder.getQueue();
         this.scenarioExecutor = scenarioExecutor;
     }

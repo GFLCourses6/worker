@@ -1,5 +1,6 @@
 package executor.service.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import executor.service.model.Scenario;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedBy;
@@ -13,7 +14,8 @@ import java.util.Objects;
 public class ScenarioResult {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "scenario_result_seq")
+    @SequenceGenerator(name = "scenario_result_seq", sequenceName = "scenario_result_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "name")
@@ -26,8 +28,8 @@ public class ScenarioResult {
     @CreatedBy
     private String createdBy;
 
-    @OneToMany(mappedBy = "scenarioResult",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JsonBackReference
+    @OneToMany(mappedBy = "scenarioResult", cascade=CascadeType.ALL)
     private List<StepResult> stepResults = new ArrayList<>();
 
     public ScenarioResult(Scenario scenario) {

@@ -10,7 +10,8 @@ import java.util.Objects;
 public class StepResult {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "step_result_seq")
+    @SequenceGenerator(name = "step_result_seq", sequenceName = "step_result_seq", allocationSize = 1)
     private Long id;
 
     @Embedded

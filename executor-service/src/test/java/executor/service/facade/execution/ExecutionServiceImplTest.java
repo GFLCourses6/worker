@@ -1,6 +1,5 @@
 package executor.service.facade.execution;
 
-import java.util.function.Supplier;
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.Scenario;
 import executor.service.service.executor.ScenarioExecutor;
@@ -11,11 +10,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.openqa.selenium.WebDriver;
-import java.util.concurrent.BlockingQueue;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.function.Supplier;
+
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.mock;
 
 class ExecutionServiceImplTest {
     @Mock
@@ -31,7 +32,9 @@ class ExecutionServiceImplTest {
         closeable = MockitoAnnotations.openMocks(this);
         scenarioQueueHolder = new ScenarioQueueHolder();
         scenarioQueue = scenarioQueueHolder.getQueue();
-        executionService = new ExecutionServiceImpl(scenarioQueueHolder, scenarioExecutor);
+        executionService = new ExecutionServiceImpl(
+                scenarioQueueHolder,
+                scenarioExecutor);
     }
 
     @AfterEach

@@ -4,8 +4,12 @@ import executor.service.facade.parallel.ParallelFlowExecutorService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
+@EnableAspectJAutoProxy
+@EnableTransactionManagement
 public class App implements CommandLineRunner {
 
     private final ParallelFlowExecutorService executorService;
