@@ -1,4 +1,4 @@
-package executor.service.service.result;
+package executor.service.service.executor.result;
 
 import executor.service.model.entity.ScenarioResult;
 

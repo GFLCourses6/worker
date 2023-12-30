@@ -14,7 +14,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class AppConfig {
 
     @Bean
-    public ThreadPoolExecutor threadPoolExecutor(ThreadPoolConfig threadPoolConfig) {
+    public ThreadPoolExecutor threadPoolExecutor(
+            final ThreadPoolConfig threadPoolConfig) {
         return new ConfigurableThreadPool(threadPoolConfig);
     }
 }

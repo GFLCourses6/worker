@@ -4,7 +4,6 @@ import executor.service.model.Scenario;
 import executor.service.model.Step;
 import executor.service.model.entity.ScenarioResult;
 import executor.service.model.entity.StepResult;
-import executor.service.service.result.ScenarioResultService;
 import executor.service.service.step.StepExecution;
 import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
@@ -18,23 +17,12 @@ import static executor.service.service.step.impl.StepExecutionType.fromString;
 public class ScenarioExecutorService
         implements ScenarioExecutor {
 
-    private final ScenarioResultService scenarioResultService;
-
-    public ScenarioExecutorService(ScenarioResultService scenarioResultService) {
-        this.scenarioResultService = scenarioResultService;
-    }
-
     @Override
     public ScenarioResult execute(
             final Scenario scenario,
             final WebDriver webDriver) {
         webDriver.get(scenario.getSite());
-        var scenarioResult = executeSteps(scenario, webDriver);
-        webDriver.quit();
-        scenarioResultService.createScenarioResult(scenarioResult);
-        // TODO saving to DB by using AOP
-        // keep all Results in Map before saving
-        return scenarioResult;
+        return executeSteps(scenario, webDriver);
     }
 
     private ScenarioResult executeSteps(
@@ -47,6 +35,7 @@ public class ScenarioExecutorService
             StepResult stepResult = getStepExecution(step).step(driver, step);
             scenarioResult.addStepResult(stepResult);
         }
+        driver.quit();
         return scenarioResult;
     }
 

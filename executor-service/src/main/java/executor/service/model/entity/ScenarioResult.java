@@ -1,8 +1,18 @@
 package executor.service.model.entity;
 
 import executor.service.model.Scenario;
-import jakarta.persistence.*;
-import org.springframework.data.annotation.CreatedBy;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +20,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "scenario_result")
+@EntityListeners(AuditingEntityListener.class)
 public class ScenarioResult {
 
     @Id
@@ -23,11 +34,11 @@ public class ScenarioResult {
     @Column(name = "site", nullable = false)
     private String site;
 
+    @CreatedDate
     @Column(name = "created_by")
-    @CreatedBy
     private String createdBy;
 
-    @OneToMany(mappedBy = "scenarioResult", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "scenarioResult", cascade = CascadeType.ALL)
     private List<StepResult> stepResults = new ArrayList<>();
 
     public ScenarioResult(Scenario scenario) {
@@ -73,19 +84,20 @@ public class ScenarioResult {
 
     @Override
     public String toString() {
-        return "ScenarioResult{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", site='" + site + '\'' +
-                ", createdBy='" + createdBy + '\'' +
-                '}';
+        return "ScenarioResult{" + "id=" + id + ", name='" + name + '\'' + ", site='" + site + '\'' + ", createdBy='" + createdBy + '\'' + '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ScenarioResult that)) return false;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(site, that.site) && Objects.equals(createdBy, that.createdBy) && Objects.equals(stepResults, that.stepResults);
+        return Objects.equals(id, that.id) && Objects.equals(name,
+                                                             that.name) && Objects.equals(
+                site,
+                that.site) && Objects.equals(createdBy,
+                                             that.createdBy) && Objects.equals(
+                stepResults,
+                that.stepResults);
     }
 
     @Override

@@ -12,20 +12,13 @@ public abstract class AbstractStepExecution implements StepExecution {
 
     @Override
     public StepResult step(WebDriver webDriver, Step step) {
-        StepResult stepResult = new StepResult(step, ExecutionStatus.SUCCESS);
-
         try {
             executeStepLogic(webDriver, step);
+            return new StepResult(step, ExecutionStatus.SUCCESS);
         } catch (WebDriverException e) {
-            handleStepExecutionException(stepResult, e.getRawMessage());
+            return new StepResult(step, e.getRawMessage());
         } catch (Exception e) {
-            handleStepExecutionException(stepResult, e.getMessage());
+            return new StepResult(step, e.getMessage());
         }
-        return stepResult;
-    }
-
-    private void handleStepExecutionException(StepResult stepResult, String message) {
-        stepResult.setExecutionMessage(message);
-        stepResult.setExecutionStatus(ExecutionStatus.FAIL);
     }
 }

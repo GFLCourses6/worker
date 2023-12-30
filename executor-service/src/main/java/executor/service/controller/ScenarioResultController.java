@@ -1,21 +1,23 @@
 package executor.service.controller;
 
 import executor.service.model.entity.ScenarioResult;
-import executor.service.service.result.ScenarioResultService;
-import org.springframework.http.HttpStatus;
+import executor.service.service.executor.result.ScenarioResultService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController()
-@RequestMapping("/api")
+@RequestMapping("/result")
 public class ScenarioResultController {
 
     private final ScenarioResultService scenarioResultService;
 
-    public ScenarioResultController(ScenarioResultService scenarioResultService) {
-        this.scenarioResultService = scenarioResultService;
+    public ScenarioResultController(
+            final ScenarioResultService resultService) {
+        this.scenarioResultService = resultService;
     }
 
     @GetMapping
@@ -25,12 +27,5 @@ public class ScenarioResultController {
         return scenarioResults.isEmpty()
                ? ResponseEntity.noContent().build()
                : ResponseEntity.ok(scenarioResults);
-    }
-
-    @PostMapping(value = "/result", consumes = "application/json")
-    public ResponseEntity<ScenarioResult> createScenarioResult(
-            @RequestBody ScenarioResult scenarioResult) {
-        return new ResponseEntity<>(scenarioResultService.createScenarioResult(
-                scenarioResult), HttpStatus.CREATED);
     }
 }

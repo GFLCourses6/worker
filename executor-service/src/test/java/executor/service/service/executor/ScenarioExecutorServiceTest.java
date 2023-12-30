@@ -5,7 +5,6 @@ import executor.service.model.Scenario;
 import executor.service.model.Step;
 import executor.service.params.ActionsArgumentsProvider;
 import executor.service.params.ScenariosArgumentsProvider;
-import executor.service.service.result.ScenarioResultService;
 import executor.service.service.step.impl.StepExecutionType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +26,9 @@ import java.util.List;
 import static executor.service.service.executor.Action.UNSUPPORTED_ACTION;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class ScenarioExecutorServiceTest {
 
@@ -45,8 +46,6 @@ class ScenarioExecutorServiceTest {
     private WebElement webElement;
     @InjectMocks
     private ScenarioExecutorService service;
-    @Mock
-    private ScenarioResultService resultService;
 
     AutoCloseable autoCloseable;
 
@@ -55,14 +54,10 @@ class ScenarioExecutorServiceTest {
         autoCloseable = MockitoAnnotations.openMocks(this);
         sleep = new Step();
         click = new Step();
-        clickCss = mock(Step.class);
-        scenario = mock(Scenario.class);
-        webDriver = mock(WebDriver.class);
-        webElement = mock(WebElement.class);
         List<Step> steps = Arrays.asList(click, sleep, clickCss);
         scenario.setSteps(steps);
         when(scenario.getSteps()).thenReturn(steps);
-        service = new ScenarioExecutorService(resultService);
+        service = new ScenarioExecutorService();
     }
 
     @AfterEach

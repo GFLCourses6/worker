@@ -2,7 +2,17 @@ package executor.service.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import executor.service.model.Step;
-import jakarta.persistence.*;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 import java.util.Objects;
 
@@ -23,7 +33,7 @@ public class StepResult {
     private ExecutionStatus executionStatus;
 
     @Column(name = "execution_message", columnDefinition="TEXT")
-    private String executionMessage;
+    private String executionMessage = "completed";
 
     @JsonIgnore
     @ManyToOne
@@ -35,11 +45,13 @@ public class StepResult {
         this.executionStatus = executionStatus;
     }
 
-    public StepResult(Step step) {
-        this.step = step;
+    public StepResult() {
     }
 
-    public StepResult() {
+    public StepResult(Step step, String message) {
+        this.executionStatus = ExecutionStatus.FAIL;
+        this.executionMessage = message;
+        this.step = step;
     }
 
     public Long getId() {
