@@ -1,6 +1,5 @@
 package executor.service.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import executor.service.model.Scenario;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedBy;
@@ -28,7 +27,6 @@ public class ScenarioResult {
     @CreatedBy
     private String createdBy;
 
-    @JsonBackReference
     @OneToMany(mappedBy = "scenarioResult", cascade=CascadeType.ALL)
     private List<StepResult> stepResults = new ArrayList<>();
 

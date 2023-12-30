@@ -32,7 +32,7 @@ public class ScenarioExecutorService
         var scenarioResult = executeSteps(scenario, webDriver);
         webDriver.quit();
         scenarioResultService.createScenarioResult(scenarioResult);
-        //TODO saving to DB by using AOP
+        // TODO saving to DB by using AOP
         // keep all Results in Map before saving
         return scenarioResult;
     }

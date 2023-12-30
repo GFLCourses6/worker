@@ -1,5 +1,6 @@
 package executor.service.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import executor.service.model.Step;
 import jakarta.persistence.*;
 
@@ -21,12 +22,18 @@ public class StepResult {
     @Column(name = "execution_status", nullable = false)
     private ExecutionStatus executionStatus;
 
-    @Column(name = "execution_message", nullable = false)
+    @Column(name = "execution_message", columnDefinition="TEXT")
     private String executionMessage;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "scenario_id")
     private ScenarioResult scenarioResult;
+
+    public StepResult(Step step, ExecutionStatus executionStatus) {
+        this.step = step;
+        this.executionStatus = executionStatus;
+    }
 
     public StepResult(Step step) {
         this.step = step;
