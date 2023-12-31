@@ -1,20 +1,24 @@
 package executor.service.service.step;
 
-import executor.service.model.entity.ExecutionStatus;
 import executor.service.model.Step;
+import executor.service.model.entity.ExecutionStatus;
 import executor.service.model.entity.StepResult;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 
 public abstract class AbstractStepExecution implements StepExecution {
 
-    protected StepResult computeStepResult(Step step, Runnable function) {
-        StepResult stepResult = new StepResult(step);
+    protected abstract void executeStepLogic(WebDriver webDriver, Step step) throws Exception;
+
+    @Override
+    public StepResult step(WebDriver webDriver, Step step) {
         try {
-            function.run();
-            stepResult.setExecutionStatus(ExecutionStatus.SUCCESS);
+            executeStepLogic(webDriver, step);
+            return new StepResult(step, ExecutionStatus.SUCCESS);
+        } catch (WebDriverException e) {
+            return new StepResult(step, e.getRawMessage());
         } catch (Exception e) {
-            stepResult.setExecutionMessage(e.getMessage());
-            stepResult.setExecutionStatus(ExecutionStatus.FAIL);
+            return new StepResult(step, e.getMessage());
         }
-        return stepResult;
     }
 }

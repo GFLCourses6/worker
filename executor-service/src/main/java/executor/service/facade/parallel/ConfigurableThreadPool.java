@@ -25,7 +25,7 @@ public class ConfigurableThreadPool extends ThreadPoolExecutor {
     @Override
     protected void beforeExecute(Thread t, Runnable r) {
         super.beforeExecute(t, r);
-        logger.trace(String.format("Thread %s: start %s", t, r));
+        logger.trace("Thread {}: start {}", t, r);
         startTime.set(System.nanoTime());
     }
 
@@ -36,9 +36,10 @@ public class ConfigurableThreadPool extends ThreadPoolExecutor {
             long taskTime = endTime - startTime.get();
             numTasks.incrementAndGet();
             totalTime.addAndGet(taskTime);
-            logger.trace(String.format("Thread %s: end %s, time=%dns",
-                    t, r, taskTime));
+            logger.trace("Thread {}: end {}, time={}ns",
+                         t, r, taskTime);
         } finally {
+            startTime.remove();
             super.afterExecute(r, t);
         }
     }
@@ -46,8 +47,8 @@ public class ConfigurableThreadPool extends ThreadPoolExecutor {
     @Override
     protected void terminated() {
         try {
-            logger.trace(String.format("Terminated: avg time=%dns",
-                    totalTime.get() / numTasks.get()));
+            logger.trace("Terminated: avg time={}ns",
+                         totalTime.get() / numTasks.get());
         } finally {
             super.terminated();
         }

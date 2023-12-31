@@ -1,7 +1,6 @@
 package executor.service.service.step.impl;
 
 import executor.service.model.Step;
-import executor.service.model.entity.StepResult;
 import executor.service.service.step.AbstractStepExecution;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -16,10 +15,8 @@ public class StepExecutionClickXpath extends AbstractStepExecution {
     }
 
     @Override
-    public StepResult step(WebDriver webDriver, Step step) {
+    protected void executeStepLogic(WebDriver webDriver, Step step) {
         String xpath = step.getValue();
-        return computeStepResult(step, () ->
-                webDriver.findElement(By.xpath(xpath)).click()
-        );
+        webDriver.findElement(By.xpath(xpath)).click();
     }
 }

@@ -49,6 +49,7 @@ target/
 .idea
 target
 .mvn
+.run
 
 ### NetBeans ###
 /nbproject/private/

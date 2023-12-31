@@ -1,7 +1,18 @@
 package executor.service.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import executor.service.model.Step;
-import jakarta.persistence.*;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 import java.util.Objects;
 
@@ -10,7 +21,8 @@ import java.util.Objects;
 public class StepResult {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "step_result_seq")
+    @SequenceGenerator(name = "step_result_seq", sequenceName = "step_result_seq", allocationSize = 1)
     private Long id;
 
     @Embedded
@@ -20,18 +32,26 @@ public class StepResult {
     @Column(name = "execution_status", nullable = false)
     private ExecutionStatus executionStatus;
 
-    @Column(name = "execution_message", nullable = false)
-    private String executionMessage;
+    @Column(name = "execution_message", columnDefinition="TEXT")
+    private String executionMessage = "completed";
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "scenario_id")
     private ScenarioResult scenarioResult;
 
-    public StepResult(Step step) {
+    public StepResult(Step step, ExecutionStatus executionStatus) {
         this.step = step;
+        this.executionStatus = executionStatus;
     }
 
     public StepResult() {
+    }
+
+    public StepResult(Step step, String message) {
+        this.executionStatus = ExecutionStatus.FAIL;
+        this.executionMessage = message;
+        this.step = step;
     }
 
     public Long getId() {

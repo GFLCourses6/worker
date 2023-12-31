@@ -1,10 +1,7 @@
-package executor.service.service.executor;
+package executor.service.service.step.impl;
 
 import executor.service.exception.StepExecutionException;
 import executor.service.service.step.StepExecution;
-import executor.service.service.step.impl.StepExecutionClickCss;
-import executor.service.service.step.impl.StepExecutionClickXpath;
-import executor.service.service.step.impl.StepExecutionSleep;
 
 import java.util.Arrays;
 

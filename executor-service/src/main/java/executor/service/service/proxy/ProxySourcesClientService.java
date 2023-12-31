@@ -3,12 +3,13 @@ package executor.service.service.proxy;
 import executor.service.exception.FileReadException;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.util.file.FileParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ProxySourcesClientService implements ProxySourcesClient {
