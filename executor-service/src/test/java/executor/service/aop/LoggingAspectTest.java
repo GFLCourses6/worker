@@ -1,7 +1,7 @@
 package executor.service.aop;
 
 import executor.service.model.entity.ScenarioResult;
-import executor.service.service.executor.result.ScenarioResultService;
+import executor.service.service.scenario.result.ScenarioResultService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

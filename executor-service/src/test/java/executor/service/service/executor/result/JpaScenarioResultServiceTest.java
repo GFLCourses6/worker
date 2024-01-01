@@ -2,6 +2,7 @@ package executor.service.service.executor.result;
 
 import executor.service.dao.ScenarioResultRepository;
 import executor.service.model.entity.ScenarioResult;
+import executor.service.service.scenario.result.JpaScenarioResultService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package executor.service.service.executor.result;
+package executor.service.service.scenario.result;
 
 import executor.service.dao.ScenarioResultRepository;
 import executor.service.model.entity.ScenarioResult;

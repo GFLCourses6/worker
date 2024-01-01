@@ -1,15 +1,17 @@
 package executor.service.facade.execution;
 
 import executor.service.holder.ScenarioQueueHolder;
+import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
 import executor.service.service.executor.ScenarioExecutor;
+import executor.service.service.proxy.ProxySourcesClient;
+import executor.service.service.webDriver.WebDriverInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.function.Supplier;
 
 @Service
 public class ExecutionServiceImpl implements ExecutionService {
@@ -18,37 +20,45 @@ public class ExecutionServiceImpl implements ExecutionService {
 
     private final BlockingQueue<Scenario> scenarioQueue;
     private final ScenarioExecutor scenarioExecutor;
+    private final WebDriverInitializer webDriverInitializer;
+    private final ProxySourcesClient proxySourcesClient;
 
     public ExecutionServiceImpl(
             ScenarioQueueHolder scenarioQueueHolder,
-            ScenarioExecutor scenarioExecutor
-    ) {
+            ScenarioExecutor scenarioExecutor,
+            WebDriverInitializer webDriverInitializer,
+            ProxySourcesClient proxySourcesClient) {
         this.scenarioQueue = scenarioQueueHolder.getQueue();
         this.scenarioExecutor = scenarioExecutor;
+        this.webDriverInitializer = webDriverInitializer;
+        this.proxySourcesClient = proxySourcesClient;
     }
 
     @Override
-    public void execute(Supplier<WebDriver> webDriverSupplier) {
+    public void execute() {
         while (!Thread.currentThread().isInterrupted()) {
             logger.info("Scenarios in queue: {}", scenarioQueue.size());
             Scenario scenario = getScenario();
-            logger.info("Executing the scenario '{}'", scenario.getName());
-            scenarioExecutor.execute(scenario, webDriverSupplier.get());
+            if (scenario != null) {
+                logger.info("Executing the scenario '{}'", scenario.getName());
+                var webDriver = getWebDriver();
+                scenarioExecutor.execute(scenario, webDriver);
+            }
         }
     }
 
     private Scenario getScenario() {
         try {
-            synchronized (scenarioQueue) {
-                if (scenarioQueue.isEmpty()) {
-                    logger.info("ScenarioQueue is empty!");
-                    scenarioQueue.notify();
-                }
-            }
             return scenarioQueue.take();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
         return null;
+    }
+
+    private WebDriver getWebDriver() {
+        ProxyConfigHolder proxyConfigHolder = proxySourcesClient.getProxy();
+        logger.info("Proxy {}", proxyConfigHolder );
+        return webDriverInitializer.create(proxyConfigHolder);
     }
 }

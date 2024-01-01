@@ -1,7 +1,7 @@
 package executor.service.controller;
 
 import executor.service.model.entity.ScenarioResult;
-import executor.service.service.executor.result.ScenarioResultService;
+import executor.service.service.scenario.result.ScenarioResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
