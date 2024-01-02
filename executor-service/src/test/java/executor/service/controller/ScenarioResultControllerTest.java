@@ -1,6 +1,6 @@
 package executor.service.controller;
 
-import executor.service.model.entity.ScenarioResult;
+import executor.service.model.dto.ScenarioResultResponse;
 import executor.service.service.scenario.result.ScenarioResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,8 +29,8 @@ class ScenarioResultControllerTest {
 
     void getAllScenarioResults()
             throws Exception {
-        List<ScenarioResult> scenarioResults =
-                Arrays.asList(new ScenarioResult(), new ScenarioResult());
+        List<ScenarioResultResponse> scenarioResults =
+                Arrays.asList(new ScenarioResultResponse(), new ScenarioResultResponse());
         when(scenarioResultService.getAllScenarioResults()).thenReturn(scenarioResults);
         mockMvc.perform(get("/result").contentType(MediaType.APPLICATION_JSON))
                .andExpect(status().isOk())

@@ -1,5 +1,6 @@
 package executor.service.aop;
 
+import executor.service.model.dto.ScenarioResultResponse;
 import executor.service.model.entity.ScenarioResult;
 import executor.service.service.scenario.result.ScenarioResultService;
 import org.junit.jupiter.api.AfterEach;
@@ -34,7 +35,8 @@ class LoggingAspectTest {
     @Test
     void saveScenarioResultAfterExecutionAspect() {
         ScenarioResult scenarioResult = new ScenarioResult();
-        when(resultService.createScenarioResult(scenarioResult)).thenReturn(scenarioResult);
+        ScenarioResultResponse scenarioResultResponse = new ScenarioResultResponse();
+        when(resultService.createScenarioResult(scenarioResult)).thenReturn(scenarioResultResponse);
         loggingAspect.saveScenarioResultAfterExecutionAspect(scenarioResult);
         verify(resultService, times(1)).createScenarioResult(scenarioResult);
     }

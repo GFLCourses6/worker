@@ -1,6 +1,7 @@
 package executor.service.service.executor.result;
 
 import executor.service.dao.ScenarioResultRepository;
+import executor.service.mapper.ScenarioMapper;
 import executor.service.model.entity.ScenarioResult;
 import executor.service.service.scenario.result.JpaScenarioResultService;
 import org.junit.jupiter.api.AfterEach;
@@ -13,10 +14,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class JpaScenarioResultServiceTest {
 
@@ -24,6 +22,9 @@ class JpaScenarioResultServiceTest {
 
     @Mock
     private ScenarioResultRepository repository;
+
+    @Mock
+    private ScenarioMapper mapper;
 
     @InjectMocks
     private JpaScenarioResultService scenarioResultService;
@@ -42,9 +43,9 @@ class JpaScenarioResultServiceTest {
     void testCreateScenarioResult() {
         ScenarioResult scenarioResult = new ScenarioResult();
         when(repository.save(scenarioResult)).thenReturn(scenarioResult);
-        ScenarioResult savedResult = scenarioResultService.createScenarioResult(scenarioResult);
+        scenarioResultService.createScenarioResult(scenarioResult);
         verify(repository, times(1)).save(scenarioResult);
-        assertEquals(scenarioResult, savedResult);
+        verify(mapper, times(1)).scenarioResultToScenarioResponse(scenarioResult);
     }
 
     @Test
@@ -52,8 +53,8 @@ class JpaScenarioResultServiceTest {
         List<ScenarioResult> expectedResultList = Arrays.asList(
                 new ScenarioResult(), new ScenarioResult());
         when(repository.findAllFetchStepResults()).thenReturn(expectedResultList);
-        List<ScenarioResult> actualResultList = scenarioResultService.getAllScenarioResults();
+        scenarioResultService.getAllScenarioResults();
         verify(repository, times(1)).findAllFetchStepResults();
-        assertEquals(expectedResultList, actualResultList);
+        verify(mapper, times(1)).scenarioResultToScenarioResponse(expectedResultList);
     }
 }
