@@ -1,5 +1,8 @@
 package executor.service.model;
 
+import executor.service.model.dto.ProxyConfigHolder;
+import executor.service.model.dto.ProxyCredentials;
+import executor.service.model.dto.ProxyNetworkConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

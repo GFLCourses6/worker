@@ -1,7 +1,7 @@
 package executor.service.service.scenario;
 
 import executor.service.holder.ScenarioQueueHolder;
-import executor.service.model.Scenario;
+import executor.service.model.dto.Scenario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

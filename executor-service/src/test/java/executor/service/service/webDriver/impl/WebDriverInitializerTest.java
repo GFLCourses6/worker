@@ -1,9 +1,9 @@
 package executor.service.service.webDriver.impl;
 
-import executor.service.model.ProxyConfigHolder;
-import executor.service.model.ProxyCredentials;
-import executor.service.model.ProxyNetworkConfig;
-import executor.service.model.WebDriverConfig;
+import executor.service.model.dto.ProxyConfigHolder;
+import executor.service.model.dto.ProxyCredentials;
+import executor.service.model.dto.ProxyNetworkConfig;
+import executor.service.model.dto.WebDriverConfig;
 import executor.service.service.webDriver.WebDriverInitializerImpl;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;

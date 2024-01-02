@@ -1,6 +1,6 @@
 package executor.service.params;
 
-import executor.service.model.ThreadPoolConfig;
+import executor.service.model.dto.ThreadPoolConfig;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.stream.Stream;

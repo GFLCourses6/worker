@@ -1,7 +1,7 @@
 package executor.service.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import executor.service.model.Step;
+import executor.service.model.dto.Step;
 import jakarta.persistence.*;
 
 import java.time.Instant;

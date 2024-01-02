@@ -1,6 +1,6 @@
 package executor.service.facade.parallel;
 
-import executor.service.model.ThreadPoolConfig;
+import executor.service.model.dto.ThreadPoolConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.concurrent.LinkedBlockingQueue;

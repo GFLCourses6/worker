@@ -1,7 +1,7 @@
 package executor.service.params;
 
-import executor.service.model.Scenario;
-import executor.service.model.Step;
+import executor.service.model.dto.Scenario;
+import executor.service.model.dto.Step;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.Queue;

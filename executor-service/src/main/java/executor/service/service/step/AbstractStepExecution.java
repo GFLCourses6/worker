@@ -1,6 +1,6 @@
 package executor.service.service.step;
 
-import executor.service.model.Step;
+import executor.service.model.dto.Step;
 import executor.service.model.entity.ExecutionStatus;
 import executor.service.model.entity.StepResult;
 import org.openqa.selenium.WebDriver;

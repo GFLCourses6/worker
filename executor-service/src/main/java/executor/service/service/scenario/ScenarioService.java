@@ -1,6 +1,6 @@
 package executor.service.service.scenario;
 
-import executor.service.model.Scenario;
+import executor.service.model.dto.Scenario;
 
 public interface ScenarioService {
 

@@ -1,8 +1,8 @@
 package executor.service.facade.execution;
 
 import executor.service.holder.ScenarioQueueHolder;
-import executor.service.model.ProxyConfigHolder;
-import executor.service.model.Scenario;
+import executor.service.model.dto.ProxyConfigHolder;
+import executor.service.model.dto.Scenario;
 import executor.service.service.executor.ScenarioExecutor;
 import executor.service.service.proxy.ProxySourcesClient;
 import executor.service.service.webDriver.WebDriverInitializer;

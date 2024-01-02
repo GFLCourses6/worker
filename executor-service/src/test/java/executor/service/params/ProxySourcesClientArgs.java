@@ -1,8 +1,8 @@
 package executor.service.params;
 
-import executor.service.model.ProxyConfigHolder;
-import executor.service.model.ProxyCredentials;
-import executor.service.model.ProxyNetworkConfig;
+import executor.service.model.dto.ProxyConfigHolder;
+import executor.service.model.dto.ProxyCredentials;
+import executor.service.model.dto.ProxyNetworkConfig;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.stream.Stream;

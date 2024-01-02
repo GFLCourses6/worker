@@ -1,8 +1,8 @@
 package executor.service.service.executor;
 
 import executor.service.exception.StepExecutionException;
-import executor.service.model.Scenario;
-import executor.service.model.Step;
+import executor.service.model.dto.Scenario;
+import executor.service.model.dto.Step;
 import executor.service.params.ActionsArgumentsProvider;
 import executor.service.params.ScenariosArgumentsProvider;
 import executor.service.service.step.impl.StepExecutionType;

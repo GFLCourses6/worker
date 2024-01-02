@@ -1,6 +1,6 @@
 package executor.service.model.entity;
 
-import executor.service.model.Scenario;
+import executor.service.model.dto.Scenario;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

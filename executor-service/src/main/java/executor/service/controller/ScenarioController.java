@@ -1,6 +1,6 @@
 package executor.service.controller;
 
-import executor.service.model.Scenario;
+import executor.service.model.dto.Scenario;
 import executor.service.service.scenario.ScenarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

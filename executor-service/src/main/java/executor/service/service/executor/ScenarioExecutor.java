@@ -1,6 +1,6 @@
 package executor.service.service.executor;
 
-import executor.service.model.Scenario;
+import executor.service.model.dto.Scenario;
 import executor.service.model.entity.ScenarioResult;
 import org.openqa.selenium.WebDriver;
 

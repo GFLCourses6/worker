@@ -1,6 +1,9 @@
 package executor.service.model;
 
 import java.util.Collections;
+
+import executor.service.model.dto.Scenario;
+import executor.service.model.dto.Step;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

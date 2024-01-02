@@ -2,8 +2,8 @@ package executor.service.facade.parallel;
 
 import executor.service.facade.execution.ExecutionService;
 import executor.service.holder.ScenarioQueueHolder;
-import executor.service.model.Scenario;
-import executor.service.model.ThreadPoolConfig;
+import executor.service.model.dto.Scenario;
+import executor.service.model.dto.ThreadPoolConfig;
 import executor.service.service.proxy.ProxySourcesClient;
 import executor.service.service.webDriver.WebDriverInitializer;
 import org.junit.jupiter.api.AfterEach;
