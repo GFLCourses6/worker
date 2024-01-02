@@ -1,8 +1,8 @@
 package executor.service.config;
 
 import executor.service.facade.parallel.ConfigurableThreadPool;
-import executor.service.model.ThreadPoolConfig;
-import executor.service.model.WebDriverConfig;
+import executor.service.model.dto.ThreadPoolConfig;
+import executor.service.model.dto.WebDriverConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

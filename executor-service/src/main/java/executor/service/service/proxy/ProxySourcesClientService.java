@@ -1,7 +1,7 @@
 package executor.service.service.proxy;
 
 import executor.service.exception.FileReadException;
-import executor.service.model.ProxyConfigHolder;
+import executor.service.model.dto.ProxyConfigHolder;
 import executor.service.util.file.FileParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

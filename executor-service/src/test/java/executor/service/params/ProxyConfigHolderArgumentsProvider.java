@@ -1,6 +1,6 @@
 package executor.service.params;
 
-import executor.service.model.ProxyConfigHolder;
+import executor.service.model.dto.ProxyConfigHolder;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;

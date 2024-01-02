@@ -1,19 +1,10 @@
 package executor.service.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import executor.service.model.Step;
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import executor.service.model.dto.Step;
+import jakarta.persistence.*;
 
+import java.time.Instant;
 import java.util.Objects;
 
 @Entity
@@ -33,7 +24,10 @@ public class StepResult {
     private ExecutionStatus executionStatus;
 
     @Column(name = "execution_message", columnDefinition="TEXT")
-    private String executionMessage = "completed";
+    private String executionMessage;
+
+    @Column(name = "created_date", nullable = false, updatable = false)
+    private Instant createdDate = Instant.now();
 
     @JsonIgnore
     @ManyToOne
@@ -48,9 +42,9 @@ public class StepResult {
     public StepResult() {
     }
 
-    public StepResult(Step step, String message) {
+    public StepResult(Step step, String failMessage) {
         this.executionStatus = ExecutionStatus.FAIL;
-        this.executionMessage = message;
+        this.executionMessage = failMessage;
         this.step = step;
     }
 
@@ -88,6 +82,10 @@ public class StepResult {
 
     public void setExecutionMessage(String executionMessage) {
         this.executionMessage = executionMessage;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
     }
 
     @Override

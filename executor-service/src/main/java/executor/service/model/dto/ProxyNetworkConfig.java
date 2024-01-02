@@ -1,4 +1,4 @@
-package executor.service.model;
+package executor.service.model.dto;
 
 import java.util.Objects;
 

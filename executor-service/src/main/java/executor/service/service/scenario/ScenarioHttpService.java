@@ -1,16 +1,20 @@
-package executor.service.service.executor;
+package executor.service.service.scenario;
 
-import executor.service.model.Scenario;
+import executor.service.holder.ScenarioQueueHolder;
+import executor.service.model.dto.Scenario;
 import org.springframework.stereotype.Service;
 
 import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 @Service
 public class ScenarioHttpService
         implements ScenarioService {
 
-    private final Queue<Scenario> scenarioQueue = new LinkedBlockingQueue<>();
+    private final Queue<Scenario> scenarioQueue;
+
+    public ScenarioHttpService(ScenarioQueueHolder scenarioQueueHolder) {
+        this.scenarioQueue = scenarioQueueHolder.getQueue();
+    }
 
     @Override
     public void saveScenario(final Scenario scenario) {
@@ -18,14 +22,10 @@ public class ScenarioHttpService
     }
 
     @Override
-    public Queue<Scenario> getScenarioQueue() {
-        return scenarioQueue;
-    }
-
     public Scenario getScenarioByName(final String scenarioName) {
         return scenarioQueue
                 .stream()
-                .filter(scenario -> scenario.getName().equals(scenarioName))
+                .filter(scenario -> scenarioName.equals(scenario.getName()))
                 .findFirst()
                 .orElse(null);
     }

@@ -1,6 +1,6 @@
 package executor.service.holder;
 
-import executor.service.model.Scenario;
+import executor.service.model.dto.Scenario;
 import org.springframework.stereotype.Component;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

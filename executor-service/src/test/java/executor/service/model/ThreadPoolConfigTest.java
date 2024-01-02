@@ -1,5 +1,6 @@
 package executor.service.model;
 
+import executor.service.model.dto.ThreadPoolConfig;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

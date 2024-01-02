@@ -1,7 +1,7 @@
 package executor.service.service.executor;
 
-import executor.service.model.Scenario;
-import executor.service.model.Step;
+import executor.service.model.dto.Scenario;
+import executor.service.model.dto.Step;
 import executor.service.model.entity.ScenarioResult;
 import executor.service.model.entity.StepResult;
 import executor.service.service.step.StepExecution;

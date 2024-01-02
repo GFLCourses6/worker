@@ -1,7 +1,7 @@
 package executor.service.service.step.impl;
 
 import executor.service.model.entity.ExecutionStatus;
-import executor.service.model.Step;
+import executor.service.model.dto.Step;
 import executor.service.model.entity.StepResult;
 import executor.service.service.step.StepExecution;
 import org.junit.jupiter.api.AfterEach;

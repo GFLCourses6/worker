@@ -20,10 +20,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>5.10.0</junit.version>
     <selenium.version>4.16.1</selenium.version>
-    <reflections.version>0.10.2</reflections.version>
     <jackson-databind.version>2.15.2</jackson-databind.version>
     <mockito.version>5.6.0</mockito.version>
     <log4j.version>2.20.0</log4j.version>
+    <mapstruct.version>1.6.0.Beta1</mapstruct.version>
   </properties>
 
   <dependencies>
@@ -38,11 +38,6 @@
       <artifactId>junit-jupiter-params</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.reflections</groupId>
-      <artifactId>reflections</artifactId>
-      <version>${reflections.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -76,24 +71,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>${log4j.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.zaxxer</groupId>
-      <artifactId>HikariCP</artifactId>
-      <version>5.0.1</version>
-    </dependency>
-    <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>2.2.220</version>
     </dependency>
     <dependency>
     <groupId>org.postgresql</groupId>
     <artifactId>postgresql</artifactId>
-      <version>42.6.0</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -108,11 +91,30 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct</artifactId>
+      <version>${mapstruct.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
     <finalName>executor-service</finalName>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.mapstruct</groupId>
+              <artifactId>mapstruct-processor</artifactId>
+              <version>${mapstruct.version}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>

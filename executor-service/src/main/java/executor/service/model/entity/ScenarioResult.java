@@ -1,17 +1,8 @@
 package executor.service.model.entity;
 
-import executor.service.model.Scenario;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
-import org.springframework.data.annotation.CreatedDate;
+import executor.service.model.dto.Scenario;
+import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.ArrayList;
@@ -34,7 +25,7 @@ public class ScenarioResult {
     @Column(name = "site", nullable = false)
     private String site;
 
-    @CreatedDate
+    @CreatedBy
     @Column(name = "created_by")
     private String createdBy;
 

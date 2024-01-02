@@ -1,8 +1,8 @@
 package executor.service.util.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import executor.service.model.ProxyNetworkConfig;
-import executor.service.model.Scenario;
+import executor.service.model.dto.ProxyNetworkConfig;
+import executor.service.model.dto.Scenario;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;

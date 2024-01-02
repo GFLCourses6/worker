@@ -1,7 +1,7 @@
 package executor.service.controller;
 
-import executor.service.model.entity.ScenarioResult;
-import executor.service.service.executor.result.ScenarioResultService;
+import executor.service.model.dto.ScenarioResultResponse;
+import executor.service.service.scenario.result.ScenarioResultService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +21,8 @@ public class ScenarioResultController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ScenarioResult>> getAllScenarioResults() {
-        List<ScenarioResult> scenarioResults =
+    public ResponseEntity<List<ScenarioResultResponse>> getAllScenarioResults() {
+        List<ScenarioResultResponse> scenarioResults =
                 scenarioResultService.getAllScenarioResults();
         return scenarioResults.isEmpty()
                ? ResponseEntity.noContent().build()
