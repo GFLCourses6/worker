@@ -9,19 +9,26 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.io.File;
+
 import static java.time.Duration.ofSeconds;
 
 @Component
 public class WebDriverInitializerImpl implements WebDriverInitializer {
 
-    private static final String EXTENSION_PATH = "src/main/resources/MultiPass-for-HTTP-basic-authentication.crx";
-    private static final String EXTENSION_URL = "chrome-extension://enhldmjbphoeibbpdhmjkchohnidgnah/options.html";
+    @Value("${proxy.extension.url}")
+    private String extensionUrl;
     private final WebDriverConfig webDriverConfig;
+    private final File[] extensionFiles;
 
-    public WebDriverInitializerImpl(WebDriverConfig webDriverConfig) {
+    @Autowired
+    public WebDriverInitializerImpl(WebDriverConfig webDriverConfig, File[] extensionFiles) {
         this.webDriverConfig = webDriverConfig;
+        this.extensionFiles = extensionFiles;
     }
 
     @Override
@@ -57,7 +64,7 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
             chromeOptions.addArguments(String.format("--proxy-server=%s:%d", hostname, port));
 
             if (proxyCredentials != null) {
-                chromeOptions.addExtensions(new File(EXTENSION_PATH));
+                chromeOptions.addExtensions(extensionFiles);
             }
         }
     }
@@ -72,7 +79,7 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
     }
 
     private void configureAuth(WebDriver driver, String username, String password) {
-        driver.get(EXTENSION_URL);
+        driver.get(extensionUrl);
         driver.findElement(By.id("url")).sendKeys(".*");
         driver.findElement(By.id("username")).sendKeys(username);
         driver.findElement(By.id("password")).sendKeys(password);
