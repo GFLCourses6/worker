@@ -14,7 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 @Service
 public class ProxySourcesClientService implements ProxySourcesClient {
 
-    private static final String PROXY_CONFIGS_PATH = "src/main/resources/json/ProxyConfigs.json";
+    private static final String PROXY_CONFIGS_PATH = "json/ProxyConfigs.json";
     private final FileParser fileParser;
     private final BlockingQueue<ProxyConfigHolder> proxyConfigHolders;
 
