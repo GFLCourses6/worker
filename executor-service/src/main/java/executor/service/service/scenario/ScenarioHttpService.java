@@ -4,6 +4,7 @@ import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.dto.Scenario;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Queue;
 
 @Service
@@ -19,6 +20,11 @@ public class ScenarioHttpService
     @Override
     public void saveScenario(final Scenario scenario) {
         scenarioQueue.add(scenario);
+    }
+
+    @Override
+    public void saveScenarios(List<Scenario> scenarios) {
+        scenarioQueue.addAll(scenarios);
     }
 
     @Override
