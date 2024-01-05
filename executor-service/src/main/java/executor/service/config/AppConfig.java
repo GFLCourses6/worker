@@ -3,11 +3,13 @@ package executor.service.config;
 import executor.service.facade.parallel.ConfigurableThreadPool;
 import executor.service.model.dto.ThreadPoolConfig;
 import executor.service.model.dto.WebDriverConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,8 +22,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Import({WebDriverConfig.class, ThreadPoolConfig.class})
 public class AppConfig {
 
-    private static final String EXTENSION_PATH =
-            "classpath:MultiPass-for-HTTP-basic-authentication.crx";
+    @Value("${proxy.extension.path}")
+    private String extensionPath;
+
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     @Bean
     public ThreadPoolExecutor threadPoolExecutor(
@@ -31,7 +36,7 @@ public class AppConfig {
 
     @Bean
     public File extensionFile() throws IOException {
-        Resource resource = new DefaultResourceLoader().getResource(EXTENSION_PATH);
+        Resource resource = resourceLoader.getResource(extensionPath);
         InputStream inputStream = resource.getInputStream();
         Path tempFile = Files.createTempFile("extension", ".crx");
         Files.copy(inputStream, tempFile, java.nio.file.StandardCopyOption.REPLACE_EXISTING);

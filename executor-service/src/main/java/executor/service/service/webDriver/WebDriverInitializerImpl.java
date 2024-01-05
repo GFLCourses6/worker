@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -18,9 +19,10 @@ import static java.time.Duration.ofSeconds;
 
 @Component
 public class WebDriverInitializerImpl implements WebDriverInitializer {
-    private static final String EXTENSION_URL = "chrome-extension://enhldmjbphoeibbpdhmjkchohnidgnah/options.html";
-    private final WebDriverConfig webDriverConfig;
 
+    @Value("${proxy.extension.url}")
+    private String extensionUrl;
+    private final WebDriverConfig webDriverConfig;
     private final File[] extensionFiles;
 
     @Autowired
@@ -77,7 +79,7 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
     }
 
     private void configureAuth(WebDriver driver, String username, String password) {
-        driver.get(EXTENSION_URL);
+        driver.get(extensionUrl);
         driver.findElement(By.id("url")).sendKeys(".*");
         driver.findElement(By.id("username")).sendKeys(username);
         driver.findElement(By.id("password")).sendKeys(password);
