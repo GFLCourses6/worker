@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/scenario")
 public class ScenarioController {
@@ -31,4 +33,12 @@ public class ScenarioController {
         scenarioService.saveScenario(scenario);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @PostMapping("/queue")
+    public ResponseEntity<Void> createScenarios(
+            @RequestBody final List<Scenario> scenarios) {
+        scenarioService.saveScenarios(scenarios);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 }

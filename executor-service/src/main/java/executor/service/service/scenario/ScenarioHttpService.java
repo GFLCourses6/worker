@@ -4,6 +4,7 @@ import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.dto.Scenario;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Queue;
 
 @Service
@@ -28,5 +29,11 @@ public class ScenarioHttpService
                 .filter(scenario -> scenarioName.equals(scenario.getName()))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Override
+    public void saveScenarios(
+            final List<Scenario> scenarios) {
+        scenarioQueue.addAll(scenarios);
     }
 }
