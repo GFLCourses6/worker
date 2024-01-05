@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +27,9 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
     private final File[] extensionFiles;
 
     @Autowired
-    public WebDriverInitializerImpl(WebDriverConfig webDriverConfig, File[] extensionFiles) {
+    public WebDriverInitializerImpl(
+            WebDriverConfig webDriverConfig,
+            @Qualifier("extensionFile") File[] extensionFiles) {
         this.webDriverConfig = webDriverConfig;
         this.extensionFiles = extensionFiles;
     }
