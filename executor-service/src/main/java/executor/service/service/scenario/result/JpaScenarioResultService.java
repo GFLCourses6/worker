@@ -5,7 +5,6 @@ import executor.service.mapper.ScenarioMapper;
 import executor.service.model.dto.ScenarioResultResponse;
 import executor.service.model.entity.ScenarioResult;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class JpaScenarioResultService
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public ScenarioResultResponse createScenarioResult(
             final ScenarioResult result) {
         var scenarioResult = repository.save(result);

@@ -39,11 +39,13 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions chromeOptions = getChromeOptions();
-        configureProxy(chromeOptions, proxyConfigHolder);
+        if (proxyConfigHolder != null)
+            configureProxy(chromeOptions, proxyConfigHolder);
 
         ChromeDriver driver = new ChromeDriver(chromeOptions);
 
-        configureProxyAuth(driver, proxyConfigHolder);
+        if (proxyConfigHolder != null)
+            configureProxyAuth(driver, proxyConfigHolder);
         configureTimeouts(driver);
 
         return driver;

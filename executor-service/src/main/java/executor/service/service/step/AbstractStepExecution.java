@@ -16,9 +16,9 @@ public abstract class AbstractStepExecution implements StepExecution {
             executeStepLogic(webDriver, step);
             return new StepResult(step, ExecutionStatus.SUCCESS);
         } catch (WebDriverException e) {
-            return new StepResult(step, e.getRawMessage());
+            return new StepResult(step, e.getRawMessage(), ExecutionStatus.FAIL);
         } catch (Exception e) {
-            return new StepResult(step, e.getMessage());
+            return new StepResult(step, e.getMessage(), ExecutionStatus.FAIL);
         }
     }
 }

@@ -14,16 +14,16 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.BlockingQueue;
 
 @Service
-public class ExecutionServiceImpl implements ExecutionService {
+public class ScenarioWorker implements ExecutionService {
 
-    private final Logger logger = LogManager.getLogger(ExecutionServiceImpl.class);
+    private final Logger logger = LogManager.getLogger(ScenarioWorker.class);
 
     private final BlockingQueue<Scenario> scenarioQueue;
     private final ScenarioExecutor scenarioExecutor;
     private final WebDriverInitializer webDriverInitializer;
     private final ProxySourcesClient proxySourcesClient;
 
-    public ExecutionServiceImpl(
+    public ScenarioWorker(
             ScenarioQueueHolder scenarioQueueHolder,
             ScenarioExecutor scenarioExecutor,
             WebDriverInitializer webDriverInitializer,
