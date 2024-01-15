@@ -35,7 +35,7 @@ class ExecutionServiceImplTest {
         proxySourcesClient = mock(ProxySourcesClient.class);
         scenarioQueueHolder = new ScenarioQueueHolder();
         scenarioQueue = scenarioQueueHolder.getQueue();
-        executionService = new ExecutionServiceImpl(
+        executionService = new ScenarioWorker(
                 scenarioQueueHolder,
                 scenarioExecutor,
                 webDriverInitializer,

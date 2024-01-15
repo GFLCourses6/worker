@@ -34,17 +34,17 @@ public class StepResult {
     @JoinColumn(name = "scenario_id")
     private ScenarioResult scenarioResult;
 
+    public StepResult() {
+    }
+
     public StepResult(Step step, ExecutionStatus executionStatus) {
         this.step = step;
         this.executionStatus = executionStatus;
     }
 
-    public StepResult() {
-    }
-
-    public StepResult(Step step, String failMessage) {
-        this.executionStatus = ExecutionStatus.FAIL;
-        this.executionMessage = failMessage;
+    public StepResult(Step step, String message, ExecutionStatus executionStatus) {
+        this.executionStatus = executionStatus;
+        this.executionMessage = message;
         this.step = step;
     }
 
