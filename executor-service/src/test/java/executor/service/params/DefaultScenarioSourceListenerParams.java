@@ -17,6 +17,7 @@ public class DefaultScenarioSourceListenerParams {
         scenarios.add(new Scenario(
                 "test scenario 1",
                 "http://info.cern.ch",
+                null,
                 Stream.of(
                         new Step(
                                 "clickCss",
@@ -35,6 +36,7 @@ public class DefaultScenarioSourceListenerParams {
         scenarios.add(new Scenario(
                 "test scenario 2",
                 "http://info.cern.ch",
+                null,
                 Stream.of(
                         new Step(
                                 "clickXpath",

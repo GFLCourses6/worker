@@ -3,5 +3,5 @@ package executor.service.service.proxy;
 import executor.service.model.dto.ProxyConfigHolder;
 
 public interface ProxySourcesClient {
-    ProxyConfigHolder getProxy();
+    ProxyConfigHolder getProxy(String username);
 }

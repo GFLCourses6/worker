@@ -41,7 +41,7 @@ public class ScenarioWorker implements ExecutionService {
             Scenario scenario = getScenario();
             if (scenario != null) {
                 logger.info("Executing the scenario '{}'", scenario.getName());
-                var webDriver = getWebDriver();
+                var webDriver = getWebDriver(scenario.getUsername());
                 scenarioExecutor.execute(scenario, webDriver);
             }
         }
@@ -56,9 +56,10 @@ public class ScenarioWorker implements ExecutionService {
         return null;
     }
 
-    private WebDriver getWebDriver() {
-        ProxyConfigHolder proxyConfigHolder = proxySourcesClient.getProxy();
-        logger.info("Proxy {}", proxyConfigHolder );
+    private WebDriver getWebDriver(String username) {
+        logger.info("Retrieving proxy for {}", username);
+        ProxyConfigHolder proxyConfigHolder = proxySourcesClient.getProxy(username);
+        logger.info("Proxy {}", proxyConfigHolder);
         return webDriverInitializer.create(proxyConfigHolder);
     }
 }

@@ -1,20 +1,15 @@
 package executor.service.model;
 
-import java.util.Collections;
-
 import executor.service.model.dto.Scenario;
 import executor.service.model.dto.Step;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ScenarioTest {
 
@@ -25,7 +20,7 @@ class ScenarioTest {
     List<Step> steps = new ArrayList<>();
     steps.add(new Step("action1", "value1"));
     steps.add(new Step("action2", "value2"));
-    scenario = new Scenario("TestScenario", "example.com", steps);
+    scenario = new Scenario("TestScenario", "example.com", null, steps);
   }
 
   @Test
@@ -82,8 +77,8 @@ class ScenarioTest {
   }
   @Test
   void testScenarioHashCodeEquals() {
-    Scenario scenario1 = new Scenario("Scenario1", "example.com", Collections.emptyList());
-    Scenario scenario2 = new Scenario("Scenario1", "example.com", Collections.emptyList());
+    Scenario scenario1 = new Scenario("Scenario1", "example.com",null, Collections.emptyList());
+    Scenario scenario2 = new Scenario("Scenario1", "example.com",null, Collections.emptyList());
 
     assertEquals(scenario1.hashCode(), scenario2.hashCode());
   }
@@ -105,14 +100,14 @@ class ScenarioTest {
   }
   @Test
   void testScenarioNotEqualsToOtherTypes() {
-    Scenario scenario = new Scenario("Scenario1", "example.com", Collections.emptyList());
+    Scenario scenario = new Scenario("Scenario1", "example.com", null, Collections.emptyList());
     Step step = new Step("action1", "value1");
 
     assertFalse(scenario.equals(step));
   }
   @Test
   void testScenarioWithEmptySteps() {
-    Scenario scenario = new Scenario("EmptyScenario", "example.com", Collections.emptyList());
+    Scenario scenario = new Scenario("EmptyScenario", "example.com", null, Collections.emptyList());
 
     assertTrue(scenario.getSteps().isEmpty());
   }
@@ -122,7 +117,7 @@ class ScenarioTest {
     steps.add(new Step("action1", "value1"));
     steps.add(new Step("action2", "value2"));
 
-    Scenario scenario = new Scenario("TestScenario", "example.com", steps);
+    Scenario scenario = new Scenario("TestScenario", "example.com", null, steps);
 
     List<Step> newSteps = new ArrayList<>();
     newSteps.add(new Step("newAction1", "newValue1"));
@@ -134,7 +129,7 @@ class ScenarioTest {
   }
   @Test
   void testNullAndEmptyValues() {
-    Scenario scenario = new Scenario("TestScenario", "example.com", Collections.emptyList());
+    Scenario scenario = new Scenario("TestScenario", "example.com", null, Collections.emptyList());
 
     scenario.setName(null);
     scenario.setSite("");
@@ -144,8 +139,4 @@ class ScenarioTest {
     assertTrue(scenario.getSite().isEmpty());
     assertNull(step.getAction());
   }
-
-
-
-
 }

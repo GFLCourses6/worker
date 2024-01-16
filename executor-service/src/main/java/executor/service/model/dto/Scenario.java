@@ -6,14 +6,16 @@ import java.util.Objects;
 public class Scenario {
   private String name;
   private String site;
+  private String username;
   private List<Step> steps;
 
   public Scenario() {
   }
 
-  public Scenario(String name, String site, List<Step> steps) {
+  public Scenario(String name, String site, String username, List<Step> steps) {
     this.name = name;
     this.site = site;
+    this.username = username;
     this.steps = steps;
   }
 
@@ -33,6 +35,14 @@ public class Scenario {
     this.site = site;
   }
 
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
   public List<Step> getSteps() {
     return steps;
   }
@@ -50,7 +60,6 @@ public class Scenario {
         Objects.equals(site, scenarioDTO.site) &&
         Objects.equals(steps, scenarioDTO.steps);
   }
-
 
   @Override
   public int hashCode() {

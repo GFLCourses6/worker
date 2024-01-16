@@ -44,7 +44,7 @@ class ScenarioHttpServiceTest {
 
     @Test
     void testGetScenarioByName() {
-        var expected = new Scenario("expected", "site", new ArrayList<>());
+        var expected = new Scenario("expected", "site", null, new ArrayList<>());
         scenarioQueue.addAll(List.of(new Scenario(), expected, new Scenario()));
 
         var actual = scenarioHttpService.getScenarioByName("expected");
