@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 public class HttpProxySourcesClient implements ProxySourcesClient {
 
     @Value("${client.url.proxy}")
-    private String clientUrl;
+    private String clientProxyUrl;
     private final Logger logger = LoggerFactory.getLogger(HttpProxySourcesClient.class);
     private final RestTemplate restTemplate;
 
@@ -22,7 +22,7 @@ public class HttpProxySourcesClient implements ProxySourcesClient {
 
     @Override
     public ProxyConfigHolder getProxy(String username) {
-        String url = clientUrl + "/" + username;
+        String url = clientProxyUrl + "/" + username;
         try {
             return getProxyConfigHolder(url);
         } catch (Exception e) {
