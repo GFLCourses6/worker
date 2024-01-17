@@ -7,6 +7,10 @@ import java.util.List;
 public interface ScenarioService {
 
     void saveScenario(Scenario scenario);
+
     Scenario getScenarioByName(String scenarioName);
+
     void saveScenarios(List<Scenario> scenarios);
+
+    List<Scenario> getScenariosByUsername(String username);
 }

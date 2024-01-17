@@ -6,6 +6,7 @@ import java.util.Objects;
 public class Scenario {
   private String name;
   private String site;
+  private String username;
   private List<Step> steps;
 
   public Scenario() {
@@ -15,6 +16,14 @@ public class Scenario {
     this.name = name;
     this.site = site;
     this.steps = steps;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   public String getName() {
@@ -45,25 +54,24 @@ public class Scenario {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    Scenario scenarioDTO = (Scenario) o;
-    return Objects.equals(name, scenarioDTO.name) &&
-        Objects.equals(site, scenarioDTO.site) &&
-        Objects.equals(steps, scenarioDTO.steps);
+    Scenario scenario = (Scenario) o;
+    return Objects.equals(name, scenario.name)
+            && Objects.equals(site, scenario.site)
+            && Objects.equals(steps, scenario.steps)
+            && Objects.equals(username, scenario.username);
   }
-
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, site, steps);
+    return Objects.hash(name, site, steps, username);
   }
 
   @Override
   public String toString() {
-    return "Scenario{" +
-        "name='" + name + '\'' +
-        ", site='" + site + '\'' +
-        ", steps=" + steps +
-        '}';
+    return "Scenario{name='%s', site='%s', steps=%s, username='%s'}".formatted(
+            name,
+            site,
+            steps,
+            username);
   }
 }
-

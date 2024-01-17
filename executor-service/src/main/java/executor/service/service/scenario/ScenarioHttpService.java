@@ -35,4 +35,12 @@ public class ScenarioHttpService
                 .findFirst()
                 .orElse(null);
     }
+
+    @Override
+    public List<Scenario> getScenariosByUsername(String username) {
+        return scenarioQueue
+                .stream()
+                .filter(scenario -> scenario.getUsername().equals(username))
+                .toList();
+    }
 }

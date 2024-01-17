@@ -8,6 +8,7 @@ public class ScenarioResultResponse {
     private Long id;
     private String name;
     private String site;
+    private String username;
     private String createdBy;
     private List<StepResultResponse> stepResults;
 
@@ -21,6 +22,14 @@ public class ScenarioResultResponse {
     }
 
     public ScenarioResultResponse() {
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Long getId() {
