@@ -52,8 +52,8 @@ class ExecutionServiceImplTest {
     void execute() throws InterruptedException {
         WebDriver mockWebDriver = mock(WebDriver.class);
         when(webDriverInitializer.create(any())).thenReturn(mockWebDriver);
-        Scenario scenario1 = new Scenario("TestScenario1", "example1.com", null);
-        Scenario scenario2 = new Scenario("TestScenario2", "example2.com", null);
+        Scenario scenario1 = new Scenario("TestScenario1", "example1.com", null, null);
+        Scenario scenario2 = new Scenario("TestScenario2", "example2.com", null, null);
 
         scenarioQueue.add(scenario1);
         scenarioQueue.add(scenario2);
