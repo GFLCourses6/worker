@@ -8,7 +8,14 @@ import java.util.List;
 public interface ScenarioService {
 
     void saveScenario(Scenario scenario);
+
+    List<Scenario> getScenariosByUsername(String username);
+
     Scenario getScenarioByName(String scenarioName);
+
     void saveScenarios(List<Scenario> scenarios);
-    ResponseEntity<Scenario> getScenarioByUsername(String username, String scenarioName);
+
+    ResponseEntity<Scenario> getScenarioByUsername(
+            String username,
+            String scenarioName);
 }
