@@ -2,6 +2,8 @@ package executor.service.service.scenario;
 
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.dto.Scenario;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +27,24 @@ public class ScenarioHttpService
     @Override
     public void saveScenarios(List<Scenario> scenarios) {
         scenarioQueue.addAll(scenarios);
+    }
+
+    @Override
+    public ResponseEntity<Scenario> getScenarioByUsername(
+            final String username, final String scenarioName) {
+        List<Scenario> scenarios = scenarioQueue
+                .stream()
+                .filter(scenario -> scenario.getUsername().equals(username))
+                .toList();
+
+        Scenario scenario = scenarios
+                    .stream()
+                    .filter(s -> s.getUsername().equals(username))
+                    .findFirst()
+                    .orElse(null);
+        return scenario != null
+               ? new ResponseEntity<>(scenario, HttpStatus.OK)
+               : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Override
