@@ -25,6 +25,7 @@ public class ScenarioExecutorService implements ScenarioExecutor {
         try {
             webDriver.get(scenario.getSite());
         } catch (Exception e) {
+            webDriver.quit();
             logger.error(e.getMessage());
             return new ScenarioResult(scenario);
         }
