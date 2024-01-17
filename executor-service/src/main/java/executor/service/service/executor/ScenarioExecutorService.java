@@ -34,6 +34,7 @@ public class ScenarioExecutorService implements ScenarioExecutor {
     private ScenarioResult executeSteps(Scenario scenario, WebDriver driver) {
         Queue<Step> steps = new ArrayDeque<>(scenario.getSteps());
         var scenarioResult = new ScenarioResult(scenario);
+
         while (!steps.isEmpty()) {
             Step step = steps.poll();
             StepResult stepResult = getStepExecution(step).step(driver, step);

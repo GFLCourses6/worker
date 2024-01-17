@@ -22,8 +22,8 @@ public class HttpProxySourcesClient implements ProxySourcesClient {
 
     @Override
     public ProxyConfigHolder getProxy(String username) {
-        String url = clientProxyUrl + "/" + username;
         try {
+            String url = clientProxyUrl + "/" + username;
             return getProxyConfigHolder(url);
         } catch (Exception e) {
             logger.error("Couldn't retrieve proxy for {}.\nMore: {}",
