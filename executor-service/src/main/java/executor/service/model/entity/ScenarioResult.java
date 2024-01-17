@@ -1,7 +1,16 @@
 package executor.service.model.entity;
 
 import executor.service.model.dto.Scenario;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.ArrayList;
@@ -24,8 +33,8 @@ public class ScenarioResult {
     @Column(name = "site", nullable = false)
     private String site;
 
-    @Column(name = "created_by")
-    private String createdBy;
+    @Column(name = "username")
+    private String username;
 
     @OneToMany(mappedBy = "scenarioResult", cascade = CascadeType.ALL)
     private List<StepResult> stepResults = new ArrayList<>();
@@ -33,7 +42,7 @@ public class ScenarioResult {
     public ScenarioResult(Scenario scenario) {
         this.name = scenario.getName();
         this.site = scenario.getSite();
-        this.createdBy = scenario.getUsername();
+        this.username = scenario.getUsername();
     }
 
     public ScenarioResult() {
@@ -64,8 +73,8 @@ public class ScenarioResult {
         this.site = site;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    public String getUsername() {
+        return username;
     }
 
     public List<StepResult> getStepResults() {
@@ -78,7 +87,7 @@ public class ScenarioResult {
                 + "id=" + id
                 + ", name='" + name + '\''
                 + ", site='" + site + '\''
-                + ", createdBy='" + createdBy + '\'' + '}';
+                + ", createdBy='" + username + '\'' + '}';
     }
 
     @Override
@@ -88,12 +97,12 @@ public class ScenarioResult {
         return Objects.equals(id, that.id)
                 && Objects.equals(name, that.name)
                 && Objects.equals(site, that.site)
-                && Objects.equals(createdBy, that.createdBy)
+                && Objects.equals(username, that.username)
                 && Objects.equals(stepResults, that.stepResults);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, site, createdBy, stepResults);
+        return Objects.hash(id, name, site, username, stepResults);
     }
 }

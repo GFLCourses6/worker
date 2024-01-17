@@ -8,15 +8,15 @@ public class ScenarioResultResponse {
     private Long id;
     private String name;
     private String site;
-    private String createdBy;
+    private String username;
     private List<StepResultResponse> stepResults;
 
     public ScenarioResultResponse(Long id, String name, String site,
-                                  String createdBy, List<StepResultResponse> stepResults) {
+                                  String username, List<StepResultResponse> stepResults) {
         this.id = id;
         this.name = name;
         this.site = site;
-        this.createdBy = createdBy;
+        this.username = username;
         this.stepResults = stepResults;
     }
 
@@ -48,11 +48,11 @@ public class ScenarioResultResponse {
     }
 
     public String getCreatedBy() {
-        return createdBy;
+        return username;
     }
 
     public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+        this.username = createdBy;
     }
 
     public List<StepResultResponse> getStepResults() {
@@ -70,13 +70,13 @@ public class ScenarioResultResponse {
         return Objects.equals(id, that.id)
                 && Objects.equals(name, that.name)
                 && Objects.equals(site, that.site)
-                && Objects.equals(createdBy, that.createdBy)
+                && Objects.equals(username, that.username)
                 && Objects.equals(stepResults, that.stepResults);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, site, createdBy, stepResults);
+        return Objects.hash(id, name, site, username, stepResults);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class ScenarioResultResponse {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", site='" + site + '\'' +
-                ", createdBy='" + createdBy + '\'' +
+                ", createdBy='" + username + '\'' +
                 ", stepResults=" + stepResults +
                 '}';
     }
