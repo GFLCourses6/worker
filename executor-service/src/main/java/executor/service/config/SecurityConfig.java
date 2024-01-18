@@ -22,7 +22,7 @@ public class SecurityConfig {
 
     @Value("${executor.service.auth.token.header.name}")
     private String authTokenHeaderName;
-    @Value("#{'${executor.service.auth.token.values}'.split(',')}")
+    @Value("#{'${executor.service.auth.token.value}'.split(',')}")
     private Set<String> authTokenValues;
 
     @Bean
