@@ -24,10 +24,12 @@ public class ScenarioController {
     }
 
     @GetMapping("/queue/{username}/{scenarioName}")
-    public ResponseEntity<Scenario> getScenarioByName(
+    public ResponseEntity<List<Scenario>> getScenarioByName(
             @PathVariable final String username,
             @PathVariable final String scenarioName) {
-        return scenarioService.getScenarioByUsername(username, scenarioName);
+        List<Scenario> scenarios =
+                scenarioService.getScenariosByUsernameAndScenarioName(username, scenarioName);
+        return new ResponseEntity<>(scenarios, HttpStatus.OK) ;
     }
 
     @PostMapping("/queue")

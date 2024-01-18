@@ -30,16 +30,12 @@ public class ScenarioHttpService
     }
 
     @Override
-    public ResponseEntity<Scenario> getScenarioByUsername(
+    public List<Scenario> getScenariosByUsernameAndScenarioName(
             final String username, final String scenarioName) {
-        Scenario scenario = getScenariosByUsername(username)
+        return getScenariosByUsername(username)
                     .stream()
-                    .filter(s -> s.getUsername().equals(username))
-                    .findFirst()
-                    .orElse(null);
-        return scenario != null
-               ? new ResponseEntity<>(scenario, HttpStatus.OK)
-               : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    .filter(scenario -> scenarioName.equals(scenario.getName()))
+                    .toList();
     }
 
     @Override
@@ -47,7 +43,7 @@ public class ScenarioHttpService
             final String username) {
         return scenarioQueue
                 .stream()
-                .filter(scenario -> scenario.getUsername().equals(username))
+                .filter(scenario -> username.equals(scenario.getUsername()))
                 .toList();
     }
 

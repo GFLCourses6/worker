@@ -47,12 +47,12 @@ public class ScenarioResultResponse {
         this.site = site;
     }
 
-    public String getCreatedBy() {
+    public String getUsername() {
         return username;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.username = createdBy;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public List<StepResultResponse> getStepResults() {
