@@ -2,6 +2,8 @@ package executor.service.controller;
 
 import executor.service.model.dto.Scenario;
 import executor.service.service.scenario.ScenarioService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +20,10 @@ import java.util.List;
 public class ScenarioController {
 
     private final ScenarioService scenarioService;
-
+    @Value("${client.auth.token.header.name}")
+    private String authTokenHeaderName;
+    @Value("${client.service.auth.token.value}")
+    private String authTokenValue;
     public ScenarioController(final ScenarioService scenarioService) {
         this.scenarioService = scenarioService;
     }
@@ -27,7 +32,14 @@ public class ScenarioController {
     public ResponseEntity<List<Scenario>> getScenariosByUsername(
             @PathVariable final String username) {
         List<Scenario> scenarios = scenarioService.getScenariosByUsername(username);
-        return new ResponseEntity<>(scenarios, HttpStatus.OK) ;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(authTokenHeaderName, authTokenValue);
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(scenarios);
     }
 
     @GetMapping("/queue/{username}/{scenarioName}")
@@ -35,13 +47,27 @@ public class ScenarioController {
             @PathVariable final String username,
             @PathVariable final String scenarioName) {
         List<Scenario> scenarios = scenarioService.getScenariosByUsernameAndScenarioName(username, scenarioName);
-        return new ResponseEntity<>(scenarios, HttpStatus.OK) ;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(authTokenHeaderName, authTokenValue);
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(scenarios);
     }
 
     @PostMapping("/queue")
     public ResponseEntity<Void> createScenario(
             @RequestBody final List<Scenario> scenarios) {
         scenarioService.saveScenarios(scenarios);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(authTokenHeaderName, authTokenValue);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .headers(headers)
+                .build();
     }
 }
