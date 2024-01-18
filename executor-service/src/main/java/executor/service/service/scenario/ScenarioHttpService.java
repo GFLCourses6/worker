@@ -34,7 +34,7 @@ public class ScenarioHttpService
             final String username, final String scenarioName) {
         Scenario scenario = getScenariosByUsername(username)
                     .stream()
-                    .filter(s -> s.getUsername().equals(username))
+                    .filter(s -> s.getName().equals(scenarioName))
                     .findFirst()
                     .orElse(null);
         return scenario != null
