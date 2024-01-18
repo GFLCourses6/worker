@@ -27,8 +27,7 @@ public class ScenarioController {
     public ResponseEntity<List<Scenario>> getScenarioByName(
             @PathVariable final String username,
             @PathVariable final String scenarioName) {
-        List<Scenario> scenarios =
-                scenarioService.getScenariosByUsernameAndScenarioName(username, scenarioName);
+        List<Scenario> scenarios = scenarioService.getScenariosByUsernameAndScenarioName(username, scenarioName);
         return new ResponseEntity<>(scenarios, HttpStatus.OK) ;
     }
 

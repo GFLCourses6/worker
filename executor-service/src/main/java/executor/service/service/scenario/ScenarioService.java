@@ -14,5 +14,6 @@ public interface ScenarioService {
 
     void saveScenarios(List<Scenario> scenarios);
 
-    List<Scenario> getScenariosByUsernameAndScenarioName(String username, String scenarioName);
+    List<Scenario> getScenariosByUsernameAndScenarioName(
+            String username, String scenarioName);
 }

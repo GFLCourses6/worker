@@ -2,8 +2,6 @@ package executor.service.service.scenario;
 
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.dto.Scenario;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
