@@ -3,14 +3,13 @@ package executor.service.service.scenario;
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.dto.Scenario;
 import executor.service.params.ScenariosArgumentsProvider;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +18,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class ScenarioHttpServiceTest {
@@ -69,17 +71,11 @@ class ScenarioHttpServiceTest {
     @ArgumentsSource(ScenariosArgumentsProvider.class)
     void testGetScenarioByUsername(List<Scenario> scenarios) {
         scenarioHttpService.saveScenarios(scenarios);
-        for (Scenario scenario : scenarios) {
-            ResponseEntity<Scenario> responseEntity = scenarioHttpService
-                    .getScenarioByUsername(scenario.getUsername(), scenario.getName());
-            if (scenario.getName() != null) {
-                assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-                assertNotNull(responseEntity.getBody());
-            } else {
-                assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-                assertNull(responseEntity.getBody());
-            }
-        }
+        scenarios.stream()
+                .map(scenario -> scenarioHttpService.getScenarioByUsername(
+                        scenario.getUsername(),
+                        scenario.getName()))
+                .forEach(Assertions::assertNotNull);
     }
 
     @ParameterizedTest

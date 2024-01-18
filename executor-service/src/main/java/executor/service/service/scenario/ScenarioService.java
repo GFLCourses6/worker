@@ -15,7 +15,7 @@ public interface ScenarioService {
 
     void saveScenarios(List<Scenario> scenarios);
 
-    ResponseEntity<Scenario> getScenarioByUsername(
+    List<Scenario> getScenarioByUsername(
             String username,
             String scenarioName);
 }
