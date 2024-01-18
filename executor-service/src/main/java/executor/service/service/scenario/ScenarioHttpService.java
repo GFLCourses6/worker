@@ -28,6 +28,24 @@ public class ScenarioHttpService
     }
 
     @Override
+    public List<Scenario> getScenariosByUsernameAndScenarioName(
+            final String username, final String scenarioName) {
+        return getScenariosByUsername(username)
+                    .stream()
+                    .filter(scenario -> scenarioName.equals(scenario.getName()))
+                    .toList();
+    }
+
+    @Override
+    public List<Scenario> getScenariosByUsername(
+            final String username) {
+        return scenarioQueue
+                .stream()
+                .filter(scenario -> username.equals(scenario.getUsername()))
+                .toList();
+    }
+
+    @Override
     public Scenario getScenarioByName(final String scenarioName) {
         return scenarioQueue
                 .stream()

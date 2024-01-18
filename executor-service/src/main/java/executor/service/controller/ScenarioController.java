@@ -23,13 +23,12 @@ public class ScenarioController {
         this.scenarioService = scenarioService;
     }
 
-    @GetMapping("/queue/{scenarioName}")
-    public ResponseEntity<Scenario> getScenarioByName(
+    @GetMapping("/queue/{username}/{scenarioName}")
+    public ResponseEntity<List<Scenario>> getScenarioByName(
+            @PathVariable final String username,
             @PathVariable final String scenarioName) {
-        Scenario scenario = scenarioService.getScenarioByName(scenarioName);
-        return scenario != null
-                ? new ResponseEntity<>(scenario, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        List<Scenario> scenarios = scenarioService.getScenariosByUsernameAndScenarioName(username, scenarioName);
+        return new ResponseEntity<>(scenarios, HttpStatus.OK) ;
     }
 
     @PostMapping("/queue")

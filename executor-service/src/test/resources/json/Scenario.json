@@ -1,6 +1,7 @@
 [
   {
     "name": "test scenario 1",
+    "username": "Alice",
     "site": "http://info.cern.ch",
     "steps": [
       {
@@ -19,6 +20,7 @@
   },
   {
     "name": "test scenario 2",
+    "username": "Alice",
     "site": "http://info.cern.ch",
     "steps": [
       {
