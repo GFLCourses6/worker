@@ -22,7 +22,7 @@ public class ScenarioController {
     private final ScenarioService scenarioService;
     @Value("${client.auth.token.header.name}")
     private String authTokenHeaderName;
-    @Value("${client.service.auth.token.value}")
+    @Value("${client.auth.token.value}")
     private String authTokenValue;
     public ScenarioController(final ScenarioService scenarioService) {
         this.scenarioService = scenarioService;

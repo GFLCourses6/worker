@@ -18,7 +18,7 @@ public class ScenarioResultController {
     private final ScenarioResultService scenarioResultService;
     @Value("${client.auth.token.header.name}")
     private String authTokenHeaderName;
-    @Value("${client.service.auth.token.value}")
+    @Value("${client.auth.token.value}")
     private String authTokenValue;
     public ScenarioResultController(
             final ScenarioResultService resultService) {
