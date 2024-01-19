@@ -1,5 +1,6 @@
 package executor.service.config;
 
+import com.google.common.net.HttpHeaders;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -13,35 +14,39 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 
-import java.util.Set;
-
 @Configuration
 @EnableWebSecurity
 @PropertySource("classpath:application.properties")
 public class SecurityConfig {
 
-    @Value("${executor.service.auth.token.header.name}")
-    private String authTokenHeaderName;
-    @Value("#{'${executor.service.auth.token.value}'.split(',')}")
-    private Set<String> authTokenValues;
+    @Value("${client.auth.token.value}")
+    private String clientApiToken;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((authorizeRequests) ->
-                        authorizeRequests
-                                .anyRequest().access(hasToken(authTokenValues))
-                )
+        http.authorizeHttpRequests(
+                authorizeRequests ->
+                        authorizeRequests.anyRequest().access(hasApiToken()))
                 .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable);
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 
-    private AuthorizationManager<RequestAuthorizationContext> hasToken(Set<String> tokens) {
+    private AuthorizationManager<RequestAuthorizationContext> hasApiToken() {
         return (authentication, context) -> {
             HttpServletRequest request = context.getRequest();
-            return new AuthorizationDecision(tokens.contains(request.getHeader(authTokenHeaderName)));
+            String tokenHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+            return new AuthorizationDecision(isValidApiToken(tokenHeader));
         };
+    }
+
+    private boolean isValidApiToken(String tokenHeader) {
+        if (tokenHeader != null && tokenHeader.startsWith("Token ")) {
+            String token = tokenHeader.substring(6);
+            return clientApiToken.equals(token);
+        }
+        return false;
     }
 }
 
