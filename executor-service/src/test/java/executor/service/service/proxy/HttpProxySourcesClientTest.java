@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -35,8 +37,10 @@ class HttpProxySourcesClientTest {
 
     @BeforeEach
     void setUp() {
-        when(restTemplate.getForEntity(anyString(), eq(ProxyConfigHolder.class)))
-                .thenReturn(responseEntity);
+        when(restTemplate.exchange(
+                anyString(), eq(HttpMethod.GET),
+                any(HttpEntity.class), eq(ProxyConfigHolder.class))
+        ).thenReturn(responseEntity);
     }
 
     @Test
@@ -48,7 +52,9 @@ class HttpProxySourcesClientTest {
         var username = "dobby";
         var actual = proxySourcesClient.getProxy(username);
 
-        verify(restTemplate).getForEntity(clientProxyUrl + "/" + username, ProxyConfigHolder.class);
+        verify(restTemplate).exchange(
+                eq(clientProxyUrl + "/" + username), eq(HttpMethod.GET),
+                any(HttpEntity.class), eq(ProxyConfigHolder.class));
         assertEquals(expected, actual);
     }
 
@@ -60,19 +66,25 @@ class HttpProxySourcesClientTest {
         var username = "dobby";
         var actual = proxySourcesClient.getProxy(username);
 
-        verify(restTemplate).getForEntity(clientProxyUrl + "/" + username, ProxyConfigHolder.class);
+        verify(restTemplate).exchange(
+                eq(clientProxyUrl + "/" + username), eq(HttpMethod.GET),
+                any(HttpEntity.class), eq(ProxyConfigHolder.class));
         assertNull(actual);
     }
 
     @Test
     void testFailExceptionProxyRetrieving() {
-        when(restTemplate.getForEntity(anyString(), eq(ProxyConfigHolder.class)))
-                .thenThrow(new RuntimeException());
+        when(restTemplate.exchange(
+                anyString(), eq(HttpMethod.GET),
+                any(HttpEntity.class), eq(ProxyConfigHolder.class))
+        ).thenThrow(new RuntimeException());
 
         var username = "dobby";
         var actual = proxySourcesClient.getProxy(username);
 
-        verify(restTemplate).getForEntity(clientProxyUrl + "/" + username, ProxyConfigHolder.class);
+        verify(restTemplate).exchange(
+                eq(clientProxyUrl + "/" + username), eq(HttpMethod.GET),
+                any(HttpEntity.class), eq(ProxyConfigHolder.class));
         assertNull(actual);
     }
 }

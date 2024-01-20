@@ -4,7 +4,9 @@ import executor.service.model.dto.ProxyConfigHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,6 +15,9 @@ public class HttpProxySourcesClient implements ProxySourcesClient {
 
     @Value("${client.url.proxy}")
     private String clientProxyUrl;
+    @Value("${executor.service.auth.token.value}")
+    private String workerApiToken;
+
     private final Logger logger = LoggerFactory.getLogger(HttpProxySourcesClient.class);
     private final RestTemplate restTemplate;
 
@@ -26,19 +31,29 @@ public class HttpProxySourcesClient implements ProxySourcesClient {
             String url = clientProxyUrl + "/" + username;
             return getProxyConfigHolder(url);
         } catch (Exception e) {
-            logger.error("Couldn't retrieve proxy for {}.\nMore: {}",
-                    username, e.getMessage());
+            logger.error(
+                    "Couldn't retrieve proxy for {}. {}",
+                    username, e.getMessage()
+            );
             return null;
         }
     }
 
     private ProxyConfigHolder getProxyConfigHolder(String url) {
-        ResponseEntity<ProxyConfigHolder> responseEntity =
-                restTemplate.getForEntity(url, ProxyConfigHolder.class);
-
+        var requestEntity = getHttpEntity();
+        var responseEntity = restTemplate.exchange(
+                url, HttpMethod.GET,
+                requestEntity, ProxyConfigHolder.class
+        );
         if (responseEntity.getStatusCode().is2xxSuccessful())
             return responseEntity.getBody();
         return null;
+    }
+
+    private HttpEntity<Object> getHttpEntity() {
+        var headers = new HttpHeaders();
+        headers.set(HttpHeaders.AUTHORIZATION, "Token " + workerApiToken);
+        return new HttpEntity<>(headers);
     }
 }
 

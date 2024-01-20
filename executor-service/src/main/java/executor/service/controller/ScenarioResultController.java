@@ -25,7 +25,7 @@ public class ScenarioResultController {
         List<ScenarioResultResponse> scenarioResults =
                 scenarioResultService.getAllScenarioResults();
         return scenarioResults.isEmpty()
-               ? ResponseEntity.noContent().build()
-               : ResponseEntity.ok(scenarioResults);
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(scenarioResults);
     }
 }

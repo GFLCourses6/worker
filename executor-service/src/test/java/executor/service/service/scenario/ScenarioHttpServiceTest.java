@@ -58,7 +58,7 @@ class ScenarioHttpServiceTest {
 
     @ParameterizedTest
     @ArgumentsSource(ScenariosArgumentsProvider.class)
-    void testCreateScenarios(List<Scenario> scenarios)  {
+    void testCreateScenarios(List<Scenario> scenarios) {
         assertNotNull(scenarios);
         when(scenarioQueueHolder.getQueue()).thenReturn(scenarioQueue);
         scenarioHttpService.saveScenarios(scenarios);
