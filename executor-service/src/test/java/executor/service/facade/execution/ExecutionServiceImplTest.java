@@ -1,9 +1,12 @@
 package executor.service.facade.execution;
 
 import executor.service.holder.ScenarioQueueHolder;
+import executor.service.model.dto.ProxyConfigHolder;
 import executor.service.model.dto.Scenario;
+import executor.service.model.entity.ScenarioResult;
 import executor.service.service.executor.ScenarioExecutor;
 import executor.service.service.proxy.ProxySourcesClient;
+import executor.service.service.scenario.result.ScenarioResultService;
 import executor.service.service.webDriver.WebDriverInitializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +28,7 @@ class ExecutionServiceImplTest {
     private ProxySourcesClient proxySourcesClient;
     private ExecutionService executionService;
     private BlockingQueue<Scenario> scenarioQueue;
+    private ScenarioResultService scenarioResultService;
 
     private AutoCloseable closeable;
 
@@ -35,11 +39,13 @@ class ExecutionServiceImplTest {
         proxySourcesClient = mock(ProxySourcesClient.class);
         scenarioQueueHolder = new ScenarioQueueHolder();
         scenarioQueue = scenarioQueueHolder.getQueue();
+        scenarioResultService = mock(ScenarioResultService.class);
         executionService = new ScenarioWorker(
                 scenarioQueueHolder,
                 scenarioExecutor,
                 webDriverInitializer,
-                proxySourcesClient);
+                proxySourcesClient,
+                scenarioResultService);
     }
 
     @AfterEach
@@ -51,9 +57,12 @@ class ExecutionServiceImplTest {
     @DisplayName("Test execute method")
     void execute() throws InterruptedException {
         WebDriver mockWebDriver = mock(WebDriver.class);
+        ProxyConfigHolder proxyConfigHolder = mock(ProxyConfigHolder.class);
         when(webDriverInitializer.create(any())).thenReturn(mockWebDriver);
-        Scenario scenario1 = new Scenario("TestScenario1", "example1.com", null, null);
-        Scenario scenario2 = new Scenario("TestScenario2", "example2.com", null, null);
+        when(proxySourcesClient.getProxy(anyString())).thenReturn(proxyConfigHolder);
+        when(scenarioExecutor.execute(any(), any())).thenReturn(mock(ScenarioResult.class));
+        Scenario scenario1 = new Scenario("TestScenario1", "example1.com", "", null);
+        Scenario scenario2 = new Scenario("TestScenario2", "example2.com", "", null);
 
         scenarioQueue.add(scenario1);
         scenarioQueue.add(scenario2);
@@ -64,6 +73,6 @@ class ExecutionServiceImplTest {
 
         verify(scenarioExecutor, times(1)).execute(scenario1, mockWebDriver);
         verify(scenarioExecutor, times(1)).execute(scenario2, mockWebDriver);
-
+        verify(scenarioResultService, times(2)).createScenarioResult(any(ScenarioResult.class));
     }
 }

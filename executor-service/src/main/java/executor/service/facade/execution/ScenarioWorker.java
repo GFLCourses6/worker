@@ -1,14 +1,13 @@
 package executor.service.facade.execution;
 
 import executor.service.holder.ScenarioQueueHolder;
-import executor.service.model.dto.ProxyConfigHolder;
 import executor.service.model.dto.Scenario;
 import executor.service.service.executor.ScenarioExecutor;
 import executor.service.service.proxy.ProxySourcesClient;
+import executor.service.service.scenario.result.ScenarioResultService;
 import executor.service.service.webDriver.WebDriverInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.BlockingQueue;
@@ -22,16 +21,19 @@ public class ScenarioWorker implements ExecutionService {
     private final ScenarioExecutor scenarioExecutor;
     private final WebDriverInitializer webDriverInitializer;
     private final ProxySourcesClient proxySourcesClient;
+    private final ScenarioResultService scenarioResultService;
 
     public ScenarioWorker(
             ScenarioQueueHolder scenarioQueueHolder,
             ScenarioExecutor scenarioExecutor,
             WebDriverInitializer webDriverInitializer,
-            ProxySourcesClient proxySourcesClient) {
+            ProxySourcesClient proxySourcesClient,
+            ScenarioResultService scenarioResultService) {
         this.scenarioQueue = scenarioQueueHolder.getQueue();
         this.scenarioExecutor = scenarioExecutor;
         this.webDriverInitializer = webDriverInitializer;
         this.proxySourcesClient = proxySourcesClient;
+        this.scenarioResultService = scenarioResultService;
     }
 
     @Override
@@ -40,9 +42,7 @@ public class ScenarioWorker implements ExecutionService {
             logger.info("Scenarios in queue: {}", scenarioQueue.size());
             Scenario scenario = getScenario();
             if (scenario != null) {
-                logger.info("Executing the scenario '{}'", scenario.getName());
-                var webDriver = getWebDriver(scenario.getUsername());
-                scenarioExecutor.execute(scenario, webDriver);
+                execute(scenario);
             }
         }
     }
@@ -56,10 +56,13 @@ public class ScenarioWorker implements ExecutionService {
         return null;
     }
 
-    private WebDriver getWebDriver(String username) {
-        logger.info("Retrieving proxy for {}", username);
-        ProxyConfigHolder proxyConfigHolder = proxySourcesClient.getProxy(username);
-        logger.info("Proxy {}", proxyConfigHolder);
-        return webDriverInitializer.create(proxyConfigHolder);
+    private void execute(Scenario scenario) {
+        logger.info("Executing the scenario '{}'", scenario.getName());
+        String username = scenario.getUsername();
+        var proxy = proxySourcesClient.getProxy(username);
+        var driver = webDriverInitializer.create(proxy);
+        var result = scenarioExecutor.execute(scenario, driver);
+        result.setProxy(proxy);
+        scenarioResultService.createScenarioResult(result);
     }
 }
