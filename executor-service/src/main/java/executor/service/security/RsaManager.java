@@ -16,15 +16,21 @@ import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 
 @Component
+
 public class RsaManager {
 
+    private PublicKey publicKey;
     private PrivateKey privateKey;
 
+    @Value("${public.key}")
+    private String publicKeyString;
     @Value("${private.key}")
     private String privateKeyString;
 
@@ -33,9 +39,10 @@ public class RsaManager {
     @PostConstruct
     public void initFromStrings() {
         try {
-
+            X509EncodedKeySpec keySpecPublic = new X509EncodedKeySpec(decode(publicKeyString));
             PKCS8EncodedKeySpec keySpecPrivate = new PKCS8EncodedKeySpec(decode(privateKeyString));
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            publicKey = keyFactory.generatePublic(keySpecPublic);
             privateKey = keyFactory.generatePrivate(keySpecPrivate);
         } catch (Exception e) {
             logger.error("Error during initialization from strings", e);
@@ -47,7 +54,7 @@ public class RsaManager {
         try {
             byte[] messageToBytes = message.getBytes();
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             byte[] encryptedBytes = cipher.doFinal(messageToBytes);
             return encode(encryptedBytes);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
