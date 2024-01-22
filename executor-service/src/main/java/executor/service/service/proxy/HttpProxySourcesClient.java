@@ -1,6 +1,7 @@
 package executor.service.service.proxy;
 
 import executor.service.model.dto.ProxyConfigHolder;
+import executor.service.security.RsaManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class HttpProxySourcesClient implements ProxySourcesClient {
-
+    private final RsaManager rsaManager;
     @Value("${client.url.proxy}")
     private String clientProxyUrl;
     @Value("${executor.service.auth.token.value}")
@@ -21,8 +22,9 @@ public class HttpProxySourcesClient implements ProxySourcesClient {
     private final Logger logger = LoggerFactory.getLogger(HttpProxySourcesClient.class);
     private final RestTemplate restTemplate;
 
-    public HttpProxySourcesClient(RestTemplate restTemplate) {
+    public HttpProxySourcesClient(RestTemplate restTemplate, RsaManager rsaManager) {
         this.restTemplate = restTemplate;
+        this.rsaManager = rsaManager;
     }
 
     @Override
@@ -52,7 +54,10 @@ public class HttpProxySourcesClient implements ProxySourcesClient {
 
     private HttpEntity<Object> getHttpEntity() {
         var headers = new HttpHeaders();
-        headers.set(HttpHeaders.AUTHORIZATION, "Token " + workerApiToken);
+
+        rsaManager.initFromStrings();
+        String encryptedWorkerApiToken = rsaManager.encrypt(workerApiToken);
+        headers.set(HttpHeaders.AUTHORIZATION, "Token " + encryptedWorkerApiToken);
         return new HttpEntity<>(headers);
     }
 }
