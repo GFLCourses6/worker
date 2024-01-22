@@ -88,6 +88,10 @@ public class StepResult {
         return createdDate;
     }
 
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
     @Override
     public String toString() {
         return "StepResult{" +

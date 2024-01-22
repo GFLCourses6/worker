@@ -2,6 +2,7 @@ package executor.service.service.executor;
 
 import executor.service.model.dto.Scenario;
 import executor.service.model.dto.Step;
+import executor.service.model.entity.ExecutionStatus;
 import executor.service.model.entity.ScenarioResult;
 import executor.service.model.entity.StepResult;
 import executor.service.service.step.StepExecution;
@@ -34,15 +35,23 @@ public class ScenarioExecutorService implements ScenarioExecutor {
 
     private ScenarioResult executeSteps(Scenario scenario, WebDriver driver) {
         Queue<Step> steps = new ArrayDeque<>(scenario.getSteps());
-        var scenarioResult = new ScenarioResult(scenario);
+        ScenarioResult scenarioResult = new ScenarioResult(scenario);
 
         while (!steps.isEmpty()) {
             Step step = steps.poll();
-            StepResult stepResult = getStepExecution(step).step(driver, step);
-            scenarioResult.addStepResult(stepResult);
+            StepResult result = makeStep(driver, step);
+            scenarioResult.addStepResult(result);
         }
         driver.quit();
         return scenarioResult;
+    }
+
+    private StepResult makeStep(WebDriver driver, Step step) {
+        try {
+            return getStepExecution(step).step(driver, step);
+        } catch (Exception e) {
+            return new StepResult(step, e.getMessage(), ExecutionStatus.FAIL);
+        }
     }
 
     private StepExecution getStepExecution(Step step) {

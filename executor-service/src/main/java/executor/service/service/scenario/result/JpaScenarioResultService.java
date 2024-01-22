@@ -32,7 +32,7 @@ public class JpaScenarioResultService
 
     @Override
     @Transactional(readOnly = true)
-    public List<ScenarioResultResponse> getAllScenarioResults() {
-        return scenarioMapper.scenarioResultToScenarioResponse(repository.findAllFetchStepResults());
+    public List<ScenarioResultResponse> getAllScenarioResults(String username) {
+        return scenarioMapper.scenarioResultToScenarioResponse(repository.findAllFetchStepResults(username));
     }
 }
