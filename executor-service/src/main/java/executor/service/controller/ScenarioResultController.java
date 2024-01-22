@@ -4,6 +4,7 @@ import executor.service.model.dto.ScenarioResultResponse;
 import executor.service.service.scenario.result.ScenarioResultService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,10 +21,9 @@ public class ScenarioResultController {
         this.scenarioResultService = resultService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<ScenarioResultResponse>> getAllScenarioResults() {
-        List<ScenarioResultResponse> scenarioResults =
-                scenarioResultService.getAllScenarioResults();
+    @GetMapping("/{username}")
+    public ResponseEntity<List<ScenarioResultResponse>> getAllScenarioResults(@PathVariable String username) {
+        List<ScenarioResultResponse> scenarioResults = scenarioResultService.getAllScenarioResults(username);
         return scenarioResults.isEmpty()
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.ok(scenarioResults);

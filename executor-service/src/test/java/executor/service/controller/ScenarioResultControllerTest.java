@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -31,7 +32,7 @@ class ScenarioResultControllerTest {
             throws Exception {
         List<ScenarioResultResponse> scenarioResults =
                 Arrays.asList(new ScenarioResultResponse(), new ScenarioResultResponse());
-        when(scenarioResultService.getAllScenarioResults()).thenReturn(scenarioResults);
+        when(scenarioResultService.getAllScenarioResults(anyString())).thenReturn(scenarioResults);
         mockMvc.perform(get("/result").contentType(MediaType.APPLICATION_JSON))
                .andExpect(status().isOk())
                .andExpect(jsonPath("$.length()").value(scenarioResults.size()));
@@ -39,7 +40,7 @@ class ScenarioResultControllerTest {
 
     void getAllScenarioResultsEmptyList()
             throws Exception {
-        when(scenarioResultService.getAllScenarioResults()).thenReturn(List.of());
+        when(scenarioResultService.getAllScenarioResults(anyString())).thenReturn(List.of());
         mockMvc.perform(get("/result").contentType(MediaType.APPLICATION_JSON))
                .andExpect(status().isNoContent());
     }

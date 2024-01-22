@@ -52,9 +52,9 @@ class JpaScenarioResultServiceTest {
     void testGetAllScenarioResults() {
         List<ScenarioResult> expectedResultList = Arrays.asList(
                 new ScenarioResult(), new ScenarioResult());
-        when(repository.findAllFetchStepResults()).thenReturn(expectedResultList);
-        scenarioResultService.getAllScenarioResults();
-        verify(repository, times(1)).findAllFetchStepResults();
+        when(repository.findAllFetchStepResults(anyString())).thenReturn(expectedResultList);
+        scenarioResultService.getAllScenarioResults("username");
+        verify(repository, times(1)).findAllFetchStepResults("username");
         verify(mapper, times(1)).scenarioResultToScenarioResponse(expectedResultList);
     }
 }

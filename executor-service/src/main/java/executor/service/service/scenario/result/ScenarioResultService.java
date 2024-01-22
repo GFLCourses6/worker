@@ -8,5 +8,5 @@ import java.util.List;
 public interface ScenarioResultService {
     ScenarioResultResponse createScenarioResult(ScenarioResult result);
 
-    List<ScenarioResultResponse> getAllScenarioResults();
+    List<ScenarioResultResponse> getAllScenarioResults(String username);
 }
