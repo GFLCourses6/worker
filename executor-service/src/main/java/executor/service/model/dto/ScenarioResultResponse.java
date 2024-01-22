@@ -9,6 +9,7 @@ public class ScenarioResultResponse {
     private String name;
     private String site;
     private String username;
+    private String proxy;
     private List<StepResultResponse> stepResults;
 
     public ScenarioResultResponse(Long id, String name, String site,
@@ -53,6 +54,14 @@ public class ScenarioResultResponse {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getProxy() {
+        return proxy;
+    }
+
+    public void setProxy(String proxy) {
+        this.proxy = proxy;
     }
 
     public List<StepResultResponse> getStepResults() {

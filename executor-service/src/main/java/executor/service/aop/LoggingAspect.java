@@ -1,7 +1,6 @@
 package executor.service.aop;
 
 import executor.service.model.entity.ScenarioResult;
-import executor.service.service.scenario.result.ScenarioResultService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -14,19 +13,11 @@ public class LoggingAspect {
 
     private final Logger logger = LogManager.getLogger(LoggingAspect.class);
 
-    private final ScenarioResultService scenarioResultService;
-
-    public LoggingAspect(
-            final ScenarioResultService resultService) {
-        this.scenarioResultService = resultService;
-    }
-
     @AfterReturning(
             returning = "scenarioResult",
             pointcut = "Pointcuts.scenarioExecutorServicePointCut()")
-    public void saveScenarioResultAfterExecutionAspect(
+    public void logScenarioResultAfterExecutionAspect(
             final ScenarioResult scenarioResult) {
-        scenarioResultService.createScenarioResult(scenarioResult);
-        logger.info("Saved after execution: {}", scenarioResult);
+        logger.info("Scenario result has been executed: {}", scenarioResult);
     }
 }
