@@ -13,8 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class HttpProxySourcesClient implements ProxySourcesClient {
-
-    private RsaManager rsaManager;
+    private final RsaManager rsaManager;
     @Value("${client.url.proxy}")
     private String clientProxyUrl;
     @Value("${executor.service.auth.token.value}")
@@ -23,8 +22,9 @@ public class HttpProxySourcesClient implements ProxySourcesClient {
     private final Logger logger = LoggerFactory.getLogger(HttpProxySourcesClient.class);
     private final RestTemplate restTemplate;
 
-    public HttpProxySourcesClient(RestTemplate restTemplate) {
+    public HttpProxySourcesClient(RestTemplate restTemplate, RsaManager rsaManager) {
         this.restTemplate = restTemplate;
+        this.rsaManager = rsaManager;
     }
 
     @Override

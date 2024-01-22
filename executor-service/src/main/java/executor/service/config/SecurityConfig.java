@@ -47,7 +47,6 @@ public class SecurityConfig {
     private boolean isValidApiToken(String tokenHeader) {
         if (tokenHeader != null && tokenHeader.startsWith("Token ")) {
             String token = tokenHeader.substring(6);
-            rsaManager.initFromStrings();
             String decryptedToken = rsaManager.decrypt(token);
             return clientApiToken.equals(decryptedToken);
         }
