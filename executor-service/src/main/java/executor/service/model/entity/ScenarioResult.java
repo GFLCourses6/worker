@@ -1,16 +1,8 @@
 package executor.service.model.entity;
 
+import executor.service.model.dto.ProxyConfigHolder;
 import executor.service.model.dto.Scenario;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.ArrayList;
@@ -35,6 +27,9 @@ public class ScenarioResult {
 
     @Column(name = "username")
     private String username;
+
+    @Column(name = "proxy")
+    private String proxy;
 
     @OneToMany(mappedBy = "scenarioResult", cascade = CascadeType.ALL)
     private List<StepResult> stepResults = new ArrayList<>();
@@ -75,6 +70,17 @@ public class ScenarioResult {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getProxy() {
+        return proxy;
+    }
+
+    public void setProxy(ProxyConfigHolder proxy) {
+        if (proxy != null && proxy.getProxyNetworkConfig() != null) {
+            var network = proxy.getProxyNetworkConfig();
+            this.proxy = String.format("%s:%d", network.getHostname(), network.getPort());
+        }
     }
 
     public List<StepResult> getStepResults() {
