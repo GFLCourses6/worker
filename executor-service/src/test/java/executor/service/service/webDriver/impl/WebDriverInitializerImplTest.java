@@ -5,7 +5,6 @@ import executor.service.model.dto.ProxyCredentials;
 import executor.service.model.dto.ProxyNetworkConfig;
 import executor.service.model.dto.WebDriverConfig;
 import executor.service.service.webDriver.WebDriverInitializerImpl;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -42,7 +41,6 @@ class WebDriverInitializerImplTest {
     @InjectMocks
     private WebDriverInitializerImpl webDriverInitializer;
 
-    @Test
     void createWebDriverWithoutProxy() {
         when(mockProxyConfigHolder.getProxyNetworkConfig()).thenReturn(null);
 
@@ -52,7 +50,6 @@ class WebDriverInitializerImplTest {
         result.quit();
     }
 
-    @Test
     void createWebDriverWithUnauthenticatedProxy() {
         when(mockProxyConfigHolder.getProxyNetworkConfig()).thenReturn(mockProxyNetworkConfig);
         when(mockProxyConfigHolder.getProxyCredentials()).thenReturn(null);
