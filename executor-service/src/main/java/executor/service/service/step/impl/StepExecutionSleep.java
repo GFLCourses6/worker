@@ -18,6 +18,8 @@ public class StepExecutionSleep extends AbstractStepExecution {
     @Override
     protected void executeStepLogic(WebDriver webDriver, Step step) throws Exception {
         long value = Long.parseLong(step.getValue());
+        if (value > 30)
+            throw new IllegalArgumentException("'sleep' value can't be more than 30s.");
         TimeUnit.SECONDS.sleep(value);
     }
 }

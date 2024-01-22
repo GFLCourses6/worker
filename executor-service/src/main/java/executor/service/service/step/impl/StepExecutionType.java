@@ -26,8 +26,7 @@ public enum StepExecutionType {
                 .stream(values())
                 .filter(type -> type.name().equals(action.toUpperCase()))
                 .findFirst()
-                .orElseThrow(() -> (new StepExecutionException(
-                        String.format("%s %s%n",
-                        "The step %s is not supported", action))));
+                .orElseThrow(() -> new StepExecutionException(
+                        String.format("The step '%s' is not supported", action)));
     }
 }
