@@ -1,7 +1,9 @@
 package executor.service.config;
 
 import com.google.common.net.HttpHeaders;
+import executor.service.security.RsaManager;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,15 +20,16 @@ import org.springframework.security.web.access.intercept.RequestAuthorizationCon
 @EnableWebSecurity
 @PropertySource("classpath:application.properties")
 public class SecurityConfig {
-
+    @Autowired
+    private RsaManager rsaManager;
     @Value("${client.auth.token.value}")
     private String clientApiToken;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(
-                authorizeRequests ->
-                        authorizeRequests.anyRequest().access(hasApiToken()))
+                        authorizeRequests ->
+                                authorizeRequests.anyRequest().access(hasApiToken()))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable);
@@ -44,7 +47,9 @@ public class SecurityConfig {
     private boolean isValidApiToken(String tokenHeader) {
         if (tokenHeader != null && tokenHeader.startsWith("Token ")) {
             String token = tokenHeader.substring(6);
-            return clientApiToken.equals(token);
+            rsaManager.initFromStrings();
+            String decryptedToken = rsaManager.decrypt(token);
+            return clientApiToken.equals(decryptedToken);
         }
         return false;
     }
