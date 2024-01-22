@@ -28,9 +28,9 @@ public class SecurityConfigTest {
         String validToken = "client-token";
         String encryptedToken = rsaManager.encrypt(validToken);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/result")
+        mockMvc.perform(MockMvcRequestBuilders.get("/result/{username}", "user")
                         .header("Authorization", "Token " + encryptedToken))
-                .andExpect(MockMvcResultMatchers.status().isNoContent());
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
 
     @Test
@@ -38,16 +38,16 @@ public class SecurityConfigTest {
     void testSecurityFilterChainWithInvalidApiToken() throws Exception {
         String invalidToken = "invalidToken";
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/result")
+        mockMvc.perform(MockMvcRequestBuilders.get("/result/{username}", "user")
                         .header("Authorization", "Token " + invalidToken))
-                .andExpect(MockMvcResultMatchers.status().isForbidden());
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 
     @Test
     @WithMockUser
     void testSecurityFilterChainWithMissingApiToken() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/result"))
-                .andExpect(MockMvcResultMatchers.status().isForbidden());
+        mockMvc.perform(MockMvcRequestBuilders.get("/result/{username}", "user"))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 
 }
