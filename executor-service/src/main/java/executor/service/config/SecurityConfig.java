@@ -20,10 +20,12 @@ import org.springframework.security.web.access.intercept.RequestAuthorizationCon
 @EnableWebSecurity
 @PropertySource("classpath:application.properties")
 public class SecurityConfig {
-    @Autowired
-    private RsaManager rsaManager;
+
     @Value("${client.auth.token.value}")
     private String clientApiToken;
+
+    @Autowired
+    private RsaManager rsaManager;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

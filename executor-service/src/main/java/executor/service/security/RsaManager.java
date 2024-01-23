@@ -11,12 +11,8 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.nio.charset.StandardCharsets;
+import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
@@ -74,9 +70,9 @@ public class RsaManager {
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] decryptedMessage = cipher.doFinal(encryptedBytes);
-            return new String(decryptedMessage, "UTF-8");
+            return new String(decryptedMessage, StandardCharsets.UTF_8);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
-                 IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException e) {
+                 IllegalBlockSizeException | BadPaddingException e) {
             logger.error("Error during decryption", e);
             return "";
         }
