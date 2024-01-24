@@ -23,12 +23,11 @@ public class ScenarioWorker implements ExecutionService {
     private final ProxySourcesClient proxySourcesClient;
     private final ScenarioResultService scenarioResultService;
 
-    public ScenarioWorker(
-            ScenarioQueueHolder scenarioQueueHolder,
-            ScenarioExecutor scenarioExecutor,
-            WebDriverInitializer webDriverInitializer,
-            ProxySourcesClient proxySourcesClient,
-            ScenarioResultService scenarioResultService) {
+    public ScenarioWorker(ScenarioQueueHolder scenarioQueueHolder,
+                          ScenarioExecutor scenarioExecutor,
+                          WebDriverInitializer webDriverInitializer,
+                          ProxySourcesClient proxySourcesClient,
+                          ScenarioResultService scenarioResultService) {
         this.scenarioQueue = scenarioQueueHolder.getQueue();
         this.scenarioExecutor = scenarioExecutor;
         this.webDriverInitializer = webDriverInitializer;

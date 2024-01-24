@@ -13,13 +13,14 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class HttpProxySourcesClient implements ProxySourcesClient {
-    private final RsaManager rsaManager;
+
     @Value("${client.url.proxy}")
     private String clientProxyUrl;
     @Value("${executor.service.auth.token.value}")
     private String workerApiToken;
 
     private final Logger logger = LoggerFactory.getLogger(HttpProxySourcesClient.class);
+    private final RsaManager rsaManager;
     private final RestTemplate restTemplate;
 
     public HttpProxySourcesClient(RestTemplate restTemplate, RsaManager rsaManager) {
@@ -54,8 +55,6 @@ public class HttpProxySourcesClient implements ProxySourcesClient {
 
     private HttpEntity<Object> getHttpEntity() {
         var headers = new HttpHeaders();
-
-        rsaManager.initFromStrings();
         String encryptedWorkerApiToken = rsaManager.encrypt(workerApiToken);
         headers.set(HttpHeaders.AUTHORIZATION, "Token " + encryptedWorkerApiToken);
         return new HttpEntity<>(headers);
