@@ -19,18 +19,20 @@ import static executor.service.service.step.impl.StepExecutionType.fromString;
 @Service
 public class ScenarioExecutorService implements ScenarioExecutor {
 
-    private Logger logger = LoggerFactory.getLogger(ScenarioExecutorService.class);
+    private final Logger logger = LoggerFactory.getLogger(ScenarioExecutorService.class);
 
     @Override
     public ScenarioResult execute(Scenario scenario, WebDriver webDriver) {
         try {
             webDriver.get(scenario.getSite());
+            return executeSteps(scenario, webDriver);
         } catch (Exception e) {
-            webDriver.quit();
             logger.error(e.getMessage());
             return new ScenarioResult(scenario);
         }
-        return executeSteps(scenario, webDriver);
+        finally {
+            webDriver.quit();
+        }
     }
 
     private ScenarioResult executeSteps(Scenario scenario, WebDriver driver) {
@@ -42,7 +44,6 @@ public class ScenarioExecutorService implements ScenarioExecutor {
             StepResult result = makeStep(driver, step);
             scenarioResult.addStepResult(result);
         }
-        driver.quit();
         return scenarioResult;
     }
 
