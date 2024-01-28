@@ -11,6 +11,7 @@ import java.util.List;
 public interface ScenarioResultRepository
         extends JpaRepository<ScenarioResult, Long> {
 
-    @Query("SELECT DISTINCT s FROM ScenarioResult s LEFT JOIN FETCH s.stepResults WHERE s.username = :username")
+    @Query("SELECT DISTINCT s FROM ScenarioResult s LEFT JOIN FETCH s.stepResults s2 WHERE s.username = :username " +
+            "ORDER BY s.id, s2.id")
     List<ScenarioResult> findAllFetchStepResults(String username);
 }

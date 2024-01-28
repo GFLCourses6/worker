@@ -19,7 +19,6 @@ import java.util.Base64;
 
 
 @Component
-
 public class RsaManager {
 
     private PublicKey publicKey;
