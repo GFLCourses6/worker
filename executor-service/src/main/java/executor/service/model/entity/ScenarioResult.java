@@ -31,8 +31,16 @@ public class ScenarioResult {
     @Column(name = "proxy")
     private String proxy;
 
+    @Column(name = "execution_message", columnDefinition="TEXT")
+    private String executionMessage;
+
     @OneToMany(mappedBy = "scenarioResult", cascade = CascadeType.ALL)
     private List<StepResult> stepResults = new ArrayList<>();
+
+    public ScenarioResult(Scenario scenario, String executionMessage) {
+        this(scenario);
+        this.executionMessage = executionMessage;
+    }
 
     public ScenarioResult(Scenario scenario) {
         this.name = scenario.getName();
@@ -66,6 +74,14 @@ public class ScenarioResult {
 
     public void setSite(String site) {
         this.site = site;
+    }
+
+    public String getExecutionMessage() {
+        return executionMessage;
+    }
+
+    public void setExecutionMessage(String executionMessage) {
+        this.executionMessage = executionMessage;
     }
 
     public String getUsername() {

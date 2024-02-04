@@ -10,6 +10,7 @@ public class ScenarioResultResponse {
     private String site;
     private String username;
     private String proxy;
+    private String executionMessage;
     private List<StepResultResponse> stepResults;
 
     public ScenarioResultResponse(Long id, String name, String site,
@@ -62,6 +63,14 @@ public class ScenarioResultResponse {
 
     public void setProxy(String proxy) {
         this.proxy = proxy;
+    }
+
+    public String getExecutionMessage() {
+        return executionMessage;
+    }
+
+    public void setExecutionMessage(String executionMessage) {
+        this.executionMessage = executionMessage;
     }
 
     public List<StepResultResponse> getStepResults() {

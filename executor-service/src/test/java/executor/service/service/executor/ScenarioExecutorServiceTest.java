@@ -23,12 +23,9 @@ import org.openqa.selenium.WebElement;
 import java.util.Arrays;
 import java.util.List;
 
-import static executor.service.service.executor.Action.UNSUPPORTED_ACTION;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ScenarioExecutorServiceTest {
 
@@ -119,6 +116,6 @@ class ScenarioExecutorServiceTest {
     @DisplayName("Given a ScenarioExecutor instance, when fromString method is called with an unsupported action, then a StepExecutionException is thrown")
     void testFromStringThrowsException() {
         assertThrows(StepExecutionException.class,
-                () -> StepExecutionType.fromString(UNSUPPORTED_ACTION));
+                () -> StepExecutionType.fromString("unsupported"));
     }
 }

@@ -27,7 +27,9 @@ public class ScenarioController {
     public ResponseEntity<List<Scenario>> getScenariosByUsername(
             @PathVariable final String username) {
         List<Scenario> scenarios = scenarioService.getScenariosByUsername(username);
-        return new ResponseEntity<>(scenarios, HttpStatus.OK) ;
+        return scenarios.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(scenarios);
     }
 
     @GetMapping("/queue/{username}/{scenarioName}")
@@ -35,7 +37,9 @@ public class ScenarioController {
             @PathVariable final String username,
             @PathVariable final String scenarioName) {
         List<Scenario> scenarios = scenarioService.getScenariosByUsernameAndScenarioName(username, scenarioName);
-        return new ResponseEntity<>(scenarios, HttpStatus.OK) ;
+        return scenarios.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(scenarios);
     }
 
     @PostMapping("/queue")

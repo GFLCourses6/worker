@@ -1,13 +1,16 @@
 package executor.service.facade.execution;
 
 import executor.service.holder.ScenarioQueueHolder;
+import executor.service.model.dto.ProxyConfigHolder;
 import executor.service.model.dto.Scenario;
+import executor.service.model.entity.ScenarioResult;
 import executor.service.service.executor.ScenarioExecutor;
 import executor.service.service.proxy.ProxySourcesClient;
 import executor.service.service.scenario.result.ScenarioResultService;
 import executor.service.service.webDriver.WebDriverInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.BlockingQueue;
@@ -58,9 +61,9 @@ public class ScenarioWorker implements ExecutionService {
     private void execute(Scenario scenario) {
         logger.info("Executing the scenario '{}'", scenario.getName());
         String username = scenario.getUsername();
-        var proxy = proxySourcesClient.getProxy(username);
-        var driver = webDriverInitializer.create(proxy);
-        var result = scenarioExecutor.execute(scenario, driver);
+        ProxyConfigHolder proxy = proxySourcesClient.getProxy(username);
+        WebDriver driver = webDriverInitializer.create(proxy);
+        ScenarioResult result = scenarioExecutor.execute(scenario, driver);
         result.setProxy(proxy);
         scenarioResultService.createScenarioResult(result);
     }
