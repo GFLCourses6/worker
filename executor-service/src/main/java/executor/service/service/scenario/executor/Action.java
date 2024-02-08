@@ -1,4 +1,4 @@
-package executor.service.service.executor;
+package executor.service.service.scenario.executor;
 
 public final class Action {
 

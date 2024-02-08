@@ -5,7 +5,7 @@ import executor.service.service.step.AbstractStepExecution;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import static executor.service.service.executor.Action.CLICK_XPATH_ACTION;
+import static executor.service.service.scenario.executor.Action.CLICK_XPATH_ACTION;
 
 public class StepExecutionClickXpath extends AbstractStepExecution {
 

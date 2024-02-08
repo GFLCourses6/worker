@@ -1,7 +1,7 @@
 package executor.service.controller;
 
 import executor.service.model.dto.Scenario;
-import executor.service.service.scenario.ScenarioService;
+import executor.service.service.scenario.queue.ScenarioQueueService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +15,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/scenario")
-public class ScenarioController {
+public class ScenarioQueueController {
 
-    private final ScenarioService scenarioService;
+    private final ScenarioQueueService scenarioService;
 
-    public ScenarioController(final ScenarioService scenarioService) {
+    public ScenarioQueueController(final ScenarioQueueService scenarioService) {
         this.scenarioService = scenarioService;
     }
 

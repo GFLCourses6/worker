@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 
 import java.util.concurrent.TimeUnit;
 
-import static executor.service.service.executor.Action.SLEEP_ACTION;
+import static executor.service.service.scenario.executor.Action.SLEEP_ACTION;
 
 public class StepExecutionSleep extends AbstractStepExecution {
 

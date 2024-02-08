@@ -1,4 +1,4 @@
-package executor.service.service.scenario;
+package executor.service.service.scenario.queue;
 
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.dto.Scenario;
@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Queue;
 
 @Service
-public class ScenarioHttpService
-        implements ScenarioService {
+public class DefaultScenarioQueueService
+        implements ScenarioQueueService {
 
     private final Queue<Scenario> scenarioQueue;
 
-    public ScenarioHttpService(ScenarioQueueHolder scenarioQueueHolder) {
+    public DefaultScenarioQueueService(ScenarioQueueHolder scenarioQueueHolder) {
         this.scenarioQueue = scenarioQueueHolder.getQueue();
     }
 

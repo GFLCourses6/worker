@@ -1,10 +1,10 @@
-package executor.service.service.scenario;
+package executor.service.service.scenario.queue;
 
 import executor.service.model.dto.Scenario;
 
 import java.util.List;
 
-public interface ScenarioService {
+public interface ScenarioQueueService {
 
     void saveScenario(Scenario scenario);
 

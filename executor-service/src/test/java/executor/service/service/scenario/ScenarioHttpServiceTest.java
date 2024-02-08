@@ -3,6 +3,7 @@ package executor.service.service.scenario;
 import executor.service.holder.ScenarioQueueHolder;
 import executor.service.model.dto.Scenario;
 import executor.service.params.ScenariosArgumentsProvider;
+import executor.service.service.scenario.queue.DefaultScenarioQueueService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,17 +26,17 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class ScenarioHttpServiceTest {
+class ScenarioQueueServiceTest {
 
     @Mock
     private ScenarioQueueHolder scenarioQueueHolder;
-    private ScenarioHttpService scenarioHttpService;
+    private DefaultScenarioQueueService scenarioHttpService;
     private final BlockingQueue<Scenario> scenarioQueue = spy(new LinkedBlockingQueue<>());
 
     @BeforeEach
     void setUp() {
         when(scenarioQueueHolder.getQueue()).thenReturn(scenarioQueue);
-        scenarioHttpService = new ScenarioHttpService(scenarioQueueHolder);
+        scenarioHttpService = new DefaultScenarioQueueService(scenarioQueueHolder);
     }
 
     @Test
