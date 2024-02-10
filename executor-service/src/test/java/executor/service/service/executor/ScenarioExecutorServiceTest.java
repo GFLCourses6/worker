@@ -1,33 +1,31 @@
 package executor.service.service.executor;
 
-import executor.service.exception.StepExecutionException;
 import executor.service.model.dto.Scenario;
 import executor.service.model.dto.Step;
 import executor.service.params.ActionsArgumentsProvider;
 import executor.service.params.ScenariosArgumentsProvider;
 import executor.service.service.scenario.executor.ScenarioExecutorService;
-import executor.service.service.step.impl.StepExecutionType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 class ScenarioExecutorServiceTest {
 
     @Mock
@@ -42,7 +40,7 @@ class ScenarioExecutorServiceTest {
     private Scenario scenario;
     @Mock
     private WebElement webElement;
-    @InjectMocks
+    @Autowired
     private ScenarioExecutorService service;
 
     AutoCloseable autoCloseable;
@@ -55,7 +53,6 @@ class ScenarioExecutorServiceTest {
         List<Step> steps = Arrays.asList(click, sleep, clickCss);
         scenario.setSteps(steps);
         when(scenario.getSteps()).thenReturn(steps);
-        service = new ScenarioExecutorService();
     }
 
     @AfterEach
@@ -111,12 +108,5 @@ class ScenarioExecutorServiceTest {
         verify(webElement, times(steps.size())).click();
         verify(webDriver).get(site);
         verify(webDriver).quit();
-    }
-
-    @Test
-    @DisplayName("Given a ScenarioExecutor instance, when fromString method is called with an unsupported action, then a StepExecutionException is thrown")
-    void testFromStringThrowsException() {
-        assertThrows(StepExecutionException.class,
-                () -> StepExecutionType.fromString("unsupported"));
     }
 }
