@@ -2,15 +2,15 @@ package executor.service.exception;
 
 import executor.service.model.dto.Step;
 
-public class StepExecutionException
+public class StepNotFoundException
         extends RuntimeException {
 
-    public StepExecutionException(
+    public StepNotFoundException(
             final String message) {
         super(message);
     }
 
-    public StepExecutionException(
+    public StepNotFoundException(
             final Step step) {
         super(String.format("The step '%s' is not supported", step.getAction()));
     }

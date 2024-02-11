@@ -1,6 +1,6 @@
 package executor.service.service.step.executor;
 
-import executor.service.exception.StepExecutionException;
+import executor.service.exception.StepNotFoundException;
 import executor.service.model.dto.Step;
 import executor.service.model.entity.ExecutionStatus;
 import executor.service.model.entity.StepResult;
@@ -12,18 +12,19 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 
 @Service
 public class StepExecutorService implements StepExecutor {
 
-    private final Map<String, StepExecution> steps;
+    private final Map<String, StepExecution> availableSteps;
 
     @Autowired
     public StepExecutorService(List<StepExecution> steps) {
-        this.steps = steps.stream().collect(Collectors.toMap(
-                        StepExecution::getStepAction,
-                        stepExecution -> stepExecution));
+        this.availableSteps = steps.stream().collect(toMap(
+                StepExecution::getStepAction, identity()));
     }
 
     @Override
@@ -36,7 +37,7 @@ public class StepExecutorService implements StepExecutor {
     }
 
     private StepExecution getStepExecution(Step step) {
-        return Optional.ofNullable(steps.get(step.getAction()))
-                .orElseThrow(() -> new StepExecutionException(step));
+        return Optional.ofNullable(availableSteps.get(step.getAction()))
+                .orElseThrow(() -> new StepNotFoundException(step));
     }
 }
