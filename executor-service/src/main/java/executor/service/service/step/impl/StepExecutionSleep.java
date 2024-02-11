@@ -3,11 +3,13 @@ package executor.service.service.step.impl;
 import executor.service.model.dto.Step;
 import executor.service.service.step.AbstractStepExecution;
 import org.openqa.selenium.WebDriver;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 
-import static executor.service.service.executor.Action.SLEEP_ACTION;
+import static executor.service.service.scenario.executor.Action.SLEEP_ACTION;
 
+@Component
 public class StepExecutionSleep extends AbstractStepExecution {
 
     @Override
